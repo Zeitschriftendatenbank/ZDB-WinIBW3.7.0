@@ -1,0 +1,17 @@
+0500 Abxz
+0501 Text$btxt
+0502 ohne Hilfsmittel zu benutzen$bn
+0503 Band$bnc
+1100 ++
+1131 !040674886!
+1505 $erda
+1700 
+3260 $T01$ULatn%%
+4000 $T01$UJpan%%
+4000 $T01$ULatn%%
+4030 $T01$UJpan%%
+4030 $T01$ULatn%%
+4024 
+4025 
+4030 
+5080 

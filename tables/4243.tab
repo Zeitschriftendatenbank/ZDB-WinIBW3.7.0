@@ -1,0 +1,17 @@
+<tbl>
+<tt> Beziehungskennzeichen 4243
+<dt> 4243.tab
+<tag> 4243
+<row>CD-Ausgabe QQ $nCD-Ausgabe
+<row>CD-ROM-Ausgabe QQ $nCD-ROM-Ausgabe
+<row>Disketten-Ausgabe QQ $nDisketten-Ausgabe
+<row>DVD-Audio-Ausgabe QQ $nDVD-Audio-Ausgabe
+<row>DVD-ROM-Ausgabe QQ $nDVD-ROM-Ausgabe
+<row>DVD-Video-Ausgabe QQ $nDVD-Video-Ausgabe
+<row>Druck-Ausgabe QQ $nDruck-Ausgabe
+<row>E-Paper-Ausgabe QQ $nE-Paper-Ausgabe
+<row>Mikroform-Ausgabe QQ $nMikroform-Ausgabe
+<row>Online-Ausgabe QQ $nOnline-Ausgabe
+<row>Schallplatten-Ausgabe QQ $nSchallplatten-Ausgabe
+<row>USB-Stick-Ausgabe QQ $nUSB-Stick-Ausgabe
+</tbl>

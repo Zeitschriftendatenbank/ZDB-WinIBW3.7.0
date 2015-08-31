@@ -1,0 +1,53 @@
+<?xml version="1.0"?> <!-- -*- Mode: HTML -*- -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?> 
+<?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
+
+
+<dialog
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+	title="SetBuilder"
+	onload="loadFiles();"
+	buttons="accept, cancel"
+	style="min-width: 33em;height:100%;"
+	ondialogaccept="return fidOnAccept();"
+	ondialogcancel="return fidOnCancel();"
+	onunload="application.activate();"
+	id="ZDB_FID"
+>
+<script type="application/x-javascript" src="chrome://ibw/content/xul/ZDB_FID.js" />
+	<hbox>
+		<groupbox orient="horizontal">
+			<label value="Dateiauswahl:" />
+			<menulist id="idFileListMenu">
+				<menupopup id="idFileList" />
+			</menulist>
+		</groupbox>	
+		<groupbox orient="horizontal">
+			<label value="Trennzeichen:" />
+				<textbox id="delimiter"
+					value=";"
+					multiline="false"
+					rows="1"
+					cols="1"
+					tooltiptext="Bitte geben Sie das CSV-Trennzeichen ein!"/>
+		</groupbox>
+		<groupbox orient="horizontal">
+			<label value="Startzeile:" />
+				<textbox id="sZeile"
+					value="2"
+					multiline="false"
+					rows="1"
+					cols="1"
+					tooltiptext="Bitte geben Sie die Zeile an, ab der die Daten gelesen werden sollen!"/>
+		</groupbox>
+        <groupbox orient="horizontal">
+			<label value="Spalte mit ZDB-ID:" />
+				<textbox id="idSpalte"
+					value="4"
+					multiline="false"
+					rows="1"
+					cols="1"
+					tooltiptext="Bitte geben Sie die Nummer der Spalte an, in der die ZDB-ID hinterlegt ist."/>
+		</groupbox>	
+	</hbox>
+</dialog>

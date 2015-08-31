@@ -1,0 +1,89 @@
+﻿<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?> 
+<?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
+<!-- Include your own stylesheet here. -->
+
+<!-- Define the dialog: -->
+<dialog
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+	title="Bibliothek definieren"
+	onload="onLoad();"
+	buttons="accept,cancel"
+	ondialogaccept="return onAccept();"
+	ondialogcancel="return onCancel();"
+	onunload="application.activate();"
+	style="min-width: 33em"
+	id="ZDB_BibliothekDefinieren"
+>
+
+<script>
+<![CDATA[
+var application = Components.classes["@oclcpica.nl/kitabapplication;1"]
+                        .getService(Components.interfaces.IApplication);
+
+function onLoad()
+{
+	document.getElementById("ZDB_BibliothekDefinieren_Textbox1").value = application.getProfileString("zdb.userdata", "eigeneBibliothek", "");
+	return true;
+}
+
+function onAccept()
+{
+	// The Accept button is pressed..
+	var idn_input = document.getElementById("ZDB_BibliothekDefinieren_Textbox1").value;
+	// IDN wird auf korrekte Systax und Länge geprüft
+    // Korrektur: Johann Rolschewski (ZDB), 07.07.2010, Validation auf 9 bis 10 stellige IDNs angepasst 
+	if (idn_input.match(/^(\d{8,9}[\d|x|X])$/gi)){
+		idn_input = "!" + idn_input + "!";
+	}
+	if (idn_input.match(/^!(\d{8,9}[\d|x|X])!$/gi)){
+		application.writeProfileString("zdb.userdata", "eigeneBibliothek", idn_input);
+		if(application.getProfileString("zdb.userdata", "eigeneBibliothek", false) == idn_input){
+			application.messageBox("BibliothekDefinieren", "Die IDN " + idn_input + " wurde gespeichert.",  "message-icon");
+		} else {
+			
+		}
+	// Falls eine leere Eingabe erfolgt ist, wird der bestehende Inhalt gelöscht
+	} else if (idn_input.length == 0){
+		application.writeProfileString("zdb.userdata", "eigeneBibliothek", "");
+		application.messageBox("BibliothekDefinieren", "Die IDN wurde gelöscht.",  "message-icon");
+	} else {
+		application.messageBox("BibliothekDefinieren", "Die eingegebene IDN ist nicht korrekt: '" + idn_input + "'",  "alert-icon");
+	}
+	return true;
+}
+
+function onCancel()
+{
+	// The Cancel button is pressed..
+	// alert("Sie haben Abbrechen gewählt. Wirklich abbrechen?");
+	return true;
+}
+
+
+]]>
+</script>
+
+	<!-- Layout the dialog controls: -->
+	<vbox>
+
+		<!--<separator/>-->		
+		<vbox align="left" flex="1">
+			<description style="width: 30em;" flex="1">
+				Bitte geben Sie die IDN des Bibliothekssatzes mit Ausrufezeichen (Beispiel: !123456789!) an. Diese Angabe wird bei Verwendung des Macros "Exemplar erfassen" in das Feld 4800 eingetragen.
+			</description>
+			<separator/>
+			<description style="width: 30em;" flex="1">
+				Leere Eingabe und "OK" und löscht die gespeicherte IDN.
+			</description>
+			<separator/>
+			<textbox align="left" size="40" id="ZDB_BibliothekDefinieren_Textbox1" value="" />
+		</vbox>
+
+		<!--<separator/>-->
+		
+	</vbox>
+	
+	<separator/>
+
+</dialog>

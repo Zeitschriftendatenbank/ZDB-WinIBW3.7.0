@@ -1,0 +1,110 @@
+﻿<?xml version="1.0"?> <!-- -*- Mode: HTML -*- -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?> 
+<?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
+
+
+<dialog
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+	title="Exemplarmasken"
+	onload="onLoad();"
+	buttons="accept,cancel,help"
+	ondialoghelp="wikiWinibw();"
+	style="min-width: 33em"
+	ondialogaccept="return onAccept();"
+	ondialogcancel="return onCancel();"
+>
+<script type="application/x-javascript" src="chrome://ibw/content/xul/gbv_exemplarmasken_dialog.js" />
+	<tabbox>
+		<tabs id="idTabs">
+
+			<tab label="Exemplarmasken"/>
+			<tab label="weitere Einstellungen"/>
+			<tab label="Elektronische Ressourcen"/>
+		</tabs>
+
+		<tabpanels>
+			<tabpanel id="Exemplarmasken">
+				<hbox>
+					<groupbox orient="vertical">
+						<label value="Auswahl Exemplarmasken:" />
+						<menulist id="idFileListMenu" oncommand="loadFileByName();">
+							<menupopup id="idFileList" />
+						</menulist>
+					</groupbox>
+
+					<groupbox orient="vertical">
+						<label value="Selektionzeichen in Kategorie 70xx:" />
+						<textbox id="idFileEdit70xx"
+							multiline="false"
+							rows="1"
+							cols="8"
+							tooltiptext="Bitte nur Selektionszeichen ohne Kategorie eintragen!"
+							onchange="bContentsChanged1=true;"/>
+						<label value="weitere Exemplarkategorien:" />
+						<textbox id="idFileEdit"
+							multiline="true"
+							rows="8"
+							cols="20"
+							onchange="bContentsChanged1=true;"/>
+						<label value="Mit '++' können Sie kennzeichnen, an" />
+						<label value="welcher Position der Cursor stehen soll." />
+					</groupbox>
+					</hbox>
+			</tabpanel>
+	
+			<tabpanel id="weitere">
+				<hbox>
+					<vbox>
+						<groupbox orient="vertical" width="380">
+							<description>Wenn Sie festlegen wollen, mit welcher Kategorie / Exemplarnummer
+							die Exemplareingabe beginnen bzw. enden soll, füllen Sie bitte 
+							die beiden nachfolgenden Felder aus. Die Eingabe ist fakultativ.
+							Wenn Sie die Felder nicht ausfüllen, werden Exemplare standardgemäß"
+							von 7001 bis 7099 erfasst." 
+							</description>
+							<separator/>
+							<hbox align="right">
+								<text value="Erste Exemplarnummer"/> 
+								<textbox id="exNrAnfang"
+									multiline="false"
+									rows="1"
+									cols="4"
+									tooltiptext="Nummer des ersten zu erfassenden Exemplares Beispiel: 7010"
+									onchange="bContentsChanged2=true;"/>
+							</hbox>
+							<hbox align="right">
+								<text value="Letzte Exemplarnummer"/> 
+								<textbox id="exNrEnde"
+									multiline="false"
+									rows="1"
+									cols="4"
+									tooltiptext="Nummer des letzten zu erfassenden Exemplares Beispiel: 7029"
+									onchange="bContentsChanged2=true;"/>
+							</hbox>
+						</groupbox>
+						<separator/>
+						<checkbox id="checkboxExEingabe" 
+							label="Eingabe im Exemplarschirm wie nach Kommando 'e eN'"
+							oncommand="bContentsChanged2=true;"/>
+					</vbox>
+				</hbox>
+			</tabpanel>
+			<tabpanel id="elektronisch">
+				<hbox>
+					<vbox>
+						<groupbox orient="vertical" width="380">
+							<description>Beim Anhängen von Exemplaren an elektronische Ressourcen (0500 O...) 
+								können die URLs aus den Kategorien 408x in das Exemplar kopiert werden (Kategorien 713x). 
+							</description>
+							<radiogroup id="idRadioUrl" flex="2">
+								<radio label="Ja, URLs in das Exemplar kopieren" />
+								<radio label="Nein, keine URLs kopieren" />
+							</radiogroup>
+						</groupbox>
+					</vbox>
+				</hbox>
+			</tabpanel>
+		</tabpanels>
+	</tabbox>
+</dialog>
+

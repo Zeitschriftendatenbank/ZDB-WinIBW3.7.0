@@ -1,0 +1,120 @@
+<?xml version="1.0"?> <!-- -*- Mode: HTML -*- -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?> 
+<?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
+
+
+<dialog
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+    title="URL Checker"
+    onload="onLoad();"
+    buttons="accept,cancel"
+    ondialogaccept="return onAccept();"
+    ondialogcancel="return onCancel();"
+    id="idDialog"
+	style="min-width: 66em; min-height: 40em;"
+>
+    <script type="application/x-javascript" src="chrome://ibw/content/xul/url_checking_dialog.js" />
+<dialogheader id="dlgHeader" title="" description="processing record 1/1"/>
+<vbox id="vboxTree" flex="1" >
+<vbox flex="10">
+<tree id="ResultTree" flex="1">
+  <treecols>
+    <treecol id="status" label="Status" flex="1" persist="width ordinal hidden"/>
+    <splitter  class="tree-splitter" />
+    <treecol id="url" label="URL" flex="20" persist="width ordinal hidden"/>
+    <splitter  class="tree-splitter"/>
+    <treecol id="http" label="HTTP Code" flex="5" persist="width ordinal hidden"/>
+    <splitter  class="tree-splitter" />
+    <treecol id="httpStatusText" label="HTTP description" flex="10" persist="width ordinal hidden"/>
+    <splitter  class="tree-splitter" />
+    <treecol id="net" label="Network result" flex="5" persist="width ordinal hidden"/>
+  </treecols>
+  <treechildren/>
+</tree>
+</vbox>
+<separator orient="vertical" />
+<progressmeter id="progress" mode="determined" value="0%" />
+<separator orient="vertical" />
+<vbox flex="1">
+<grid flex="1">
+	<columns>
+		<column />
+		<column flex="1"/>
+		<column />
+		<column />
+		<column flex="1"/>
+	</columns>
+	<rows>
+		<row>
+			<label value="URLs to process in this record:" flex="24" /><label align="end" id="urlTotal" value="0" />
+			<spacer flex="4"/>
+			<label value="Working URLs:" flex="24"/> <label align="end" id="urlWorking" value="0" />
+		</row>
+		<row>
+			<label value="URLs processed in this record:" flex="24"/> <label align="end" id="urlSoFar" value="0" />
+			<spacer flex="4"/>
+			<label value="Broken URLs:" flex="24"/> <label align="end" id="urlBroken" value="0" />
+		</row>
+		<row>
+			<label value="URLs processed so far:" flex="24"/> <label align="end" id="urlGrandTotal" value="0" />
+			<spacer flex="4"/>
+			<label value="" flex="24"/> <label align="end" value="" />
+		</row>
+	</rows>
+</grid>
+</vbox>
+</vbox>
+<vbox id="vboxResults" collapsed="true" flex="1">
+<description>The URLChecker has completed checking of URLS.</description>
+<separator orient="vertical" />
+<description>Statistics:</description>
+<grid flex="1">
+	<columns>
+		<column />
+		<column flex="1"/>
+		<column />
+		<column />
+		<column flex="1"/>
+	</columns>
+	<rows>
+		<row>
+			<label value="Records attempted to process:" flex="24" /><label align="end" id="nrRecsProcessed" value="0" />
+			<spacer flex="4"/>
+			<label value="Working URLs:" flex="24"/> <label align="end" id="nrURLsOK" value="0" />
+		</row>
+		<row>
+			<label value="Records failed to process:" flex="24"/> <label align="end" id="nrRecsFailed" value="0" />
+			<spacer flex="4"/>
+			<label value="Broken URLs:" flex="24"/> <label align="end" id="nrURLsBroken" value="0" />
+		</row>
+		<row>
+			<label value="Records succesfully processed:" flex="24"/> <label align="end" id="nrRecsReallyProcessed" value="0" />
+			<spacer flex="4"/>
+			<label value="" flex="24"/> <label align="end" value="" />
+		</row>
+		<row>
+			<label value="Records with URLs:" flex="24"/> <label align="end" id="nrRecsWithURL" value="0" />
+			<spacer flex="4"/>
+			<label value="Records succesfully updated:" flex="24"/> <label id="nrRecsUpdated" align="end" value="0" />
+		</row>
+		<row>
+			<label value="Records without URLs:" flex="24"/> <label align="end" id="nrRecsWithoutURL" value="0" />
+			<spacer flex="4"/>
+			<label value="Records left unmodified:" flex="24"/> <label id="nrRecsUnmodified" align="end" value="0" />
+		</row>
+		<row>
+			<label value="" flex="24"/> <label align="end" value="" />
+			<spacer flex="4"/>
+			<label value="Records failed to update:" flex="24"/> <label id="nrRecsUpdateFailed" align="end" value="0" />
+		</row>
+	</rows>
+</grid>
+<vbox id="vboxSearchPPNs" collapsed="true">
+<description>There was at least one record that failed to update correctly.</description>
+<description>Click on <button label="Search Failed Records" oncommand="searchFailedRecords();"/> to display a set with the records that failed updating and to discard this dialog.</description>
+<checkbox flex="1" id="openInNewWindow" label="Open Failed Records in New Window" checked="true" persist="checked" />
+</vbox>
+</vbox>
+<separator class="groove-thin" orient="horizontal"/>
+</dialog>
+    
