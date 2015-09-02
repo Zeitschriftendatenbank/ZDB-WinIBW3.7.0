@@ -1,0 +1,30 @@
+<tbl>
+<tt> Inhaltstyp
+<dt> 0501.tab
+<tag> 0501
+<row>txt QQ Text$btxt QQ Text
+<row>tdi QQ zweidimensionales bewegtes Bild$btdi QQ zweidimensionales bewegtes Bild
+<row>ntm QQ Noten$bntm QQ Noten
+<row>crd QQ kartografischer Datensatz$bcrd QQ kartografischer Datensatz
+<row>prm QQ aufgeführte Musik$bprm QQ aufgeführte Musik
+<row>ntv QQ Bewegungsnotation$bntv QQ Bewegungsnotation
+<row>cod QQ Computerdaten$bcod QQ Computerdaten
+<row>cop QQ Computerprogramm$bcop QQ Computerprogramm
+<row>tdf QQ dreidimensionale Form$btdf QQ dreidimensionale Form
+<row>tdm QQ dreidimensionales bewegtes Bild$btdm QQ dreidimensionales bewegtes Bild
+<row>snd QQ Geräusche$bsnd QQ Geräusche
+<row>spw QQ gesprochenes Wort$bspw QQ gesprochenes Wort
+<row>crf QQ kartografische dreidimensionale Form$bcrf QQ kartografische dreidimensionale Form
+<row>crm QQ kartografisches bewegtes Bild$bcrm QQ kartografisches bewegtes Bild
+<row>cri QQ kartografisches Bild$bcri QQ kartografisches Bild
+<row>crt QQ kartografisches taktiles Bild$bcrt QQ kartografisches taktiles Bild
+<row>crn QQ kartografische taktile dreidimensionale Form$bcrn QQ kartografische taktile dreidimensionale Form
+<row>zzz QQ nicht spezifiziert$bzzz QQ nicht spezifiziert
+<row>xxx QQ Sonstige$bxxx QQ Sonstige
+<row>tcn QQ taktile Bewegungsnotation$btcn QQ taktile Bewegungsnotation
+<row>tcf QQ taktile dreidimensionale Form$btcf QQ taktile dreidimensionale Form
+<row>tcm QQ taktile Noten$btcm QQ taktile Noten
+<row>tct QQ taktiler Text$btct QQ taktiler Text
+<row>tci QQ taktiles Bild$btci QQ taktiles Bild
+<row>sti QQ unbewegtes Bild$bsti QQ unbewegtes Bild
+</tbl>
