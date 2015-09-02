@@ -18,7 +18,7 @@ var _rec;
 var fehlerin7120;
     
 function zdb_ILTISseiten(){
-    application.shellExecute ("http://support.ddb.de/iltis/inhalt.htm", 5, "open", "");
+    application.shellExecute ("https://wiki.dnb.de/display/ILTIS/ILTIS-Handbuch", 5, "open", "");
 }
 
 function zdb_BibliothekDefinieren(){
