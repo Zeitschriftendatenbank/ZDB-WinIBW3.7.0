@@ -86,19 +86,18 @@ CSV.prototype =
 
             
             this.params			= params;
-            this.constants		= params.GetString(992);
+            //this.constants		= params.GetString(992);
             this.text			= params.GetString(993);
             this.isil 			= params.GetString(994);
             this.code			= params.GetString(995);
             this.startLine 		= params.GetString(996);
             this.csvFilename 	= params.GetString(997);
             this.delimiter		= params.GetString(998);
-            params = null;
+            //params = null;
             
             //__zeigeEigenschaften(params);
-            
-            eval("var const = new Array(this.constants)");
-            this.__csvError(typeof this.constants);
+            //eval("var const = new Array(this.constants)");
+            //this.__csvError(typeof this.constants);
             /*for(var c = 1;c <= this.constants.length; c++){
                 eval("this.const_"+c) = this.constants[c];
             }*/
