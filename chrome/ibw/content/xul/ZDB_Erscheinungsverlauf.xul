@@ -143,10 +143,21 @@
             return true;
         }
         
+        function getChained(chain,splitter,where) {
+            var split;
+            if (splitter.test(chain))
+            {
+                split = chain.split('/');
+                return ('b' === where) ? split[0] : split[split.length - 1];
+            } else {
+                return chain;
+            }
+        
+        }
+        
         function parse4024()
         {
-            var feld4024, _4024, split4024,bb,bj,bh,bm,bt,eb,ej,eh,em,et;
-            var group;
+            var feld4024, _4024, split4024,bb,bj,bh,bm,bt,eb,ej,eh,em,et,group,splitter;
             
             if("" != (feld4024 = application.activeWindow.title.findTag('4024',0,false,true,false)))
             {
@@ -156,32 +167,46 @@
                     document.getElementById('lfd').checked = true;
                 }
                 split4024 = feld4024.split(";");
+                splitter = new RegExp("/");
                 for(var s in split4024)
                 {
                     group = {};
                     
-                    bb = split4024[s].match(/\/v([0-9]+)/);
-                    bj = split4024[s].match(/\/b([0-9]+)/);
-                    bh = split4024[s].match(/\/a([0-9]+)/);
-                    bm = split4024[s].match(/\/m([0-9]+)/);
-                    bt = split4024[s].match(/\/d([0-9]+)/);
-                    eb = split4024[s].match(/\/V([0-9]+)/);
-                    ej = split4024[s].match(/\/E([0-9]+)/);
-                    eh = split4024[s].match(/\/A([0-9]+)/);
-                    em = split4024[s].match(/\/M([0-9]+)/);
-                    et = split4024[s].match(/\/D([0-9]+)/);
-                    
-                    if(bb){group['bb'] = bb[1]};
-                    if(bj){group['bj'] = bj[1]};
-                    if(bh){group['bh'] = bh[1]};
-                    if(bm){group['bm'] = bm[1]};
-                    if(bt){group['bt'] = bt[1]};
-                    if(eb){group['eb'] = eb[1]};
-                    if(ej){group['ej'] = ej[1]};
-                    if(eh){group['eh'] = eh[1]};
-                    if(em){group['em'] = em[1]};
-                    if(et){group['et'] = et[1]};
-                    
+                    if(bb = split4024[s].match(/\/v((?:[0-9]|\/(?!(?:[a-vA-V])))+)/)) {
+                        group['bb'] = getChained(bb[1], splitter, 'b');
+                    }
+                    if(bj = split4024[s].match(/\/b((?:[0-9]|\/(?!(?:[a-vA-V])))+)/)) {
+                        group['bj'] = getChained(bj[1], splitter, 'b');
+                    }
+                    if(bh = split4024[s].match(/\/a((?:[0-9]|\/(?!(?:[a-vA-V])))+)/)) {
+                        group['bh'] = getChained(bh[1], splitter, 'b');
+                    }
+                    if(bm = split4024[s].match(/\/m((?:[0-9]|\/(?!(?:[a-vA-V])))+)/)) {
+                        group['bm'] = getChained(bm[1], splitter, 'b');
+                    }
+                    if(bt = split4024[s].match(/\/d((?:[0-9]|\/(?!(?:[a-vA-V])))+)/)) {
+                        group['bt'] = getChained(bt[1], splitter, 'b');
+                    }
+                    if(eb = split4024[s].match(/\/V((?:[0-9]|\/(?!(?:[a-vA-V])))+)/)) {
+                        group['eb'] = getChained(eb[1], splitter, 'e');
+                    }
+                    if(ej = split4024[s].match(/\/E((?:[0-9]|\/(?!(?:[a-vA-V])))+)/)) {
+                        group['ej'] = getChained(ej[1], splitter, 'e');
+                        if (2 === group['ej'].length)
+                        {
+                            group['ej'] = ej[1].substr(0,2) + group['ej']; // 1998/99 -> 1999
+                        }
+                    }
+                    if(eh = split4024[s].match(/\/A((?:[0-9]|\/(?!(?:[a-vA-V])))+)/)) {
+                        group['eh'] = getChained(eh[1], splitter, 'e');
+                    }
+                    if(em = split4024[s].match(/\/M((?:[0-9]|\/(?!(?:[a-vA-V])))+)/)) {
+                        group['em'] = getChained(em[1], splitter, 'e');
+                    }
+                    if(et = split4024[s].match(/\/D((?:[0-9]|\/(?!(?:[a-vA-V])))+)/)) {
+                        group['et'] = getChained(et[1], splitter, 'e');
+                    }
+
                     groups.push(group);
                 }
             }
