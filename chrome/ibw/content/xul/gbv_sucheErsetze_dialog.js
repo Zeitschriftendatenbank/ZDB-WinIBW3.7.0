@@ -73,7 +73,9 @@ function onLoad()
     //nicht bearbeitet werden können.
     strEln = application.activeWindow.getVariable("libID");
 
-    if (strEln != ("8007" || "8009" || "9001" || "9006" || "9002")){
+    //if (strEln != ("8007" || "8009" || "9001" || "9006" || "9002")){
+    if (!strEln.match(/8007|8009|9001|9006|9002/)){
+    alert(strEln);
         document.getElementById("idCheckboxExemplar").checked = true;
         document.getElementById("idCheckboxExemplar").disabled = true;
     } else {
