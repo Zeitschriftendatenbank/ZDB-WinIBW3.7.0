@@ -30,7 +30,7 @@ function zdb_merkeZDB(){
 }
 
 function zdb_MerkeIDN(){
-    if(!__zdbCheckScreen(["8A","MT","IT"],"Merke IDN")) return false;
+    if(!__zdbCheckScreen(["8A","7A","MT","IT"],"Merke IDN")) return false;
     var idn = application.activeWindow.getVariable("P3GPP");
     var idn_formatiert = "!" + idn + "!";
     application.activeWindow.clipboard = idn_formatiert;
