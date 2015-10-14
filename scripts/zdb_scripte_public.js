@@ -178,7 +178,7 @@ function __zdbNormdatenKopie(){
 function __zdbTiteldatenKopie(){
 
     __zdbJSON();
-    var _felder424X = __zdbFeld424XGet();
+    //var _felder424X = __zdbFeld424XGet();
 
     // Überschrift und IDN einfügen
     application.overwriteMode = false;
@@ -212,10 +212,12 @@ function __zdbTiteldatenKopie(){
     
     var feld4000 = __zdbTitelAnpassen();
     application.activeWindow.title.insertText(feld4000+"\n");
-    
+    application.activeWindow.title.findTag("0500", 0, false, true, true);
+    application.activeWindow.title.endOfField(false);
+    application.activeWindow.title.insertText("xz");
     application.activeWindow.title.endOfBuffer(false);
     application.activeWindow.title.insertText("\n");
-    __zdbFeld424XSet(_felder424X);
+    //__zdbFeld424XSet(_felder424X);
     //application.activeWindow.title.findTag("0500", 0, false, true, true);
     //application.activeWindow.title.endOfField(true);
     //application.activeWindow.title.insertText("xz");
