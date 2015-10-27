@@ -360,7 +360,8 @@ function zdbformat(){
     else
     {
         var strkat = application.activeWindow.title.tag;
-        application.shellExecute ("http://www.zeitschriftendatenbank.de/erschliessung/arbeitsunterlagen/zdbformat/" + strkat + "/", 5, "open", "");
+        //application.shellExecute ("http://www.zeitschriftendatenbank.de/erschliessung/arbeitsunterlagen/zdbformat/" + strkat + "/", 5, "open", "");
+        application.shellExecute ("http://www.zeitschriftendatenbank.de/fileadmin/user_upload/ZDB/pdf/zdbformat/" + strkat + ".pdf", 5, "open", "");
     }
 }
 
