@@ -780,7 +780,7 @@ function zdb_EZB(){
     var arr      = [];
     var _ezbnota = [];
     var _ezb     = [];
-    var title, publisher, eissn, url;
+    var title, publisher, eissn, url, urls;
     var ld = false;
     var dppn = false;
     var pissn = false;
@@ -844,9 +844,14 @@ function zdb_EZB(){
     }
 //---URL-Feld "4085" , Inhalt nach url, mehrere aneinander
     url = "";
+    
     if(_rec["009Q"])
     {
-        url = _rec["009Q"][0]["u"][0];
+        urls = [];
+        for(var u = 0; u < _rec["009Q"].length; u+=1) {
+            urls.push(_rec["009Q"][u]["u"][0]);
+        }
+        url = urls.join("\n");
     }
     else
     {
@@ -1148,6 +1153,7 @@ function __zdbGetZDB(idn) {
         else 
         {
             zdbid = application.activeWindow.findTagContent(cat,0,false);
+            
         }
     }
     else
@@ -1170,7 +1176,7 @@ function __zdbGetZDB(idn) {
     {
         __zdbCloseWorkWindow(myWindowId);
     }
-    return zdbid;
+    return zdbid.replace(/(\r\n|\n|\r|\s)/gm,"");
 }
 /**
 * opens a new window for temporary works
