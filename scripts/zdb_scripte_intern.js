@@ -763,3 +763,9 @@ function zdbGNDSkripte()
 {
     application.shellExecute ("https://wiki.dnb.de/display/ILTIS/GND-WinIBW-Skripte+und+-Datenmasken", 5, "open", "");
 }
+
+function stapelJob()
+{
+    var xulFeatures = "centerscreen, chrome, close, titlebar,resizable, modal=no, dependent=yes, dialog=no";
+    open_xul_dialog("chrome://ibw/content/xul/ZDB_stapelJob_dialog.xul", xulFeatures);
+}

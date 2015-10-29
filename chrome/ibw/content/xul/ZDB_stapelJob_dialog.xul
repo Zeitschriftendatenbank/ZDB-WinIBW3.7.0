@@ -12,7 +12,7 @@
 	ondialogaccept="return onAccept();"
 	ondialogcancel="return onCancel();"
 >
-<script type="application/x-javascript" src="chrome://ibw/content/xul/gbv_stapelJob_dialog.js" />
+<script type="application/x-javascript" src="chrome://ibw/content/xul/ZDB_stapelJob_dialog.js" />
 	<groupbox orient="vertical">
 		<label id="idLabelPfad" value="" />
 		<label value="Wählen Sie eine Datei:" />

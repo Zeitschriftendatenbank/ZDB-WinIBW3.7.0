@@ -257,12 +257,6 @@ function ppnlisteDownload()
 	theFileInput.close();
 }
 
-function stapelJob()
-{
-	var xulFeatures = "centerscreen, chrome, close, titlebar,resizable, modal=no, dependent=yes, dialog=no";
-	open_xul_dialog("chrome://ibw/content/xul/gbv_stapelJob_dialog.xul", xulFeatures);
-}
-
 //-------------------------------------------------------------------
 
 function inputBox(ttl,txt,dflt) {

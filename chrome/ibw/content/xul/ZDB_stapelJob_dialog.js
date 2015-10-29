@@ -135,10 +135,10 @@ function startAktion()
 	
 	switch (aktion){
 		case 0:
-			sucheIDs("PPN");
+			sucheIDs("IDN");
 			break;
 		case 1: 
-			sucheIDs("EPN");
+			sucheIDs("EID");
 			break;
 		case 2: 
 			while (!theFileInput.isEOF()) {
