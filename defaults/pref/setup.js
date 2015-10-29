@@ -15,7 +15,7 @@ pref("winibw.help.normal", "http://www.zeitschriftendatenbank.de/fileadmin/user_
 pref("winibw.help.access", "http://www.zeitschriftendatenbank.de");
 pref("winibw.help.cataloguing", "/erschliessung/");
 pref("winibw.help.prefix", "/");
-pref("winibw.help.suffix", "/");
+pref("winibw.help.suffix", ".pdf");
 pref("winibw.help.url_base", "/erschliessung/arbeitsunterlagen/zdbformat");
 pref("winibw.help_MI.url_base", "");
 pref("winibw.help_II.url_base", "");
