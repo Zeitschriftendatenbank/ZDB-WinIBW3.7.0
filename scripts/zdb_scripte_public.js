@@ -254,7 +254,7 @@ function zdb_Digitalisierung() {
     application.activeWindow.title.insertText("\n4256 Elektronische Reproduktion von!" + idn + "!\n");
     
     application.activeWindow.title.endOfBuffer(false);
-    application.activeWindow.title.insertText("4201 %Gesehen am ++");
+    application.activeWindow.title.insertText("4201 Gesehen am ++");
     application.activeWindow.title.charLeft(1,false);
     //Wiederherstellen des ursprünglichen Pfades der Titelkopie-Datei:
     application.activeWindow.titleCopyFile = titlecopyfileStandard;
@@ -281,7 +281,7 @@ function zdb_Parallelausgabe(){
 
     // Kategorie 4213: individuell gefüllt oder leer ausgeben
     application.activeWindow.title.endOfBuffer(false);
-    application.activeWindow.title.insertText("4201 %Gesehen am ++");
+    application.activeWindow.title.insertText("4201 Gesehen am ++");
     application.activeWindow.title.charLeft(1,false);
     
     //Wiederherstellen des ursprünglichen Pfades der Titelkopie-Datei:
