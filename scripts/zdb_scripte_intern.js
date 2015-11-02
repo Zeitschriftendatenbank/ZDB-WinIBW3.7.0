@@ -80,6 +80,8 @@ function __zdbGetParallel(){
     {
         while((content = application.activeWindow.findTagContent(tag,i,false)) != "")
         {
+            // workaround since findTagContent has errors
+            content = content.replace(/^\s+|\s?\n$/g,'');
             contents[i] = content;
             content = "";
             i++;

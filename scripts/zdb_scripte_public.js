@@ -881,6 +881,8 @@ function zdb_EZB(){
 
 //---Druckausgabe: reziproke Verknüpfung und Druck-ISSN
     var f0600 = application.activeWindow.findTagContent("0600",0,false);
+    // workaround since findTagContent has errors
+    f0600 = f0600.replace(/^\s+|\s?\n$/g,'');
     if("" != f0600) 
     {
         ld  = (f0600.match(/ld/g) != null) ? true : false; // code fuer layoutgetreue Digitalisierung?
@@ -1153,6 +1155,8 @@ function __zdbGetZDB(idn) {
         else 
         {
             zdbid = application.activeWindow.findTagContent(cat,0,false);
+            // workaround since findTagContent has errors
+            zdbid = zdbid.replace(/^\s+|\s?\n$/g,'');
             
         }
     }
