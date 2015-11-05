@@ -53,7 +53,7 @@ try {
 
 	// Get the user's datamasken:
 	theDir = getSpecialDirectory("ProfD");
-	theDir.append("defaults");
+
 	theDir.append("datenmasken");
 	if (theDir.exists()) {
 		theDirEnum = theDir.directoryEntries;
@@ -71,7 +71,8 @@ try {
 
     // Get the standard datamasken:
 	theDir = getSpecialDirectory("BinDir");
-	theDir.append("defaults");
+
+	//theDir.append("defaults");
 	theDir.append("datenmasken");
 	if (theDir.exists()) {
 		theDirEnum = theDir.directoryEntries;
@@ -114,7 +115,7 @@ function DatenmaskeEinfuegen()
 	var thePrompter = utility.newPrompter();
 	var antwort, dasKommando = "", kommandoTitel, kommandoNorm;
 	var titel;
-	var fileName = "\\defaults\\datenmasken\\" + currentFilename;
+	var fileName = "\\datenmasken\\" + currentFilename;
 
 	//Kommandos zum Eingeben von Titeln und Normdaten
 	kommandoTitel = "\\inv 1"
@@ -122,7 +123,7 @@ function DatenmaskeEinfuegen()
 
 	// Datenmaskendatei im Verzeichnis profiles\<user>\datenmasken oeffnen:
 	if (!theFileInput.openSpecial("ProfD", fileName)) {
-	    fileName = "\\defaults\\datenmasken\\" + currentFilename;
+	    fileName = "\\datenmasken\\" + currentFilename;
 	    if (!theFileInput.openSpecial("BinDir", fileName)) {
 			alert("Datei " + currentFilename + " wurde nicht gefunden.");
 			return;
@@ -136,25 +137,31 @@ function DatenmaskeEinfuegen()
 
 	var editing = (application.activeWindow.title != null);
 	var Datentyp;
-
-	if ((Datentyp = titel.substr(0,4)) == "0500")
-		dasKommando = kommandoTitel
-	else if ((Datentyp = titel.substr(0,3)) == "005")
-		dasKommando = kommandoNorm
-	else if (!editing) {
-		//wenn weder 0500 noch 005 vorkommt, muss er Benutzer nun entscheiden:
-		antwort = thePrompter.select("Auswahl", "Leider konnte die WinIBW nicht erkennen," +
-			"ob die Datenmaske für Titel oder Normdaten verwendet werden soll.\n" +
-			"Bitte wählen Sie aus:", "Titeldaten\nNormdaten");
-
-		if (!antwort) {
-			// Benutzer hat den Dialog abgebrochen:
-			return;
-		}
-		if (antwort == "Titeldaten")
+	
+	strSystem = application.activeWindow.getVariable("system");
+	if (strSystem == "ACQ" || strSystem == "OUS"|| strSystem == "OWC"){
+		//wir sind im LBS:
+		dasKommando  = "\\inv";
+	}else {
+		if ((Datentyp = titel.substr(0,4)) == "0500")
 			dasKommando = kommandoTitel
-		else if (antwort == "Normdaten")
+		else if ((Datentyp = titel.substr(0,3)) == "005")
 			dasKommando = kommandoNorm
+		else if (!editing) {
+			//wenn weder 0500 noch 005 vorkommt, muss er Benutzer nun entscheiden:
+			antwort = thePrompter.select("Auswahl", "Leider konnte die WinIBW nicht erkennen," +
+				"ob die Datenmaske für Titel oder Normdaten verwendet werden soll.\n" +
+				"Bitte wählen Sie aus:", "Titeldaten\nNormdaten");
+	
+			if (!antwort) {
+				// Benutzer hat den Dialog abgebrochen:
+				return;
+			}
+			if (antwort == "Titeldaten")
+				dasKommando = kommandoTitel
+			else if (antwort == "Normdaten")
+				dasKommando = kommandoNorm
+		}
 	}
 
 	if (dasKommando == "") {
@@ -202,12 +209,12 @@ function onSelectFile()
     if (currentFilename == "") return;
 
 	var theFile = getSpecialDirectory("ProfD");
-	theFile.append("defaults");
+
 	theFile.append("datenmasken");
 	theFile.append(currentFilename);
 	if (!theFile.exists()) {
 	    var theFile = getSpecialDirectory("BinDir");
-	    theFile.append("defaults");
+	//    theFile.append("defaults");
 		theFile.append("datenmasken");
 		theFile.append(currentFilename);
 		if (!theFile.exists()) {
