@@ -49,7 +49,7 @@ function onAccept()
 	var strSuche = strSuche = document.getElementById('idSuche').value;
 	var hilfethema = document.getElementById("idRadioQuelle").selectedIndex;
 	var lSuche = strSuche.length;
-	//0 = Kommandos, 1 = Suchschlüssel, 2 = WinIBW3-Wiki, 3 = Katalogisierungsrichtlinie GBV, 4 = Zeta
+	//0 = Kommandos, 1 = Suchschlüssel, 2 = WinIBW3-Wiki, 3 = Katalogisierungsrichtlinie GBV, 4 = ZDBFormat
 	switch(hilfethema) {
 		case 0:
 			if (lSuche > 0){
@@ -113,11 +113,11 @@ function onAccept()
 			break;
 		case 4:
 			if(lSuche == 0){
-				application.shellExecute ("http://www.zeitschriftendatenbank.de/erschliessung/arbeitsunterlagen/zeta.html", 5, "open", "");
+				application.shellExecute ("http://www.zeitschriftendatenbank.de/zdbformat/", 5, "open", "");
 				window.close();
 			}
 			else if (lSuche == 3 || lSuche == 4){
-				application.shellExecute ("http://www.zeitschriftendatenbank.de/erschliessung/arbeitsunterlagen/zeta/" + strSuche + ".html", 5, "open", "");
+				application.shellExecute ("http://www.zeitschriftendatenbank.de/fileadmin/user_upload/ZDB/pdf/zdbformat/" + strSuche + ".pdf", 5, "open", "");
 				window.close();
 			}
 			else {alert("Bitte geben Sie eine 4-stellige Titelkategorie\n oder eine 3-stellige Normdatenkategorie ein!");

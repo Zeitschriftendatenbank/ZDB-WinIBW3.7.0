@@ -78,7 +78,7 @@ function zeigeRichtlinie()
 	switch(richtlinie) {
 		case "ZDBFormat":
 			//neue URL: 
-			application.shellExecute ("http://www.zeitschriftendatenbank.de/erschliessung/arbeitsunterlagen/zdbformat/" + strkat + "/", 5, "open", "");
+			application.shellExecute ("http://www.zeitschriftendatenbank.de/fileadmin/user_upload/ZDB/pdf/zdbformat/" + strkat + ".pdf", 5, "open", "");
 			break;
 		default:
 		//wenn "GBV" oder nichts eingestellt ist, wird die GBV-Richtlinie verwendet

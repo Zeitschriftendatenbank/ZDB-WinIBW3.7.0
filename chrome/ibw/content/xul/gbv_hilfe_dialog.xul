@@ -60,7 +60,7 @@
 			<radio label="Hilfe zu CBS-Suchschlüsseln (Alt+s)" accesskey="S" tooltiptext="Geben Sie einen Suchschlüssel ein."/>
 			<radio label="WinIBW3-Handbuch (Alt+w)" accesskey="W"/>
 			<radio label="Kategorie GVK (Alt+g)" accesskey="G"/>
-			<radio label="Kategorie ZETA (Alt+z)" accesskey="Z"/>
+			<radio label="Kategorie ZDBFormat (Alt+z)" accesskey="Z"/>
 		</radiogroup>
 	</groupbox>
 </hbox>
