@@ -89,3 +89,6 @@ pref("ibw.presentation.syntaxcolor.PA.regex.subfield", "(\xc6\x92[a-zA-Z0-9])");
 pref("ibw.presentation.syntaxcolor.PA.format.subfield", '<span style="font-weight:bold;color:CC3300">$0</span>');
 pref("ibw.presentation.syntaxcolor.PA.regex.subfield2", "(\u0192[a-zA-Z0-9])");
 pref("ibw.presentation.syntaxcolor.PA.format.subfield2", '<span style="font-weight:bold;color:CC3300">$0</span>');
+
+// ZDB hack gegen unnötige Scrollbalken bei großer Schrift
+pref("ibw.inject.head.value.100", "\n<link rel=\"stylesheet\" type=\"text/css\" media=\"screen\" href=\"chrome://ibw/content/xul/zdb.css\">\n");
