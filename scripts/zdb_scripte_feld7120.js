@@ -226,11 +226,8 @@ function __Klammern7120(feld) {
     // Eckige Klammern mit Inhalt: Muster, Bindestrich, Blank weglassen
     klammern7120 = klammern7120.replace(/\[\d{4}]- |\[\d{4}\/\d\d]- /, " -");
     // Eckige Klammern mit Inhalt: Muster am Feldende weglassen
-    klammern7120 = klammern7120.replace(/\[\d{4}]|\[\d{4}\/\d\d]/, "");
-
-    // Eckige Klammern entfernen
-    klammern7120 = klammern7120.replace(/\[/gi, "");
-    klammern7120 = klammern7120.replace(/\]/gi, "");
+    //klammern7120 = klammern7120.replace(/\[\d{4}]|\[\d{4}\/\d\d]/, "");
+    klammern7120 = klammern7120.replace(/\[[^\]]+?\]/, "");
 
     return klammern7120;
 }
