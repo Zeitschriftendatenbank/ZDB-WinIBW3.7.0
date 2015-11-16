@@ -443,7 +443,9 @@ function __Ziffer7120(feld) {
     var zeich = "";
     var ziffern7120 = "";
     for (i = 0; i < feld.length; i++) {
+    
         zeich = feld.substring(i, i + 1);
+        
         if (zeich == "~") {
             zeich = "-";
         }
@@ -453,20 +455,21 @@ function __Ziffer7120(feld) {
         if (isNaN(zeich)) {
             //if (zeich == "/" && i > 0) {
             // edit: z.B. 1-4/5; vorher 4/5; jetzt 1-4/5
+           
             if (zeich.match(/[\/\-]/) && i > 0) {
+             
                 ziffern7120 = ziffern7120 + zeich;
             } else {
                 falschezeichen = falschezeichen + zeich;
-                ziffern7120 = ""
             }
         } else {
             ziffern7120 = ziffern7120 + zeich;
+            
         }
     }
     if (falschezeichen != "") {
         fehlerin7120 = fehlerin7120 + "Ungültige Zeichen werden weggelassen: " + falschezeichen + "\n";
     }
-
     return ziffern7120;
 
 }
