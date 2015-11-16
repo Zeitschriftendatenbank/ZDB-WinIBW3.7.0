@@ -64,12 +64,7 @@ function csvOnAccept() {
     // check if value is given
     if (params.GetString(1) !== "titel") {
         produktDescription = document.getElementById("description").value;
-        if (produktDescription === "") {
-            alert("Bitte geben Sie die Anmerkungen zur Lizenz ein!");
-            return false;
-        } else {
-            pushToParams(produktDescription, 993);
-        }
+        pushToParams(produktDescription, 993);
     }
     return true;
 
