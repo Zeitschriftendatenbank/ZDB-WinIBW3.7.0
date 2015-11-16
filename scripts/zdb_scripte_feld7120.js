@@ -98,13 +98,10 @@ function __Feldauf7120(inhalt8032, feldnummer){
     var jahr2;
     var hilfsfeld = inhalt8032;
     var inhalt7120 = "";
-
     // Klammern und Rautezeichen (#) entfernen
     hilfsfeld = __Klammern7120(hilfsfeld);
-
     // Vortexte löschen
     hilfsfeld = __Vor7120(hilfsfeld);
-
     // Ziffer, Punkt, Ziffer bzw. Ziffer Punkt Leerzeichen Ziffer wird ersetzt durch Ziffer*Ziffer 
     hilfsfeld = hilfsfeld.replace(/([0-9])\.\s{0,1}([0-9])/g, "$1*$2");
     // bzw. Ziffer Punkt Leerzeichen (Fall: Band.[?] -> Band. -> Band*) // cs 02.11.2010
@@ -151,7 +148,7 @@ function __Feldauf7120(inhalt8032, feldnummer){
         band1 = temp_felder2[0];
         jahr1 = temp_felder2[1];
         heft1 = temp_felder2[2];
-        if (teil2 != "-") {
+        if (teil2 !== "-" && teil2 !== "") {
             temp_felder3 = __Punkt71204024(teil2, band2, jahr2, heft2);
             band2 = temp_felder3[0];
             jahr2 = temp_felder3[1];
@@ -229,7 +226,7 @@ function __Klammern7120(feld) {
     // Eckige Klammern mit Inhalt: Muster, Bindestrich, Blank weglassen
     klammern7120 = klammern7120.replace(/\[\d{4}]- |\[\d{4}\/\d\d]- /, " -");
     // Eckige Klammern mit Inhalt: Muster am Feldende weglassen
-    //klammern7120 = klammern7120.replace(/\[\d{4}]$|\[\d{4}\/\d\d]$/, "");
+    klammern7120 = klammern7120.replace(/\[\d{4}]$|\[\d{4}\/\d\d]$/, "");
 
     // Eckige Klammern entfernen
     klammern7120 = klammern7120.replace(/\[/gi, "");
@@ -299,7 +296,6 @@ function __Bindestrich7120(feld) {
 
 
 function __Tilde7120(feld, teil1, teil2) {
-
     // Unterfunktion zu Feld7120 -> Feldauf7120
     // Aufgabe: Feld bei Tilde in Teil1 und Teil2 zerlegen
 
@@ -321,7 +317,6 @@ function __Tilde7120(feld, teil1, teil2) {
 
 
 function __Punkt71204024(feld, band, jahr, heft) {
-
     // Unterfunktion zu Feld7120 -> Feldauf7120
     // Aufgaben:
     //  - Entfernen von "zu", "F.", "S.", "Ser.", "Trim." mit jeweils zugehörigem Vortext
@@ -438,7 +433,6 @@ function __Ziffer7120(feld) {
 
     // Unterfunktion zu Feld7120 -> Feldauf7120 -> Punkt7120
     // Aufgaben: Falsche Zeichen (~ *) entfernen
-
     var falschezeichen = "";
     var zeich = "";
     var ziffern7120 = "";
@@ -456,7 +450,7 @@ function __Ziffer7120(feld) {
             //if (zeich == "/" && i > 0) {
             // edit: z.B. 1-4/5; vorher 4/5; jetzt 1-4/5
            
-            if (zeich.match(/[\/\-]/) && i > 0) {
+            if (zeich.match(/\[|\]|\/|\-/) && i > 0) {
              
                 ziffern7120 = ziffern7120 + zeich;
             } else {
@@ -470,6 +464,7 @@ function __Ziffer7120(feld) {
     if (falschezeichen != "") {
         fehlerin7120 = fehlerin7120 + "Ungültige Zeichen werden weggelassen: " + falschezeichen + "\n";
     }
+    
     return ziffern7120;
 
 }
