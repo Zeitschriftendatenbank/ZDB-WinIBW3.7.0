@@ -450,7 +450,7 @@ function __Ziffer7120(feld) {
             //if (zeich == "/" && i > 0) {
             // edit: z.B. 1-4/5; vorher 4/5; jetzt 1-4/5
            
-            if (zeich.match(/\[|\]|\/|\-/) && i > 0) {
+            if (zeich.match(/[\/\-]/) && i > 0) {
              
                 ziffern7120 = ziffern7120 + zeich;
             } else {
