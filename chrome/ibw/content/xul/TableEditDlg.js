@@ -1,6 +1,17 @@
 //===================================================
-// TableEditDlg.js
-// 
+/* TableEditDlg.js
+ Stand: 12.2014 
+        Eric Helsper hat den Dialog nach meinen Vorgaben ueberarbeitet:
+        - If a table file is renamed by changing the tag and/or description, 
+          the old file is removed.
+        - If the new tag/description results in a file name that already exists, 
+          the file is not saved; a message is popped up.
+        - function convertTableName(): Eric commented out the call to this function, 
+          because Karen didn't want it and Eric also thinks it should not be default behavior. 
+          But he also fixed the function so it will do nothing if there is no description, 
+          in case it is re-enabled again.
+*/
+
 //===================================================
 
 // Pull in the WinIBW application object:
@@ -107,8 +118,10 @@ function getTableNameList()
 
 	arNames.sort();	
 	var i;
-	for (i = 0; i < arNames.length; i++) { 
-		convertTableName(arNames[i]);
+	for (i = 0; i < arNames.length; i++) {
+		// If you want file names to be converted to tag + description on winibw
+		// startup, uncomment the next line. 
+		// convertTableName(arNames[i]);
 	}
 //	arrNames = null;
 }
@@ -174,10 +187,10 @@ function getTableList()
 		var menuitem = document.createElement("menuitem");	
 	    theName = arNames[i]; 
 	    theTable = arNames[i];	    
-		var ind = theName.indexOf("_"); 
-		if (theName.indexOf("_") > 0) { 
-			theName = theName.substr(0, ind);
-		} 			
+
+
+
+
 		menuitem.setAttribute("label", theName);  
 		theTableList.appendChild(menuitem);	   
 	    if (theTable == strCurrentTable) index = i;  
@@ -244,26 +257,49 @@ function removeLines(treechildren)
 
 function getValidTableDescription(theTableDes)
 {
-	// check table description because character '\', '/', ':', '*', '?', '"', '<', '>', '|'can't be in file name. 		
-	var len = theTableDes.length; 
-	for (var i=0; i<len; i++)
-	{ 
-	    switch (theTableDes.charAt(i)) {
-			case "\\": 
-			case "/":  
-			case ":": 		
-			case "*": 
-			case "?": 
-			case "\"": 
-			case "<": 
-			case ">": 
-			case "|": {
-				theTableDes = theTableDes.substr(0, i) + " " + theTableDes.substr(i+1); 				
-			};	break;
-			default: break;	
-		}				
-	}
-	return theTableDes;
+    // convert/remove diacritics and other chars that cannot be in file names.
+
+    return theTableDes
+	.replace(/[\u00C0\u00C1\u00C2\u00C3\u00C5]/g,'A')
+	.replace(/[\u00E0\u00E1\u00E2\u00E3\u00E5]/g,'a')
+	.replace(/[\u00C8\u00C9\u00CA\u00CB]/g,'E')
+	.replace(/[\u00E8\u00E9\u00EA\u00EB]/g,'e')
+	.replace(/[\u00CC\u00CD\u00CE\u00CF]/g,'I')
+	.replace(/[\u00EC\u00ED\u00EE\u00EF]/g,'i')
+	.replace(/[\u00D2\u00D3\u00D4]/g,'O')
+	.replace(/[\u00F2\u00F3\u00F4]/g,'o')
+	.replace(/[\u00D9\u00DA\u00DB]/g,'U')
+	.replace(/[\u00F9\u00FA\u00FB]/g,'u')
+	.replace(/\u00C4/g,'Ae')
+	.replace(/\u00E4/g,'ae')
+	.replace(/\u00D6/g,'Oe')
+	.replace(/\u00F6/g,'oe')
+	.replace(/\u00DC/g,'Ue')
+	.replace(/\u00FC/g,'ue')
+	.replace(/\u00DF/g,'ss')
+	.replace(/\u00C7/g,'C')
+	.replace(/\u00E7/g,'c')
+	.replace(/\u00C6/g,'Ae')
+	.replace(/\u00E6/g,'ae')
+	.replace(/[^a-z0-9-,\.;\(\)_ ]/gi,'-');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
 //---------------------------------------------------
@@ -304,6 +340,7 @@ function convertTableName(strName)
 	theFileInput = null; 
 	
 	strCurrDesc = getValidTableDescription(strCurrDesc);
+	if (!strCurrDesc) return;
 	
 	// Copy the old file to the new one and remove the old one
 	// The name of the new table file is with the form: tag + "_" + tableDescription + ".tab"
@@ -311,9 +348,9 @@ function convertTableName(strName)
 	var theFileOutput = utility.newFileOutput();
 	theFileInput.openSpecial(theDir, "\\tables\\" + strName);
 	if ((addTableDes) && (addTab)) {	
-		theFileOutput.createSpecial(theDir, "\\tables\\" + strName + "_" + strCurrDesc + ".tab");
+		theFileOutput.createSpecial(theDir, "\\tables\\" + strName + (strCurrDesc ? ("_" + strCurrDesc) : "") + ".tab");
 	} else if (addTableDes) {	   
-		theFileOutput.createSpecial(theDir, "\\tables\\" + strName.slice(0, -4) + "_" + strCurrDesc + ".tab");
+		theFileOutput.createSpecial(theDir, "\\tables\\" + strName.slice(0, -4) + (strCurrDesc ? ("_" + strCurrDesc) : "") + ".tab");
 	} else if (addTab) {
 		theFileOutput.createSpecial(theDir, "\\tables\\" + strName + ".tab");
 	}
@@ -371,6 +408,11 @@ function loadTable(strName)
 		}
 		else if ((theLine.length > 4) && (theLine.substr(0, 4) == "<tt>")) {
 			strCurrDesc = Trim(theLine.substr(4));
+			var idx = strCurrDesc.indexOf('_');
+			// Take the first part off, if it looks like a tag.
+			if (idx >= 0 && idx <= 4 && parseInt(strCurrDesc.substr(0, idx)) > 0) {
+			    strCurrDesc = strCurrDesc.substr(idx + 1);
+			}
 			document.getElementById("tbTableDescription").value = strCurrDesc;
 		}
 		else if ((theLine.length > 5) && (theLine.substr(0, 5) == "<tag>")) {
@@ -602,7 +644,7 @@ function TableExists(theTag, theTableDes)
 {
 	var theFile = getSpecialDirectory("ProfD");
 	theFile.append("tables");
-	theFile.append(theTag + "_" + theTableDes + ".tab");
+	theFile.append(theTag + (theTableDes ? ("_" + theTableDes) : "") + ".tab");
 	return theFile.exists();
 }
 
@@ -665,7 +707,7 @@ function cmdTableNew()
 		if (!prompter.prompt(dialogTitle, tableDescription, "", "", "")) 
 			return;
 		theTableDes = prompter.getEditValue();
-		if (theTableDes == "") return;
+
 	} while (!TablenameIsValid(theTableDes));
 	
 	PromptSaveTable();
@@ -674,9 +716,9 @@ function cmdTableNew()
 	document.getElementById("tbTableDescription").value = Trim(theTableDes);
 	
 	if (TableExists(theTag, theTableDes)) {
-	        var tableName = theTag + "_" + theTableDes + ".tab"; 
+	        var tableName = theTag + (theTableDes ? ("_" + theTableDes) : "") + ".tab"; 
 			prompter.alert(dialogTitle, promptTagExists.replace(/\$1/, tableName));
-			strCurrentTable = theTag + "_" + theTableDes;;
+			strCurrentTable = theTag + (theTableDes ? ("_" + theTableDes) : "");;
 			return;
 	}
 	
@@ -692,7 +734,7 @@ function cmdTableNew()
 function cmdTableSave(needReplace)
 {
 	if (strCurrentTable == "") return;
-	
+
 	var theTree = document.getElementById("idTree");
 	
 	var theDir = getSpecialDirectory("ProfD");
@@ -719,8 +761,8 @@ function cmdTableSave(needReplace)
 	    } else {
 			theTag = tableName.substr(0, ind);
 	    }
-	strCurrentTable	= theTag + "_" + theTableDes; 			 
-  	
+	strCurrentTable	= theTag + (theTableDes ? ("_" + theTableDes) : "");
+
     var newContents = "<tbl>";
 	newContents += "\n<tt> " + document.getElementById("tbTableDescription").value;
 	newContents += "\n<dt> " + strCurrentTable + ".tab";
@@ -731,26 +773,35 @@ function cmdTableSave(needReplace)
 		newContents += " QQ " + theTree.view.getCellText(i, "treecol3");
 	}
 	newContents += "\n</tbl>";	
-
     // Create a new table
+
+	if (strCurrentTable != strTableBeforeUpdate && TagExists(strCurrentTable)) {
+		// Prevent a change/removal of description to overwrite an existing file
+
+		utility.newPrompter().alert(dialogTitle,
+			promptTagExists.replace(/\$1/, strCurrentTable + '.tab'));
+		return;
+	}
+
+
 	var theFileOutput = utility.newFileOutput(); 	
 	theFileOutput.createSpecial("ProfD", "\\tables\\" + strCurrentTable + ".tab");
-	theFileOutput.setTruncate(true); 
+	theFileOutput.setTruncate(true);
 	theFileOutput.write(newContents);	
 	theFileOutput.close();
 	theFileOutput = null;
 
 	if (needReplace == true) { 
 		if (strCurrentTable != strTableBeforeUpdate) {		
-			if (strTableBeforeUpdate.indexOf("_") > 0) {  
-				// Remove the old table
-				theFileOutput = utility.newFileOutput(); 		
-				theFileOutput.createSpecial("ProfD", "\\tables\\" + strTableBeforeUpdate + ".tab");	
-				theFileOutput.remove();	
-				theFileOutput = null;
-			}	
-		}
+
+			// Remove the old table
+			theFileOutput = utility.newFileOutput(); 		
+			theFileOutput.createSpecial("ProfD", "\\tables\\" + strTableBeforeUpdate + ".tab");
+			theFileOutput.remove();	
+			theFileOutput = null;
+		}	
 	}	
+
     strTableBeforeUpdate = strCurrentTable;
 	document.getElementById("btnTblDelete").setAttribute("disabled", false);
 	
@@ -778,16 +829,16 @@ function cmdTableSaveAs()
 		if (!prompter.prompt(dialogTitle, tableDescription, "", "", "")) 
 			return;
 		theTableDes = prompter.getEditValue();
-		if (theTableDes == "") return;
+
 	} while (!TablenameIsValid(theTableDes));
 
 	document.getElementById("tbTableTagname").value = theTag;
 	document.getElementById("tbTableDescription").value = Trim(theTableDes);
 	
 	if (TableExists(theTag, theTableDes)) {
-	        var tableName = theTag + "_" + theTableDes + ".tab"; 
+	        var tableName = theTag + (theTableDes ? ("_" + theTableDes) : "") + ".tab"; 
 			prompter.alert(dialogTitle, promptTagExists.replace(/\$1/, tableName));
-			strCurrentTable = theTag + "_" + theTableDes;
+			strCurrentTable = theTag + (theTableDes ? ("_" + theTableDes) : "");
 			return;
 	}
 	
@@ -878,7 +929,7 @@ function adjustTableDescription(value)
 		theTag = tableName.substr(0, ind);
 	}
 	
-	strCurrentTable	= theTag + "_" + theTableDes;
+	strCurrentTable	= theTag + (theTableDes ? ("_" + theTableDes) : "");
 	
 	if(strCurrentTable != strTableBeforeUpdate) bTableDirty = true;
 }
@@ -897,8 +948,11 @@ function adjustTableTag(value)
 	} else {
 		theTableDes = tableName.substr(ind+1, tableName.length-ind+1);
 	}
-	strCurrentTable	= value + "_" + theTableDes;
+	strCurrentTable	= value + (theTableDes ? ("_" + theTableDes) : "");
 	
 	if(strCurrentTable != strTableBeforeUpdate) bTableDirty = true;
 }
 
+function wikiWinibw(){
+	application.shellExecute ("http://www.gbv.de/wikis/cls/WinIBW3:Textbausteine_der_WinIBW3.7", 5, "open", "");	
+}

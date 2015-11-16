@@ -1,5 +1,6 @@
 <tbl>
 <tt> Datentraegertyp
+
 <dt> 0503.tab
 <tag> 0503
 <row>nc QQ Band$bnc QQ Band
@@ -33,6 +34,7 @@
 <row>hb QQ Mikrofilm-Cartridge$bhb QQ Mikrofilm-Cartridge
 <row>hc QQ Mikrofilmkassette$bhc QQ Mikrofilmkassette
 <row>ha QQ Mikrofilmlochkarte$bhg QQ Mikrofilmlochkarte
+
 <row>hd QQ Mikrofilmspule$bhd QQ Mikrofilmspule
 <row>hh QQ Mikrofilmstreifen$bhh QQ Mikrofilmstreifen
 <row>zu QQ nicht spezifiziert$bzu QQ nicht spezifiziert
@@ -46,6 +48,7 @@
 <row>hz QQ Sonstige Mikroformen$bhz QQ Sonstige Mikroformen
 <row>mz QQ Sonstige projizierbare Bilder$bmz QQ Sonstige projizierbare Bilder
 <row>ez QQ Sonstige stereografische Datenträger$bez QQ Sonstige stereografische Datenträger
+
 <row>sz QQ Sonstige Tonträger$bsz QQ Sonstige Tonträger
 <row>pz QQ Sonstige Mikroskop-Anwendungen$bpz QQ Sonstige Mikroskop-Anwendungen
 <row>vz QQ Sonstige Videodatenträger$bvz QQ Sonstige Videodatenträger

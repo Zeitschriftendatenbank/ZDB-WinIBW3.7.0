@@ -140,16 +140,18 @@ function insertLineWithTable(treechildren, theTag, tableName)
 	
 	var fName = tableName; 
 	if (tableName.substr(-4) == ".tab") {
-		tableName = tableName.slice(0, -4);	
+		tableName = tableName.slice(0, -4);
 		if (tableName == theTag) {
 			tableName = "";
 		} else {
 			fName = theTag + "_" + tableName + ".tab";
+			//alert(theTag);
 		}
 	} else {
 		fName = theTag + "_" + tableName;
 	}	
-	
+	//alert("theTag: " + theTag +"\n" + "tableName: " + tableName +"\n" + "fName: " + fName );
+
 	treerow.appendChild(document.createElement('treecell')).setAttribute('label', theTag); 
 	treerow.appendChild(document.createElement('treecell')).setAttribute('label', tableName);
 	treerow.appendChild(document.createElement('treecell')).setAttribute('label', fName);  
@@ -271,11 +273,16 @@ function onLoad()
 		if (application.activeWindow.title == null) { window.close(); return false; }
 		
 		var theTag;
-        var theCurrentBestMatchTable = thePrefs.getCharPref("ibw.tableFunction.theCurrentBestMatchTable");
+		//Fehler im Script von OCLC:
+		//var theCurrentBestMatchTable = thePrefs.getCharPref("ibw.tableFunction.theCurrentBestMatchTable");
+        //GBV KH: 
+        var theCurrentBestMatchTable = thePrefs.getCharPref("ibw.tableFunction.theCurrentTable");
         if (theCurrentBestMatchTable == "") {
         	theTag = application.activeWindow.title.tag;
+        	//alert("onLoad, theTag 1: " + theTag);
         } else {
             theTag = theCurrentBestMatchTable;
+            //alert("onLoad, theTag 2: " + theTag);
         }
         	
 		if (theTag == "") { window.close(); return false; }

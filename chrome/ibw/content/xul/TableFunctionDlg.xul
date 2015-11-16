@@ -210,7 +210,11 @@ function getBestMatchingTableFile(theTag)
 	var bestMatch = "";
 	var bestScoreSoFar = 0;	
 	for (i = 0; i < arNames.length; i++) {
-	    score = GetScore(tag, arNames[i].substr(0, arNames[i].indexOf("_"))); 
+	    if (arNames[i].indexOf("_") > 0){
+	    	score = GetScore(tag, arNames[i].substr(0, arNames[i].indexOf("_"))); 
+	    	} else {
+	    		score = GetScore(tag, arNames[i].substr(0, arNames[i].indexOf(".tab"))); 
+	    	}
 //		if (score >= absoluteMatchValue) {	
 //			bestMatch = arNames[i];
 //			break;		
@@ -228,12 +232,21 @@ function getBestMatchingTableFile(theTag)
 		} 					
 	}
 	arNames = null; 
+	//alert("1. bestMatch: " + bestMatch);
 	if ((bestMatch.substr(0, 1) == "x") || (bestMatch.substr(0, 1) == "X")) { 
 	    if (bestMatch.substr(1, 3) != theTag.substr(1, 3)) {
 			bestMatch = "";
 		}
-	}   
-	return bestMatch.substr(0, bestMatch.indexOf("_"));
+	}
+	// alert("2. bestMatch: " + bestMatch);
+	//Im Dateinamen kommt nicht immer ein Unterstrich vor! 
+	if (bestMatch.indexOf("_") > 0){
+		return bestMatch.substr(0, bestMatch.indexOf("_"));
+	} else {
+		return bestMatch.substr(0, bestMatch.indexOf(".tab"));
+	}
+	//alert(bestMatch);//.substr(0, bestMatch.indexOf("_")));
+	//return bestMatch.substr(0, bestMatch.indexOf("_"));
 }
 
 function collectTablesForTheTag(theTag)
@@ -454,8 +467,10 @@ function insertTableText(theText)
 	var selStart = theTitle.selStart;
 	
 	// The replacing text
-	theText = theText.replace(/\\r/g, "\n");  
+	theText = theText.replace(/\\r/g, "\n"); 
+	 
 	var cursorPos = theText.indexOf("++");  
+	
 	if (cursorPos >= 0) 
 		theText = theText.replace(/\+\+/, "");
 
@@ -500,8 +515,10 @@ function insertTableText(theText)
 			
 	theTitle.insertText(theText);
 	if (cursorPos >= 0) {
-		theTitle.selStart = selStart + cursorPos;
-		theTitle.selEnd = selStart + cursorPos;
+		//GBV: Korrektur: - strShortCut.length
+		//Wenn Anwender "++" verwendet, war Cursor war an der falschen Stelle positioniert
+		theTitle.selStart = selStart + cursorPos - strShortCut.length;
+		theTitle.selEnd = selStart + cursorPos - strShortCut.length;
 	}
 }
 
@@ -524,7 +541,8 @@ try {
 		collectTablesForTheTag(theTag); 
 		if (tablesFortheTag.length == 0) {
 		    //If there is no exactly matched table, try to get the best matched tables with wildcard "x"
-	        var bestMatchTable = getBestMatchingTableFile(theTag); 	    	 
+	        var bestMatchTable = getBestMatchingTableFile(theTag);
+	       // alert("bestMatchTable: " + bestMatchTable);
 	   		if (bestMatchTable.length == 0) {	   	
 	   			displayNoTableMsg(theTag);
 				window.close(); application.activate(); return false;

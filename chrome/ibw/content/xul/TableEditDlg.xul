@@ -11,10 +11,11 @@
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
 	title="&dialog.title;"
 	onload="onLoad();"
-	buttons="accept"
+	buttons="accept,help"
 	ondialogaccept="return onAccept();"
 	ondialogcancel="return onCancel();"
 	onunload="application.activate();"
+	ondialoghelp="wikiWinibw();"
 	style="min-width: 33em"
 	id="TableEditDlg"
 >
@@ -29,7 +30,7 @@
 				<caption label="&gbTable.caption;" />
 				<hbox align="center" flex="1">
 					<label value="&lblAvailableTbls.value;" />
-					<menulist id="mlTables" width="124px" oncommand="onSelectTable();" tooltiptext="&mlTables.tooltip;" >
+					<menulist id="mlTables" width="280px" oncommand="onSelectTable();" tooltiptext="&mlTables.tooltip;" >
 						<menupopup id="mpTableList" />
 					</menulist>
 				</hbox>
