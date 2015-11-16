@@ -119,9 +119,9 @@ function onAccept()
 			else if (lSuche == 3 || lSuche == 4){
 				var re = new RegExp("480.|482[02]|6700|7...|8[0-5]..");
 				if(re.test(strSuche)) {
-					application.shellExecute ("http://www.zeitschriftendatenbank.de/erschliessung/arbeitsunterlagen/zdbformat/" + strkat, 5, "open", "");
+					application.shellExecute ("http://www.zeitschriftendatenbank.de/erschliessung/arbeitsunterlagen/zdbformat/" + strSuche, 5, "open", "");
 				} else {
-					application.shellExecute ("http://www.zeitschriftendatenbank.de/fileadmin/user_upload/ZDB/pdf/zdbformat/" + strkat + ".pdf", 5, "open", "");
+					application.shellExecute ("http://www.zeitschriftendatenbank.de/fileadmin/user_upload/ZDB/pdf/zdbformat/" + strSuche + ".pdf", 5, "open", "");
 				}
 				window.close();
 			}
