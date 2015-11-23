@@ -117,7 +117,7 @@ function zdb_MailboxsatzAnlegen(){
 }
 
 function zdb_AutomatischeSuchBox(){
-    if(false == __zdbCheckScreen(["MT","IT"],"AutomatischeSuchBox")) return false;
+    if(false == __zdbCheckScreen(["MT","IT","IE"],"AutomatischeSuchBox")) return false;
     anfangsfenster = application.activeWindow.windowID; // globale Variable, die vom Skript HoleIDN verwendet wird
     open_xul_dialog("chrome://ibw/content/xul/ZDB_AutomatischeSuchBox.xul", null);
     return true;
