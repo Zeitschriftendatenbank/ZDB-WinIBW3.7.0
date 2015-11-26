@@ -116,6 +116,18 @@ function Datenmaske3()
 {
     __DatenmaskeEinfuegen("maske03");
 }
+function Datenmaske4()
+{
+    __DatenmaskeEinfuegen("maske04");
+}
+function Datenmaske5()
+{
+    __DatenmaskeEinfuegen("maske05");
+}
+function Datenmaske6()
+{
+    __DatenmaskeEinfuegen("maske06");
+}
 // Neu GND seit 2012.02:
 
 function DatenmaskeTb()
