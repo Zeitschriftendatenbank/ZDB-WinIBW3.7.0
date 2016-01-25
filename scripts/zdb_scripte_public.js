@@ -410,7 +410,6 @@ function __zdbOnlineRessource(copyFile,showComment,add0600,digi){
     {
         application.activeWindow.title.insertText("\n4233 "+application.getProfileString("zdb.userdata.digiconfig", "4233", ""));
     }
-    application.activeWindow.title.insertText("\n4251 \n");
     application.activeWindow.title.endOfBuffer(false);
     
     __zdbFeld424XSet(_felder424X);
