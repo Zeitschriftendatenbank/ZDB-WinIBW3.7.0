@@ -311,8 +311,9 @@ function __zdbOnlineRessource(copyFile,showComment,add0600,digi){
     application.activeWindow.title.insertText(f0500);
     
     if(!_rec["002C"]) application.activeWindow.title.insertText("\n0501 $btxt");
-    if(!_rec["002D"]) application.activeWindow.title.insertText("\n0502 $bc");
-    if(!_rec["002E"]) application.activeWindow.title.insertText("\n0503 $bcr");
+    // wird schon in zdb_titeldatenkopie_digi gemacht
+    //if(!_rec["002D"]) application.activeWindow.title.insertText("\n0502 $bc");
+    //if(!_rec["002E"]) application.activeWindow.title.insertText("\n0503 $bcr");
     
     // Feld 0600
     add0600 = typeof add0600 !== 'undefined' ? add0600 : [];
