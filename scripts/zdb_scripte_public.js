@@ -1154,24 +1154,24 @@ function __zdbGetZDB(idn) {
         else 
         {
             zdbid = application.activeWindow.findTagContent(cat,0,false);
+
             // workaround since findTagContent has errors
             zdbid = zdbid.replace(/^\s+|\s?\n$/g,'');
-            
         }
     }
-    else
+    else // Format P
     {
         var _field;
         // Korrekturmodus
         if (strScreen == "MT" || strScreen == "IT")
         {
-            _field = __parseField(application.activeWindow.title.findTag(cat,0,true,false,true));
+            _field = __zdbParseField(application.activeWindow.title.findTag(cat,0,true,false,true));
             zdbid = _field[cat][0];
         }
         else 
         {
-            _field = __parseField(application.activeWindow.findTagContent(cat,0,true));
-            zdbid = _field[cat][0];
+            _field = __zdbParseField(application.activeWindow.findTagContent(cat,0,true));
+            zdbid = _field[cat][0][0];
         }
     }
     
@@ -1179,6 +1179,7 @@ function __zdbGetZDB(idn) {
     {
         __zdbCloseWorkWindow(myWindowId);
     }
+    
     return zdbid.replace(/(\r\n|\n|\r|\s)/gm,"");
 }
 /**
