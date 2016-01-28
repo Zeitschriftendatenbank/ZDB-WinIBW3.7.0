@@ -1166,7 +1166,7 @@ function __zdbGetZDB(idn) {
         if (strScreen == "MT" || strScreen == "IT")
         {
             _field = __zdbParseField(application.activeWindow.title.findTag(cat,0,true,false,true));
-            zdbid = _field[cat][0];
+            zdbid = _field[cat][0][0];
         }
         else 
         {
