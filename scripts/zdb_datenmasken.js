@@ -221,3 +221,16 @@ function DatenmaskenAlle()
     // neu seit Version WinIBW3.3: Auswahlliste zum Anwenden aller Datenmasken (Standard und eigene):
     open_xul_dialog("chrome://ibw/content/xul/moreDatenmasken_dialog.xul", null);
 }
+
+/**
+* Diese Funktion kann mit einem Nutzerscript genutzt werden. Bsp:
+* 
+*  function maskeObxz(){
+*    application.writeProfileString("zdb.userdata", "maske", "Obxz");
+*    application.callStdScriptFunction("zdb_nutzerMaske");
+*    }
+*/
+function zdb_nutzerMaske() {
+    var maskenNr = application.getProfileString("zdb.userdata", "maske", "");
+    __DatenmaskeEinfuegen(maskenNr);
+}
