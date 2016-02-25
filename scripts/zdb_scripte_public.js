@@ -609,7 +609,7 @@ function __zdbDruckausgabe(dppn,ld){
         application.activeWindow.title.endOfBuffer(false);
         if(application.activeWindow.title.find("1505 $erda",false,false,false))
         {
-            application.activeWindow.title.insertText("4243 Erscheint auch als$nOnline-Ausagabe!" + eppn + "!\n");
+            application.activeWindow.title.insertText("4243 Erscheint auch als$nOnline-Ausgabe!" + eppn + "!\n");
         }
         else
         {
