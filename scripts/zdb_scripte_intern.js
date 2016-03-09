@@ -133,37 +133,44 @@ function __zeigeEigenschaften(object){
     thePrompter.setDebug(true); // only for debugging
     
     // get the selection as string
-    var theAnswer = thePrompter.select("Eigenschaften von " + object, "Zeige Eigenschaften von", namen);
+    var theAnswer = thePrompter.select("Eigenschaften von " + typeof object, "Zeige Eigenschaften von", namen);
     // return if nothing have been selected
     if (!theAnswer) {
         return;	
     } else {
         // eval the answer as an object
-        var newObject = eval(object[theAnswer]);
+        /*for(var n in object) {
+            if(n == theAnswer)
+            __zdbError(object[theAnswer]);
+        }*/
+        //var newObject = eval(object[theAnswer]);
+        var newObject = object[theAnswer];
         type = typeof newObject;
         application.messageBox("Typ des Objects", type, false);
         if(type == "object"){
             __zeigeEigenschaften(newObject);
         }
-        try {
-            if(type == "function")
+        else {
+            try {
+                if(type == "function")
+                {
+                    application.messageBox("Eigenschaften",newObject.toString() + "\nWeitere Eigenschaften anzeigen?",false);
+                    __zeigeEigenschaften(newObject);
+                    return;
+                }
+                else // strings, integers
+                {
+                    application.messageBox("Eigenschaften", newObject.toString(), false);
+                }
+            }
+            catch(exception)
             {
-                application.messageBox("Eigenschaften",newObject.toString() + "\nWeitere Eigenschaften anzeigen?",false);
-                __zeigeEigenschaften(newObject);
+                application.messageBox("Fehler",exception,false);
+            } 
+            finally
+            {
                 return;
             }
-            else // strings, integers
-            {
-                application.messageBox("Eigenschaften", newObject.toString(), false);
-            }
-        }
-        catch(exception)
-        {
-            application.messageBox("Fehler",exception,false);
-        } 
-        finally
-        {
-            return;
         }
     }
 }
