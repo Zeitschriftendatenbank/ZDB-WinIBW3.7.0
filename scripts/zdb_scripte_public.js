@@ -178,7 +178,6 @@ function __zdbNormdatenKopie(){
 function __zdbTiteldatenKopie(){
 
     __zdbJSON();
-    //var _felder424X = __zdbFeld424XGet();
 
     // Überschrift und IDN einfügen
     application.overwriteMode = false;
@@ -289,7 +288,7 @@ function zdb_Parallelausgabe(){
 }
 
 function __zdbOnlineRessource(copyFile,showComment,add0600,digi){
-    // set gloabal variable _rec
+    // set global variable _rec
     __zdbJSON();
     
     var _felder424X = __zdbFeld424XGet();
@@ -449,7 +448,9 @@ function __zdbFeld424XGet()
 {
     // check if rda
     var rda;
-    if(_rec["010E"]) rda = ("rda" == _rec["010E"][0]["e"][0]) ? true : false;
+    if (_rec["010E"]) {
+        rda = ("rda" == _rec["010E"][0]["e"][0]) ? true : false;
+    }
     
     // Verknüpfungsfelder einsammeln und auf verbale Form ändern
     var _felder424X = {
@@ -473,7 +474,7 @@ function __zdbFeld424XGet()
     {
         if(_rec[f]) // Feld 039X vorhanden
         {
-            for(var e in _rec[f])
+            for(var e in _rec[f]) // Wiederholungen
             {
                 code = (__zdbCheckSF(f,"b",e)) ? _code[_rec[f][e]["b"][0]] : "";
                 if(__zdbCheckSF(f,"a",e)) // Vortext vorhanden
@@ -595,7 +596,9 @@ function __zdbDruckausgabe(dppn,ld){
     }
 
     satz = __zdbGetRecord("D",false);
-    if (false == satz)			return false;
+    if (false == satz) {
+        return false;
+    }
 
     regexp = new RegExp("!" + eppn + "!","gm");
     arr = satz.match(regexp);
@@ -605,16 +608,10 @@ function __zdbDruckausgabe(dppn,ld){
             __zdbMSG("Sie sind nicht berechtigt, den Datensatz zu ändern.");
             return false;
         }
-        var insText = (ld == true) ? "Digital. Ausg." : "Online-Ausg.";
+
         application.activeWindow.title.endOfBuffer(false);
-        if(application.activeWindow.title.find("1505 $erda",false,false,false))
-        {
-            application.activeWindow.title.insertText("4243 Erscheint auch als$nOnline-Ausgabe!" + eppn + "!\n");
-        }
-        else
-        {
-            application.activeWindow.title.insertText("4243 "+insText+"!" + eppn + "!\n");
-        }
+        application.activeWindow.title.insertText("4243 Erscheint auch als$nOnline-Ausgabe!" + eppn + "!\n");
+        
         application.activeWindow.simulateIBWKey("FR");
         //	Korrektur ausgeführt, dann ist der Titel im diagn. Format
         //	sonst im Korrekturformat
