@@ -2,6 +2,8 @@
 <tt> Schöpfer,Körperschaft
 <dt> 31XX.tab
 <tag> 31XX
+<row>aut QQ $4aut QQ Verfasser
+<row>isb QQ $4isb QQ Herausgebendes Organ
 <row>abr QQ $4abr QQ Kürzender
 <row>act QQ $4act QQ Schauspieler
 <row>adi QQ $4adi QQ Art Director
@@ -14,7 +16,6 @@
 <row>art QQ $4art QQ Künstler
 <row>ato QQ $4ato QQ Unterzeichner
 <row>aus QQ $4aus QQ Drehbuchautor
-<row>aut QQ $4aut QQ Verfasser
 <row>bkd QQ $4bkd QQ Buchgestalter
 <row>bnd QQ $4bnd QQ Buchbinder
 <row>brd QQ $4brd QQ Sender
@@ -67,7 +68,6 @@
 <row>ilu QQ $4ilu QQ Buchmaler
 <row>ins QQ $4ins QQ beschriftende Person
 <row>inv QQ $4inv QQ Erfinder
-<row>isb QQ $4isb QQ Herausgebendes Organ
 <row>itr QQ $4itr QQ Instrumentalmusiker
 <row>ive QQ $4ive QQ Interviewter
 <row>ivr QQ $4ivr QQ Interviewer
