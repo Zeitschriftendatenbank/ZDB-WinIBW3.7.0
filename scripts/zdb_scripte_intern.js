@@ -20,8 +20,14 @@ function __enableUserScriptFile(){
  * @return int|null
  */ 
 function __exemplareAnzahl(){
+    var regexpExe;
+    var format = application.activeWindow.getVariable("P3GPR");
     var strTitle =  application.activeWindow.copyTitle();
-    var regexpExe = /\n(70[0-9][0-9])/g;
+    switch(format) {
+        case "D": regexpExe = /\n(70[0-9][0-9])/g;
+        break;
+        case "P": regexpExe = /\n(208@)/g;
+    }
     var alleExe = new Array();
     alleExe = strTitle.match(regexpExe);
     //application.messageBox("", alleExe.length, "message-icon");
