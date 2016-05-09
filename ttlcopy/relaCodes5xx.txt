@@ -3,14 +3,14 @@ adre	Adressat	Tu500; Tu510
 adue	Administrative Überordnung	Tb511; Tf511; Tb551; Tg551; Tf510; Tb510
 affi	Affiliation	Tp510; Tp511; Tf511; Tp551
 akad	Akademischer Grad	Tp550
-akti	Tätigkeitsbereich	Tb550 Tp550
+akti	Tätigkeitsbereich	Tb550
 anla	Anlass	Tf530; Tu530; Tf550; Ts550; Tu550
 anno	Annotator	Tu500; Tu510
 arch	Architekt	Tg500 Tg510
 arra	Arrangeur	Tu500; Tu510
 aust	Aussteller	Tf500; Tf510
 aut1	Verfasser, 1.	Tu500; Tu510; Tu511; Tu551
-auta	Verfasser	Tu500; Tu510 Tu511
+auta	Verfasser	Tu500; Tu510 Tu511 Tu551
 autf	Verfasser, fiktiver	Tu500 Tu510
 autg	Verfasser, zugeschrieben	Tu500  Tu510
 autw	Verfasser, zweifelhaft	Tu500  Tu510
@@ -45,7 +45,6 @@ druc	Drucker	Tu500  Tu510
 erfi	Erfinder	Ts500 Ts510
 feie	gefeierte oder dargestellte Person/Körperschaft/Ereignis	Tf500; Tb500; Ts500; Tu500; Tg500 Tf510; Tb510; Ts510; Tu510 Tf550; Tb550; Ts550; Tu550
 foto	Fotograf	Tu500 Tu510
-funk	Funktion	Tb550; Tp550; Ts550
 geoa	Geografikum, allgemein	Tb551; Tf551; Tu551; Ts551; Tg551
 geow	geografischer Wirkungsbereich	Tb551; Tf551 Tu551
 gest	Buchgestalter	Tu500 Tu510
@@ -84,7 +83,7 @@ nazw	Name, zeitweise	Tb551; Tg551  Tf511  Tg510; Tb510;Tf510
 obal	Oberbegriff allgemein	Tf550; Tg550; Tb550; Tp550; Ts550; Tu550 Ts530
 obge	Oberbegriff, generisch	Ts550
 obin	Oberbegriff, instantiell	Tf550; Tg550; Tb550; Tp550; Ts550; Tu550
-obpa	Oberbegriff, partitiv	Tf511 Tu530  Tf550 Tb550; Ts550; Tu550 Tg551 Tp500
+obpa	Oberbegriff, partitiv	Tf511 Tu530  Tf550 Tb550; Ts550; Tu550 Tg551 Tp500 Tb510
 orta	Ort, Sitz	Tb551; Tg551; Ts551
 ortb	Aufbewahrungsort	Tu551
 ortc	Charakteristischer Ort	Tp551
