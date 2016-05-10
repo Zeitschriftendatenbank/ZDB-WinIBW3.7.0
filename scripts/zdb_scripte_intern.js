@@ -21,7 +21,7 @@ function __enableUserScriptFile(){
  */ 
 function __exemplareAnzahl(){
     var regexpExe;
-    var format = application.activeWindow.getVariable("P3GPR");
+    var format = __zdbGetFormat();
     var strTitle =  application.activeWindow.copyTitle();
     switch(format) {
         case "D": regexpExe = /\n(70[0-9][0-9])/g;

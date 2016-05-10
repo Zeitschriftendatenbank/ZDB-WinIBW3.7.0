@@ -1118,6 +1118,14 @@ function __zdbArrayUnique(a){
     return r;
 }
 
+function __zdbGetFormat() {
+    var format = application.activeWindow.getVariable("P3GPR");
+    if('' == format) {
+        format = application.activeWindow.getVariable("P3GDB");
+    }
+
+    return ('' != format) ? format.toUpperCase() : false;
+}
 /**
 * Liest ZDBID aus Vollanzeige oder Editiermodus
 * @param {string} idn optional
@@ -1138,9 +1146,10 @@ function __zdbGetZDB(idn) {
     var map = {
         "D" : "2110",
         "DA" : "2110",
-        "P" : "007G"
+        "P" : "006Z"
     };
-    var format = application.activeWindow.getVariable("P3GPR");
+    var format = __zdbGetFormat();
+    
     var cat = map[format];
     
     if("P" != format)
@@ -1165,6 +1174,7 @@ function __zdbGetZDB(idn) {
         if (strScreen == "MT" || strScreen == "IT")
         {
             _field = __zdbParseField(application.activeWindow.title.findTag(cat,0,true,false,true));
+            __zdbError(application.activeWindow.title.findTag(cat,0,true,false,true));
             zdbid = _field[cat][0][0];
         }
         else 
@@ -1332,7 +1342,7 @@ function __zdbJSON(idn){
     idn = typeof idn !== 'undefined' ? idn : false;
     
     // save format
-    var format = application.activeWindow.getVariable("P3GPR");
+    var format = __zdbGetFormat();
     
     if(idn) // get zdb id of a different title in a work window
     {
