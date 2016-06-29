@@ -271,7 +271,7 @@ var value = application.getProfileString(sect, valname, "");
     }
   }
 
-return value;									
+return value;
 }
 
 function __dnbPrompter(ttl,txt,dflt) {

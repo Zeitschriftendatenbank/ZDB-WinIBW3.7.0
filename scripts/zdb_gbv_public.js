@@ -358,3 +358,34 @@ function sucheHilfe()
 	var einstellungen = "centerscreen,chrome,close,titlebar, resizable, dialog=yes";
 	__open_xul_dialog("chrome://ibw/content/xul/gbv_hilfe_dialog.xul", einstellungen, null);
 }
+
+function ppnListe()
+{
+	// Alle PPNs des Sets werden gesammelt und in den Zwischenspeicher geschrieben.
+	var alleppn = new Array();
+	var antwort;
+	var prompter = utility.newPrompter();
+	var setSize = application.activeWindow.getVariable("P3GSZ");
+
+	if (setSize == "") {
+		application.messageBox ("PPN-Liste", "Diese Funktion kann nur in einer Kurzanzeige ausgeführt werden!", "error-icon");
+		return;
+	}
+	if (setSize > 200) {
+		antwort = prompter.confirmEx("PPN-Liste", "Das Set enthält " + setSize +
+			" Datensätze. \nDas Erstellen der PPN-Liste wird eine kleine Weile dauern.\n"+
+			"Wollen Sie trotzdem weitermachen?", "Ja", "Nein", "", "", "")
+		if (antwort == 1) {return}
+	}
+	
+	var nr=0;
+	for (nr=1; nr <= setSize; nr++){
+		application.activeWindow.command("s " + nr, false);
+		alleppn[nr] = application.activeWindow.getVariable("P3GPP");
+	}
+	alleppn.shift();//entfernt das 0. Glied der Kette, das leer ist	
+	application.activeWindow.clipboard = alleppn.join("\r\n");
+	application.messageBox ("PPN-Liste", "Alle PPNs wurden eingesammelt und in den " +
+		"Zwischenspeicher geschrieben. \nSie können die PPNs jetzt mit dem Shortcut Strg+v " +
+		"in eine Datei einfügen.", "message-icon");
+}
