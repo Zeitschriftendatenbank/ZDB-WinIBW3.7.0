@@ -31,8 +31,8 @@ function zdb_merkeZDB(){
 
 function zdb_MerkeIDN(){
     if(!__zdbCheckScreen(["8A","7A","MT","IT"],"Merke IDN")) return false;
-    var idn = application.activeWindow.getVariable("P3GPP");
-    var idn_formatiert = "!" + idn + "!";
+    var idn = application.activeWindow.getVariable("P3GPP"),
+    idn_formatiert = "!" + idn + "!";
     application.activeWindow.clipboard = idn_formatiert;
 }
 
@@ -50,7 +50,7 @@ function zdb_KennungWechseln(){
     if ((wert = application.activeWindow.caption) == "") {
         wert = "ZDB-Hauptbestand";
     }
-    if (wert.indexOf("ZDB-Hauptbestand") >= 0 || wert.indexOf("ZDB-UEbungsbestand") >= 0) {
+    if (wert.indexOf("ZDB-Hauptbestand") >= 0 || wert.indexOf("ZDB-Uebungsbestand") >= 0) {
         open_xul_dialog("chrome://ibw/content/xul/ZDB_KennungWechseln.xul", null);
     } else {
         application.messageBox("KennungWechseln", "Die Funktion \"KennungWechseln\" kann nur im ZDB-Hauptbestand oder ZDB-Übungsbestand aufgerufen werden", "alert-icon");
@@ -158,8 +158,8 @@ function __zdbNormdatenKopie(){
     application.activeWindow.titleCopyFile = "resource:/ttlcopy/gnd_title.ttl";
     
     application.overwriteMode = false;
-    var idn = application.activeWindow.getVariable("P3GPP");
-    var typ = application.activeWindow.getVariable("P3VMC");
+    var idn = application.activeWindow.getVariable("P3GPP"),
+    typ = application.activeWindow.getVariable("P3VMC");
     application.activeWindow.command("show d", false);
     application.activeWindow.copyTitle();
     application.activeWindow.command("ein n", false);
