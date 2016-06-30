@@ -38,7 +38,7 @@ function onAccept()
 	}
 	if (wert.indexOf("ZDB-Hauptbestand") >= 0) {
 		system_nr = "12";
-	} else if (wert.indexOf("ZDB-UEbungsbestand") >= 0) {
+	} else if (wert.indexOf("ZDB-Uebungsbestand") >= 0) {
 		system_nr = "14";
 	} 
 	var input = document.getElementById("ZDB_KennungWechseln_Textbox1").value;
