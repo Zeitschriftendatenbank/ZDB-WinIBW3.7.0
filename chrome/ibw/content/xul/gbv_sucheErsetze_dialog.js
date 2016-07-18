@@ -75,7 +75,7 @@ function onLoad()
 
     //if (strEln != ("8007" || "8009" || "9001" || "9006" || "9002")){
     if (!strEln.match(/8007|8009|9001|9006|9002/)){
-    alert(strEln);
+    //alert(strEln);
         document.getElementById("idCheckboxExemplar").checked = true;
         document.getElementById("idCheckboxExemplar").disabled = true;
     } else {
