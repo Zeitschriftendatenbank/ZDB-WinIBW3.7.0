@@ -775,18 +775,15 @@ function zdb_EZB(){
     //	Dokumenttyp  8A: Vollanzeige, 7A: Kurzliste
     if(false == __zdbCheckScreen(["7A","8A"],"EZB")) return false;
     
-    var arr      = [];
-    var _ezbnota = [];
-    var _ezb     = [];
-    var title, publisher, eissn, url, urls;
-    var ld = false;
-    var dppn = false;
-    var pissn = false;
-    var volume1;
-    var idx, jdx;
-    var winsnap;
-    var EZB_satz;
-    var bibid = __checkEZBAccount();
+    var arr      = [],
+        _ezbnota = [],
+        _ezb     = [],
+        title, publisher, eissn, url, urls,
+        ld = false,
+        dppn = false,
+        pissn = false,
+        volume1,jahr1,idx, jdx, winsnap, EZB_satz,
+        bibid = __checkEZBAccount();
     if(!bibid)
     {
         __zdbError("Sie müssen ein gültige EZB-bibid angeben.");
@@ -807,21 +804,39 @@ function zdb_EZB(){
     else if (idx > 0) {
         title = title.substr(idx+2) + ", " + title.substr(0,idx);
     }
-    if(__zdbCheckSF("021A","e")) title += " / " + _rec["021A"][0]["e"][0];
+    
 
     //---Feld "4005" , Inhalt an title anhängen
     if(_rec["021C"])
     {
-        if(__zdbCheckSF("021C","r"))
-        {
-            title += ". "+_rec["021C"][0]["r"][0];
+        var unterreihe_bez = "",
+            unterreihe_tit = "";
+        for(var p in _rec["021C"]) {
+            if(__zdbCheckSF("021C","r", p))
+            {
+                unterreihe_bez += " / "+_rec["021C"][0]["r"][0];
+            }
+            else
+            {
+                if(__zdbCheckSF("021C","l", p))
+                {
+                    unterreihe_bez += " / " + _rec["021C"][p]["l"][0];
+                } else {
+                    if(__zdbCheckSF("021C","a", p))
+                    {
+                        unterreihe_bez += " / " + _rec["021C"][p]["a"][0]; // wenn l nicht vh nimm a
+                    }
+                }
+                if(__zdbCheckSF("021C","a", p))
+                {
+                    unterreihe_tit = ": "+_rec["021C"][p]["a"][0]
+                }
+            }
         }
-        else
-        {
-            title += ". "+_rec["021C"][0]["a"][0];
-        }
+        title += unterreihe_bez + unterreihe_tit;
     }
     
+    if(__zdbCheckSF("021A","e")) title += " / " + _rec["021A"][0]["e"][0];
     
 //---Feld "4030" , Inhalt nach publisher
     publisher = (__zdbCheckSF("033A","n")) ? _rec["033A"][0]["n"][0] : ""; 
@@ -859,9 +874,15 @@ function zdb_EZB(){
 
 //---Feld "4025" , Inhalt nach volume1
     volume1 = "";
+    jahr1 = "";
     if(_rec["031@"])
     {
-        volume1 = _rec["031@"][0]["a"][0];
+        if(__zdbCheckSF("031@","a")) {
+            volume1 = _rec["031@"][0]["a"][0];
+        }
+        if(__zdbCheckSF("031@","j")) {
+            jahr1   = _rec["031@"][0]["j"][0];
+        }
     }
 
 //---Feld "5080" , Inhalt nach notation
@@ -931,7 +952,8 @@ function zdb_EZB(){
         "title="     + escape(title)  + "&publisher="  + escape(publisher)
                      + "&eissn="      + eissn   + "&pissn="      + pissn
                      + "&zdb_id="     + _rec["006Z"][0][0][0]  + "&url="        + escape(url)
-                     + "&volume1="    + escape(volume1);
+                     + "&first_volume="    + escape(volume1);
+                     + "&first_date="    + escape(jahr1);
 
     for(var i in _ezbnota){
         EZB_satz += "&notation[]=" + _ezbnota[i];
