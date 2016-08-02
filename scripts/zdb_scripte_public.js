@@ -584,8 +584,7 @@ function __zdbDruckausgabe(dppn,ld){
     application.activeWindow.command("f idn " + dppn, true);
 
     if (application.activeWindow.status != "OK") {
-        __zdbError("Die über 4243 verlinkte Druckausgabe existiert nicht.");
-        return false;
+        return __zdbError("Die über 4243 verlinkte Druckausgabe existiert nicht.");
     }
 
 //	DocType = 1. Zeichen im Feld 0500
@@ -786,8 +785,7 @@ function zdb_EZB(){
         bibid = __checkEZBAccount();
     if(!bibid)
     {
-        __zdbError("Sie müssen ein gültige EZB-bibid angeben.");
-        return;
+        return __zdbError("Sie müssen ein gültige EZB-bibid angeben.");
     }
 
 //	url zur EZB
@@ -868,8 +866,7 @@ function zdb_EZB(){
     }
     else
     {
-        __zdbError("Die URL (4085) fehlt.");
-        return false;
+        return __zdbError("Die URL (4085) fehlt.");
     }
 
 //---Feld "4025" , Inhalt nach volume1
@@ -1016,10 +1013,9 @@ function __zdbGetRecord(format,extmode){
     var satz = null;
     
     if ( (format != "P") && (format != "D") ) {
-        __zdbError("Funktion getRecord mit falschem Format \"" + format
+        return __zdbError("Funktion getRecord mit falschem Format \"" + format
                     + "\"aufgerufen.\n"
                     + "Bitte wenden Sie sich an Ihre Systembetreuer.");
-        return false;
     }
     if (scr == "7A") {
         if (!__zdbCheckKurztitelAuswahl())	return false;
@@ -1050,7 +1046,7 @@ function __zdbGetRecord(format,extmode){
 //--------------------------------------------------------------------------------------------------------
 function __zdbError(msgText){
     __zdbMsg(msgText,"e");
-    return;
+    return false;
 }
 
 function __zdbYesNo(msgtxt){
@@ -1196,7 +1192,6 @@ function __zdbGetZDB(idn) {
         if (strScreen == "MT" || strScreen == "IT")
         {
             _field = __zdbParseField(application.activeWindow.title.findTag(cat,0,true,false,true));
-            __zdbError(application.activeWindow.title.findTag(cat,0,true,false,true));
             zdbid = _field[cat][0][0];
         }
         else 
@@ -1226,7 +1221,7 @@ function __zdbOpenWorkWindow(){
 */ 
 function __zdbCloseWorkWindow(myWindowId){
     if(myWindowId == null) return false;
-    application.activeWindow.close();
+    application.activeWindow.closeWindow();
     application.activateWindow(myWindowId);
     return;
 }
@@ -1366,13 +1361,15 @@ function __zdbJSON(idn){
     // save format
     var format = __zdbGetFormat();
     
+    var myWindowId = application.activeWindow.windowID;//__zdbOpenWorkWindow();
+    
     if(idn) // get zdb id of a different title in a work window
     {
-        var myWindowId = __zdbOpenWorkWindow();
-        application.activeWindow.command("\zoe idn "+idn,false);
+        application.disableScreenUpdate(true);
+        application.activeWindow.command("f idn "+idn,true);
     }
 
-    if("P" != format) application.activeWindow.command("s p",false);
+    if( "P" != __zdbGetFormat() ) application.activeWindow.command("s p",false);
     
     var line, tmp, key;
     var rec = __zdbGetExpansionFromP3VTX();
@@ -1401,13 +1398,13 @@ function __zdbJSON(idn){
         }
     }
     
-    // back to source format
-    if("P" != format) application.activeWindow.command("s "+format,false);
-    
     if(idn) // close work window and return to old
     {
         __zdbCloseWorkWindow(myWindowId);
+        application.disableScreenUpdate(false);
     }
+    // back to source format
+    if("P" != format) application.activeWindow.command("s "+format,false);
 }
 
 /**
@@ -1471,4 +1468,15 @@ function __zdbCheckSF(kat,sf,i){
     if(!_rec[kat]) return false;
     if(!_rec[kat][i][sf]) return false;
     return true;
+}
+
+function isil_online() {
+    var isil;
+    var strScreen = __zdbCheckScreen(["8A","MT","IT","MI"],"ISIL Online");
+    if(false == strScreen) return false;
+    if('Tw' != application.activeWindow.getVariable("P3VMC")) {
+        return __zdbError("Die Funktion kann nur in Verbindung mit Tw-Sätzen genutzt werden.");
+    }
+    __zdbJSON(application.activeWindow.getVariable("P3GPP"));
+    application.shellExecute('http://ld.zdb-services.de/resource/organisations/'+_rec['008H'][0]['e'][0],5,"open","");
 }
