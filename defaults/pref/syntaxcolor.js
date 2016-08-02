@@ -6,30 +6,44 @@
 //
 // D
 //
+
+
 //1. ILN, Bibliotheksangaben bei Exemplardaten
 pref("ibw.presentation.syntaxcolor.D.regex.1", "(<[bB][rR]>)(70[0-9][0-9])");
 pref("ibw.presentation.syntaxcolor.D.format.1", '$1<span style="font-weight:bold;color:CC3300">$2</span>');
+
 //2. Tags werden fett
 pref("ibw.presentation.syntaxcolor.D.regex.2", "(<[bB][rR]>)(\d{3,4})");
 pref("ibw.presentation.syntaxcolor.D.format.2", '$1<span style="font-weight:bold">$2</span>');
+
 //3. alles wird als LTR definiert (default)
-pref("ibw.presentation.syntaxcolor.D.regex.3", "(.*?)(?:<[bB][rR]>)");
+/*pref("ibw.presentation.syntaxcolor.D.regex.3", "(.*?)(?:<[bB][rR]>)");
 pref("ibw.presentation.syntaxcolor.D.format.3", '<div style="direction: ltr">$1</div>');
 pref("ibw.presentation.syntaxcolor.D.regex.4", "(\$T.*?&amp;&amp;)");
 pref("ibw.presentation.syntaxcolor.D.format.4", '<span style="color:660099">$1</span>');
+*/
+
+//3. Link von ISIL in 092$e zu ISIL online
+pref("ibw.presentation.syntaxcolor.D.regex.3", "((092.+?\$e)([^\$<]+))");
+pref("ibw.presentation.syntaxcolor.D.format.3", '$2<a href="http://ld.zdb-services.de/resource/organisations/$3">$3</a>');
+
 //5. Hervorhebung der Vorzugsbenennungen in der GND (1XX, zusaetzlich eventuell 5XX bei Tu) + 7135
 pref("ibw.presentation.syntaxcolor.D.regex.5", "(>[67][01357][0138]5?</[sS][pP][aA][nN]> )(.*?)(</[dD][iI][vV]>)");
 pref("ibw.presentation.syntaxcolor.D.format.5", '$1<span>$2</span>');
+
 //6. Dollar-Subfelder in Rot 
 pref("ibw.presentation.syntaxcolor.D.regex.6", "(\$[a-zA-Z0-9])");
-pref("ibw.presentation.syntaxcolor.D.format.6", '<span style="font-weight:bold;color:CC3300">$0</span>');
+pref("ibw.presentation.syntaxcolor.D.format.6", '<span style="font-weight:bold;color:CC3300;margin-left:2px">$0</span>');
+
 //7. Erzeugung von anklickbaren Links in GDN-Kommentarfeldern, mehr als zwei URLs werden nicht anklickbar
 pref("ibw.presentation.syntaxcolor.D.regex.7", '(\$u</[sS][pP][aA][nN]>)(http.*?)(<)');
 pref("ibw.presentation.syntaxcolor.D.format.7", '$1<a href="$2">$2</a>$3');
+
 // 8. 7135 Link
 //pref("ibw.presentation.syntaxcolor.D.regex.8", "(7135.*=u )(http.*?)((<)|(=x ))");
 pref("ibw.presentation.syntaxcolor.D.regex.8", "(7135.*?=u\s)(https?\:\/\/.*?)(=x\s.*?<|<)");
 pref("ibw.presentation.syntaxcolor.D.format.8", '$1<a href="$2">$2</a>$3');
+
 // 9. Istgleich-Subfelder in Rot
 //pref("ibw.presentation.syntaxcolor.D.regex.9", "(=[a-z0-9]{1}\s)");
 //pref("ibw.presentation.syntaxcolor.D.format.9", '<span style="font-weight:bold;color:CC3300">$0</span>');
