@@ -360,8 +360,8 @@ try{
         document.getElementById("idButtonDatei").hidden=false;
     }
 } catch(e) {
-    application.messageBox ("", e, "");
-    return;
+        alert(e);
+        return;
     }
     return;
 }
@@ -616,17 +616,17 @@ function bearbeiteZeilenErsetzen()
     //den ganzen Datensatz und vergleicht die Kategorien mit den Vorgaben des Anwenders
     //bei der find-Anweisung steht lineOnly immer auf true, weil jede Zeile einzeln
     //untersucht werden soll
-
-    var strbedingung = document.getElementById("idBedingung").value;
-    var strbedingung2 = document.getElementById("idBedingung2").value;
-    var zeilenNr, tagContent, strTag;
+    var strbedingung = document.getElementById("idBedingung").value,
+        strbedingung2 = document.getElementById("idBedingung2").value,
+        zeilenNr, tagContent, strTag;
+    
     application.activeWindow.title.endOfBuffer(false);
     var lZeilen = application.activeWindow.title.currentLineNumber;
     application.activeWindow.title.startOfBuffer(false);
-    var bedingungInRange;
-    var matches;
-    var modifier = (bcaseSensitive) ? "" : "i";
-    var re = new RegExp(strSuche,modifier);
+    var bedingungInRange, matches,
+        modifier = (bcaseSensitive) ? "" : "i",
+        re = new RegExp(strSuche,modifier),
+        strFound;
     if (strbedingung2 != "")
     {
         var bedingungInRange = false;
@@ -651,7 +651,7 @@ function bearbeiteZeilenErsetzen()
             {
                 if(matches = application.activeWindow.title.currentField.match(re))
                 {
-                    strSuche = matches[0];
+                    strFound = matches[0];
                 }
                 
                 if (strbedingung != "")
@@ -660,13 +660,13 @@ function bearbeiteZeilenErsetzen()
                     {
 
                         application.activeWindow.title.startOfField(false);//Suche ab Zeilenanfang:
-                        while(application.activeWindow.title.find(strSuche, bcaseSensitive, true, bwholeWord) == true)
+                        while(application.activeWindow.title.find(strFound, bcaseSensitive, true, bwholeWord) == true)
                         {
                             application.activeWindow.title.insertText(strErsetze);
                         }
                     }
                 } else {
-                    while(application.activeWindow.title.find(strSuche, bcaseSensitive, true, bwholeWord) == true){
+                    while(application.activeWindow.title.find(strFound, bcaseSensitive, true, bwholeWord) == true){
                         application.activeWindow.title.insertText(strErsetze);
                     }
                 }
