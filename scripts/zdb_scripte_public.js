@@ -193,6 +193,11 @@ function __zdbTiteldatenKopie(){
     application.activeWindow.title.insertText("???? !" + idn + "!");
     application.activeWindow.clipboard = idn;
 
+    if(!_rec["002C"]) {
+        application.activeWindow.title.findTag("0500", 0, false, true, false);
+        application.activeWindow.title.endOfField(false);
+        application.activeWindow.title.insertText("\n0501 $btxt");
+    }
     // Ersetzungen in Kategorie 0600
     var codes0600;
     if("" != (codes0600 = application.activeWindow.title.findTag("0600", 0, false, true, true)))
