@@ -1,8 +1,10 @@
 //============================================================================
 // Erstellt: GBV, Karen Hachmann
 //           2009.02
-// letzte Änderung: 2011.03
+// Änderung: 2011.03
 //     Ausnahmeregel: ELN 1999 (VZG), 2012 (GND) und 2013 (PND) dürfen auch die bibliographische Ebene bearbeiten
+// Änderung: 2016.08 Klee
+//      Optionale Nutzung von Regulären Ausdrücken
 //============================================================================
 
 // Pull in the WinIBW application object:
