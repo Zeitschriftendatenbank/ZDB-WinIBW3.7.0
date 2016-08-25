@@ -60,7 +60,7 @@ var bProtokoll = false;
 var lBearbeitet = 0;
 var strEbene = "";
 var strSatzart = "";
-var hinweisVZG = application.getProfileString("ibw.standardscript.sucheErsetze","hinweis","");
+var hinweisVZG = "";
 
 //Variable des Zufügen-Tabs:
 var wennKat = "";
@@ -70,14 +70,18 @@ var dannText = "";
 var loescheKat = "";
 var loeschenSichtbar = false;
 var elnText ="";
+//Variable, abhängig vom Verbund!
+var strELN = "";
+var strUser = "";
+var strKatLok = "";
+var strKatExe = "";
 //-------------------------------------------------------------------------
 function erweitereRechte()
 {
 	//Prüfe ELN:
 	//1999 = VZG, 2012 = GND, 2013 = PND
 	//7777 = ELN des GBV in der DNB
-    var eln = application.getProfileString("ibw.standardscript.sucheErsetze","eln",""),
-        oRegExpELN = new RegExp( eln ),
+    var oRegExpELN = new RegExp( strELN ),
         ergebnis1 = oRegExpELN.test(application.activeWindow.getVariable("libID"));
 	if (ergebnis1 == true){
 		//Kategorien ergänzen:
@@ -86,7 +90,7 @@ function erweitereRechte()
 		loeschenSichtbar = true;
 	}
 	// Prüfe User:
-	var oRegExpUser = new RegExp( application.writeProfileString("ibw.standardscript.sucheErsetze","user","") );
+    var oRegExpUser = new RegExp( strUser );
 	var ergebnis2 = oRegExpUser.test(application.activeWindow.getVariable("P3GUK"));
 	if (ergebnis1 == true || ergebnis2 == true){
 		return true;
@@ -97,6 +101,30 @@ function erweitereRechte()
 
 function onLoad()
 {
+	var strVerbund = application.activeWindow.getVariable("P3GCN");
+	switch (strVerbund){
+		case "GBV":
+        hinweisVZG = "Sie haben Kategorien der bibliographischen Ebene (Titelebene) ausgewählt. " +
+        "\nDas Bearbeiten ganzer Sets auf bibliographischer Ebene ist der Verbundzentrale vorbehalten." +
+        "\nBitte senden Sie Ihre Korrekturvorschläge an Frau Hachmann: hachmann@gbv.de";
+        strELN = "1999|2012|2013|7777";
+        strUser = "1343|6723";
+        strKatLok = "2080|348[01]|354[0-9]|471[056]|476[34]|60[0-9xX][0-9xX]|6100|65[0-9xX][0-9xX]";
+        strKatExe = "43[0-9][0-9]|480[12347]|67[0-9xX][0-9xX]|68[0-9xX][0-9xX]|70[0-9xX][0-9xX]|71[0-9][0-9]|712[0123]|713[39]|7200|73[0-9][0-9]|7800|7901|8[0-8][0-9][0-9]"; 
+        break;
+		case "DNB":
+        hinweisVZG = "Sie haben Kategorien der bibliographischen Ebene (Titelebene) ausgewählt. " +
+        "\nDas Bearbeiten ganzer Sets auf bibliographischer Ebene ist der Zentralredaktion vorbehalten." +
+        "\nBitte senden Sie Ihre Korrekturvorschläge an zdb-winibw@sbb.spk-berlin.de";
+        strELN = "8007|9001|9006|9002";
+        strUser = "6001|6199|6099|6004";
+        strKatLok = "2080|348[01]|354[0-9]|471[056]|476[34]|60[0-9xX][0-9xX]|6100|65[0-9xX][0-9xX]";
+        strKatExe = "480[012]|4820|4822|6700|70[0-9xX][0-9xX]|710[0-9]|7120|713[345678]|714[0-9]|715[09]|7[89]00|8001|803[12345]|8[12]00|844[89]|846[567]|8510|859[45678]"; 
+        break;
+		default:
+        alert("Unbekannte Datenbank!");
+        break;
+	}
 	if (!erweitereRechte()){
 		document.getElementById("idCheckboxExemplar").checked = true;
 		document.getElementById("idCheckboxExemplar").disabled = true;
@@ -158,9 +186,9 @@ function testEbene(kategorie)
 	//Voreinstellung:
 	strEbene="0";
     //Kategorien der Lokalebene:
-    var oRegExpKatLok = new RegExp( application.getProfileString("ibw.standardscript.sucheErsetze","lokalebene","") ),
+    var oRegExpKatLok = new RegExp( strKatLok ),
     //Kategorien der Exemplarebene:
-        oRegExpKatExe = new RegExp( application.getProfileString("ibw.standardscript.sucheErsetze","exemplarebene","") );
+        oRegExpKatExe = new RegExp( strKatExe );
 	if (oRegExpKatLok.test(kategorie)== true) strEbene = "1";
 	else if (oRegExpKatExe.test(kategorie)== true) strEbene = "2";
 	//alert ("Kategorie: " + kategorie + "\nEbene: " + strEbene);
@@ -183,7 +211,7 @@ function zaehleDatensaetze()
 		application.activeWindow.simulateIBWKey("FE");
 	} else if (application.activeWindow.messages.item(0).text == "OK") {
 		//ansonsten wäre der Status auch "OK" aber Meldung: "Der Datensatz wurde NICHT verändert"
-		lBearbeitet = lBearbeitet  + 1
+		lBearbeitet++;
 	}
 }
 //----------------------------------------------------------------
@@ -639,13 +667,16 @@ function bearbeiteZeilenErsetzen()
                 if(regex) {
                     current = application.activeWindow.title.currentField;
                     replaced = current.replace(regex, strErsetze);
+                    if(current != replaced) {
+                        count++;
+                    }
                     application.activeWindow.title.insertText(replaced);
                 } else {
                     while(application.activeWindow.title.find(strSuche, bcaseSensitive, true, bwholeWord) == true){
+                        count++;
                         application.activeWindow.title.insertText(strErsetze);
                     }
                 }
-                count++;
             }
         }
         application.activeWindow.title.endOfField(false);//wichtig bei mehrzeiligen Inhalten!

@@ -534,13 +534,6 @@ function zdbformat(){
 }
 
 function sucheErsetze(){
-    application.writeProfileString("ibw.standardscript.sucheErsetze","eln","8007|9001|9006|9002");
-    application.writeProfileString("ibw.standardscript.sucheErsetze","user","6001|6199|6099|6004");
-    application.writeProfileString("ibw.standardscript.sucheErsetze","lokalebene","2080|348[01]|354[0-9]|471[056]|476[34]|60[0-9xX][0-9xX]|6100|65[0-9xX][0-9xX]");
-    application.writeProfileString("ibw.standardscript.sucheErsetze","exemplarebene","480[012]|4820|4822|6700|70[0-9xX][0-9xX]|710[0-9]|7120|713[345678]|714[0-9]|715[09]|7[89]00|8001|803[12345]|8[12]00|844[89]|846[567]|8510|859[45678]");
-    application.writeProfileString("ibw.standardscript.sucheErsetze","hinweis","Sie haben Kategorien der bibliographischen Ebene (Titelebene) ausgewählt. " +
-        "\nDas Bearbeiten ganzer Sets auf bibliographischer Ebene ist der Zentralredaktion vorbehalten." +
-        "\nBitte senden Sie Ihre Korrekturvorschläge an zdb-winibw@sbb.spk-berlin.de");
     var xulFeatures = "centerscreen, chrome, close, titlebar,resizable, modal=no, dependent=yes, dialog=no";
     open_xul_dialog("chrome://ibw/content/xul/gbv_sucheErsetze_dialog.xul", xulFeatures);
 }
