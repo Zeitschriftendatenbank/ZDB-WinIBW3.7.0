@@ -926,7 +926,10 @@ function datumHeute() {
     //das Datum und die Uhrzeit wird Bestandteil des Dateinamens
     var jetzt = new Date(),
         format = function (t) {
-            return "0" + t;
+            if (t < 10) {
+                return "0" + t;
+            }
+            return t;
         },
         jahr = format(jetzt.getFullYear()),
         monat = format(jetzt.getMonth() + 1),
@@ -934,24 +937,6 @@ function datumHeute() {
         stunde = format(jetzt.getHours()),
         minute = format(jetzt.getMinutes()),
         sekunde = format(jetzt.getSeconds());
-
-/*     if (monat < 10) {
-        monat = "0" + monat;
-    }
-    if (strTag < 10) {
-        strTag = "0" + strTag;
-    }
-    if (stunde < 10) {
-        stunde = "0" + stunde;
-    }
-
-    if (minute < 10) {
-        minute = "0" + minute;
-    }
-
-    if (sekunde < 10) {
-        sekunde = "0" + sekunde;
-    } */
 
     //Dateiname:
     return jahr + "_" + monat + strTag + stunde + minute + sekunde;
