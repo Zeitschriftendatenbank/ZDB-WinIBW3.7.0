@@ -16,13 +16,6 @@ pref("ibw.presentation.syntaxcolor.D.format.1", '$1<span style="font-weight:bold
 pref("ibw.presentation.syntaxcolor.D.regex.2", "(<[bB][rR]>)(\d{3,4})");
 pref("ibw.presentation.syntaxcolor.D.format.2", '$1<span style="font-weight:bold">$2</span>');
 
-//3. alles wird als LTR definiert (default)
-/*pref("ibw.presentation.syntaxcolor.D.regex.3", "(.*?)(?:<[bB][rR]>)");
-pref("ibw.presentation.syntaxcolor.D.format.3", '<div style="direction: ltr">$1</div>');
-pref("ibw.presentation.syntaxcolor.D.regex.4", "(\$T.*?&amp;&amp;)");
-pref("ibw.presentation.syntaxcolor.D.format.4", '<span style="color:660099">$1</span>');
-*/
-
 //3. Link von ISIL in 092$e zu ISIL online
 pref("ibw.presentation.syntaxcolor.D.regex.3", "((092.+?\$e)([^\$<]+))");
 pref("ibw.presentation.syntaxcolor.D.format.3", '$2<a href="http://ld.zdb-services.de/resource/organisations/$3">$3</a>');
@@ -47,6 +40,13 @@ pref("ibw.presentation.syntaxcolor.D.format.8", '$1<a href="$2">$2</a>$3');
 // 9. Istgleich-Subfelder in Rot
 //pref("ibw.presentation.syntaxcolor.D.regex.9", "(=[a-z0-9]{1}\s)");
 //pref("ibw.presentation.syntaxcolor.D.format.9", '<span style="font-weight:bold;color:CC3300">$0</span>');
+
+//10/11. alles wird als LTR definiert (default)
+pref("ibw.presentation.syntaxcolor.D.regex.10", "(.*?)(?:<[bB][rR]>)");
+pref("ibw.presentation.syntaxcolor.D.format.10", '<div style="direction: ltr">$1</div>');
+pref("ibw.presentation.syntaxcolor.D.regex.11", "(\$T.*?&amp;&amp;)");
+pref("ibw.presentation.syntaxcolor.D.format.11", '<span style="color:660099">$1</span>');
+
 
 
 //
