@@ -6,25 +6,6 @@
 // Änderung: 2016.08 Klee
 //      Optionale Nutzung von Regulären Ausdrücken
 //============================================================================
-
-// Pull in the WinIBW application object:
-var application = Components.classes["@oclcpica.nl/kitabapplication;1"]
-                    .getService(Components.interfaces.IApplication);
-
-var zeigeWeitereBedingungen = false;
-
-var utility = {
-        newFileInput: function () {
-            return Components.classes["@oclcpica.nl/scriptinputfile;1"]
-                        .createInstance(Components.interfaces.IInputTextFile);
-        },
-        newFileOutput: function () {
-            return Components.classes["@oclcpica.nl/scriptoutputfile;1"]
-                        .createInstance(Components.interfaces.IOutputTextFile);
-        },
-    };
-var prompter = Components.classes["@oclcpica.nl/scriptpromptutility;1"]
-                        .createInstance(Components.interfaces.IPromptUtilities);
 /*
 Ein Problem, das ich nicht lösen kann: Wenn in der Schleife der abzuarbeitenden Datensätze eine
 Fehlermeldung erscheint, dann wird die Schleife unterbrochen. Auch wenn man die Popup-Meldungen
@@ -37,41 +18,59 @@ Jian schrieb am 23.04.2010, dass leider nur bei den Standardscripten die Meldung
 Bei XUL soll dies mit einer  zukünftigen WinIBW3-Version auch möglich sein.
 */
 
-
 //Globale Variable: -------------------------------------------------------
-var lProfileAlert, lProfileError, lProfileMessage;
-var strErsetze = "";
-var strSuche = "";
-var Kat1 = "";
-var Kat2 = "";
-var bcaseSensitive = "";
-var caseFlag = "i";
-var bwholeWord = false;
-var bFehler = false;
-var strfehlerMeldungen = "";
-var listenPfadFehler = "";
-var listenPfadProtokoll = "";
-var protokollDatei = "";
-var bProtokoll = false;
-var lBearbeitet = 0;
-var strEbene = "";
-var strSatzart = "";
-var hinweisVZG = "";
-var bError;
+// Pull in the WinIBW application object:
+var application = Components.classes["@oclcpica.nl/kitabapplication;1"]
+                    .getService(Components.interfaces.IApplication),
 
+    zeigeWeitereBedingungen = false,
+
+    utility = {
+        newFileInput: function () {
+            return Components.classes["@oclcpica.nl/scriptinputfile;1"]
+                        .createInstance(Components.interfaces.IInputTextFile);
+        },
+        newFileOutput: function () {
+            return Components.classes["@oclcpica.nl/scriptoutputfile;1"]
+                        .createInstance(Components.interfaces.IOutputTextFile);
+        },
+    },
+    prompter = Components.classes["@oclcpica.nl/scriptpromptutility;1"]
+                        .createInstance(Components.interfaces.IPromptUtilities),
+    lProfileAlert,
+    lProfileError,
+    lProfileMessage,
+    strErsetze = "",
+    strSuche = "",
+    Kat1 = "",
+    Kat2 = "",
+    bcaseSensitive = "",
+    caseFlag = "i",
+    bwholeWord = false,
+    bFehler = false,
+    strfehlerMeldungen = "",
+    listenPfadFehler = "",
+    listenPfadProtokoll = "",
+    protokollDatei = "",
+    bProtokoll = false,
+    lBearbeitet = 0,
+    strEbene = "",
+    strSatzart = "",
+    hinweisVZG = "",
+    bError,
 //Variable des Zufügen-Tabs:
-var wennKat = "";
-var wennText = "";
-var dannKat = "";
-var dannText = "";
-var loescheKat = "";
-var loeschenSichtbar = false;
-var elnText = "";
+    wennKat = "",
+    wennText = "",
+    dannKat = "",
+    dannText = "",
+    loescheKat = "",
+    loeschenSichtbar = false,
+    elnText = "",
 //Variable, abhängig vom Verbund!
-var strELN = "";
-var strUser = "";
-var strKatLok = "";
-var strKatExe = "";
+    strELN = "",
+    strUser = "",
+    strKatLok = "",
+    strKatExe = "";
 //-------------------------------------------------------------------------
 function erweitereRechte() {
     //Prüfe ELN:
