@@ -346,7 +346,7 @@ function bearbeiteSetErsetzen() {
         for (datensatzNr = 1; datensatzNr <= lSetsize; datensatzNr += 1) {
             application.activeWindow.command("\\too " + datensatzNr, false);
             if (bProtokoll == true) {
-                protokollDateiSchreiben(application.activeWindow.copyTitle());
+                protokollDateiSchreiben(application.activeWindow.getVariable('P3CLIP'));
             }
             //welche Ebene darf bearbeitet werden?
             if (testEbene(Kat1) == "2") {
