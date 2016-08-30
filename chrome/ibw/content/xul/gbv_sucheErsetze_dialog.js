@@ -236,6 +236,7 @@ function bearbeiteSetErsetzen() {
 
         //Falls Aktion erneut gestartet (z.B. nach Fehlermeldung)
         lBearbeitet = 0;
+        bProtokoll = false
         verbergeSchlussmeldung(true);
 
         strSuche = document.getElementById("idSuche").value;
@@ -412,6 +413,7 @@ function bearbeiteSetZufuegen() {
 
         //Falls Aktion erneut gestartet (z.B. nach Fehlermeldung)
         lBearbeitet = 0;
+        bProtokoll = false
         verbergeSchlussmeldung(true);
 
         if (wennKat.length != dannKat.length) {
