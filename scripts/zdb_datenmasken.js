@@ -128,6 +128,14 @@ function Datenmaske6()
 {
     __DatenmaskeEinfuegen("maske06");
 }
+function DatenmaskeAdxz()
+{
+    __DatenmaskeEinfuegen("maskeAdxz");
+}
+function DatenmaskeOdxz()
+{
+    __DatenmaskeEinfuegen("maskeOdxz");
+}
 // Neu GND seit 2012.02:
 
 function DatenmaskeTb()

@@ -1,0 +1,16 @@
+0500 Adxz
+0501 Text$btxt
+0502 ohne Hilfsmittel zu benutzen$bn
+0503 Band$bnc
+1100 
+1131 !041799984!
+1500 
+1505 $erda
+1700 
+2010
+4000 
+4030 
+4024 
+4025 
+4030 
+5080
