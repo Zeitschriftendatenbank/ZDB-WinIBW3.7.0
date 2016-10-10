@@ -198,6 +198,12 @@ function __zdbTiteldatenKopie(){
         application.activeWindow.title.endOfField(false);
         application.activeWindow.title.insertText("\n0501 $btxt");
     }
+    if(!_rec["002D"]) {
+        application.activeWindow.title.insertText("\n0502 $b" + __zdbMediatype());
+    }
+    if(!_rec["002E"]) {
+        application.activeWindow.title.insertText("\n0503 $b" + __zdbMediatype() + "?");
+    }
     // Ersetzungen in Kategorie 0600
     var codes0600;
     if("" != (codes0600 = application.activeWindow.title.findTag("0600", 0, false, true, true)))
@@ -225,6 +231,32 @@ function __zdbTiteldatenKopie(){
     //application.activeWindow.title.findTag("0500", 0, false, true, true);
     //application.activeWindow.title.endOfField(true);
     //application.activeWindow.title.insertText("xz");
+}
+
+function __zdbMediatype() {
+    if(!_rec) {
+        __zdbError("Die Funktion erwartet ein globales Titelobjekt! Der Medientyp kann nicht ermittelt werden.");
+        return 'z';
+    }
+    
+    if(!_rec['002@']) {
+        __zdbError("Kategorie 0500 ist nicht vorhanden! Der Medientyp kann nicht ermittelt werden.");        
+        return 'z';
+    }
+    var mediamap = {
+        "A": "n",
+        "S": "c",
+        "O": "c",
+        "E": "h"
+    };
+    var inhaltstyp = _rec['002@'][0]["0"][0];
+    
+    if(!mediamap[inhaltstyp.substr(0,1)]) {
+        return 'z';
+    }
+    
+    return mediamap[inhaltstyp.substr(0,1)];
+    
 }
 
 function zdb_Datensatzkopie() {
