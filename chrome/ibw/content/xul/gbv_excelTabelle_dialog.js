@@ -939,7 +939,6 @@ function handleRecordPart ( satz, accept, ctrl ) {
 
 function createResult ( satz, ctrl ) {
 	var tag, suche, regex, group, text, idx;
-
 	idx = -1;	
 	while (++idx < ctrl.length) 
 	{
@@ -1271,7 +1270,7 @@ function writeCSV()
 	document.getElementById("idLabelErgebnis1").hidden=false;
 	document.getElementById("idLabelErgebnis1").value = ergebnis;
 	document.getElementById("idLabelErgebnis2").hidden=false;
-	document.getElementById("idLabelErgebnis2").value = "Sie finden die Ergebnisdatei im Verzeichnis:"
+	document.getElementById("idLabelErgebnis2").value = "Sie finden die Ergebnisdatei im unten genannten Verzeichnis. Pfad befindet sich im Zwischenspeicher."
 	document.getElementById("idTextboxPfad").value=listenPfad;
 	document.getElementById("idTextboxPfad").hidden=false;
 }
@@ -1280,18 +1279,18 @@ function writeCSV()
 
 function wikiWinibw()
 {
-	//Hilfe allgemein
-	application.shellExecute ("http://www.gbv.de/wikis/cls/WinIBW3:Excel-Tabelle_erstellen", 5, "open", "");
-}
-function wikiAnzeigen2()
-{
-	//Hilfe Konfiguration
-	application.shellExecute ("http://www.gbv.de/wikis/cls/WinIBW3:Excel-Tabelle_erstellen#Konfiguration_des_Excel-Werkzeugs", 5, "open", "");
-}
-function wikiAnzeigen3()
-{
-	//Hilfe Trennzeichen
-	application.shellExecute ("http://www.gbv.de/wikis/cls/WinIBW3:Excel-Tabelle_erstellen#Trennzeichen", 5, "open", "");
+    //Hilfe allgemein
+    application.shellExecute ("https://verbundwiki.gbv.de/x/DwAlAQ", 5, "open", "");
+    }
+    function wikiAnzeigen2()
+    {
+    //Hilfe Konfiguration
+    application.shellExecute ("https://verbundwiki.gbv.de/x/DwAlAQ#Excel-Tabelleerstellen-KonfigurationdesExcel-Werkzeugs", 5, "open", "");
+    }
+    function wikiAnzeigen3()
+    {
+    //Hilfe Trennzeichen
+    application.shellExecute ("https://verbundwiki.gbv.de/x/DwAlAQ##Excel-Tabelleerstellen-Trennzeichen", 5, "open", "");
 }
 
 function dateiOeffnen()
