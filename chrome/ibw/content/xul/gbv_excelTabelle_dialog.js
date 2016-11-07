@@ -17,6 +17,7 @@
  ZDB: Wiederholte Felder und Unterfelder
  - Funktionen createResult(), convertText überarbeitet
  - angepasst getMaxOccurrence --> radix hinzugefügt
+ - 07.11.16 Fehler Unterfeld a verschwindet bei wiederholbaren Unterfeldern
 */
 //============================================================================
 
@@ -474,6 +475,8 @@ function createCtrlArray ( content ) {
 	}
 
 	ctrl.cnt = 0;
+    //alert(__objToString (ctrl));
+
 	return ctrl;
 	
 }
@@ -958,7 +961,7 @@ function createResult ( satz, ctrl ) {
 			// workaround fuer 7120/4024(ZDB)
 			// nur fuer Feld 7120/4012
 			if (ctrl[idx].tag == "031N" || ctrl[idx].tag == "231@")
-			{			
+			{
 				// nur wenn Unterfeld $0 vorkommt
 				if(satz.indexOf(String.fromCharCode(charCode)+"0") != -1)
 				{
@@ -978,7 +981,6 @@ function createResult ( satz, ctrl ) {
 						tempArray[w] = convertOrText(group[w],ctrl[idx].spec,ctrl[idx].data);
 					}
 				}
-				
 			}
 			else
 			{
@@ -994,12 +996,9 @@ function createResult ( satz, ctrl ) {
 				{
 					ctrl[idx].val = tempArray[0];
 				}
-
 			}
 		}
-
 	}
-
 	//__M("retval:"+retval);
 	return;
 }
@@ -1017,7 +1016,6 @@ function createResult ( satz, ctrl ) {
 function convertOrText ( text, spec, data ) {
 
 	var idx, tmp, xidx;
-	
 	idx = -1;
 	while (++idx < data.length) {
 		//__M("or aufruf idx:"+idx+"  anz:"+data.length);
@@ -1035,6 +1033,7 @@ function convertOrText ( text, spec, data ) {
 //
 //
 // edited C. Klee 12.10.2011: Wiederholbare Felder/Unterfelder
+// edited C. Klee 07.11.2016: Fehler: Subfield a vanishes with Wiederholbare Felder/Unterfelder
 //
 // text	nutzende Kategorie
 // spec	Spezialzeichen (S oder K oder blank)
@@ -1043,7 +1042,6 @@ function convertOrText ( text, spec, data ) {
 // --------------------------------------------------------------------------------
 
 function convertText ( text, spec, andArr ) {
-
 	var tmp, idx, idxe, xidx, jdxa, jdxe, test;
 
 // ZDB: Diese Zeile verusrsacht das Abbrechen der Funktion, wenn das erste Unterfeld nicht vorkommt --> Daher auskommentiert	
@@ -1055,23 +1053,20 @@ function convertText ( text, spec, andArr ) {
 	var tmpArray = new Array();
 	
 	while (++idx < andArr.length) {
-	
 		// erstes vorkommen
 		jdxa = text.indexOf(andArr[idx].sbf);
-		
 		// letztes vorkommen
 		jdxl = text.lastIndexOf(andArr[idx].sbf);
 		//__M("ctext in while idx:"+idx+"   jdxa:"+jdxa);
-		
 		// nur wenn das unterfeld ueberhaupt vorkommt
 		if (jdxa >= 0) {
 			// nur wenn unterfelder wiederholt werden
 			if(jdxa != jdxl)
 			{
-				while(test == false){			
+				while(test == false){
 					jdxe = text.indexOf(String.fromCharCode(charCode),jdxa+1);
 					if (jdxe < 0)	jdxe = text.length;
-					tmp = andArr[idx].pre + text.substr(jdxa+2,jdxe-jdxa-2) + andArr[idx].post;
+					tmp += andArr[idx].pre + text.substr(jdxa+2,jdxe-jdxa-2) + andArr[idx].post;
 					tmpArray.push(tmp);
 					if (jdxa == jdxl) test = true;
 					jdxa = text.indexOf(andArr[idx].sbf,jdxa+1);
@@ -1510,4 +1505,33 @@ function waehleKonfigurationstabelle()
 		return;
 	}
 	application.writeProfileInt("winibw", "GBVexcelTabelle", auswahlRadio);
+}
+
+/**
+* Debugging function to view objects as text
+* 
+**/
+function __objToString (obj) {
+    var str = '{';
+    if(typeof obj=='object')
+      {
+
+        for (var p in obj) {
+          if (obj.hasOwnProperty(p)) {
+              str += "    " + p + ':' + __objToString (obj[p]) + ",\n";
+          }
+      }
+    }
+      else
+      {
+         if(typeof obj=='string')
+          {
+            return '"'+obj+'"';
+          }
+          else
+          {
+            return obj+'';
+          }
+      }
+    return str.substring(0,str.length-1)+"}";
 }
