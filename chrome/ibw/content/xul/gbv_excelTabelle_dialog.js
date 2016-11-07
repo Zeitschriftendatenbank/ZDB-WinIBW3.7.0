@@ -362,7 +362,7 @@ function replaceDefinitions ( defs, content ) {
 					"Ja", "Nein", "", "", "");
 				//alert(antwort);
 				if (antwort == 0) {
-					application.shellExecute ("http://www.gbv.de/wikis/cls/WinIBW3:Excel-Tabelle_erstellen#Konfiguration_des_Excel-Werkzeugs", 5, "open", "");
+					application.shellExecute ("https://verbundwiki.gbv.de/x/DwAlAQ#Excel-Tabelleerstellen-KonfigurationdesExcel-Werkzeugs", 5, "open", "");
 					window.close(); //Dialogform wird geschlossen
 				}
 				return null;
