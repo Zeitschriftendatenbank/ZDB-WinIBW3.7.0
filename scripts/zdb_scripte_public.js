@@ -852,7 +852,7 @@ function zdb_EZB(){
     }
 
 //	url zur EZB
-    var dbformUrl = 'http://www.bibliothek.uni-regensburg.de/internal/ezeit/dbform.phtml?';
+    var dbformUrl = 'http://ezb.uni-regensburg.de/admin/newtitle.php?';
     var frontDoor = 'http://www.bibliothek.uni-regensburg.de/ezeit/?';
     
     // set global variable _rec
