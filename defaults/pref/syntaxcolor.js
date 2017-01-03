@@ -19,7 +19,7 @@ pref("ibw.presentation.syntaxcolor.D.format.2", '$1<span style="font-weight:bold
 
 
 //3. Link von ISIL in 092$e zu ISIL online
-pref("ibw.presentation.syntaxcolor.D.regex.3", "((092.+?\$e)([^\$<]+))");
+pref("ibw.presentation.syntaxcolor.D.regex.3", "((092.+?\$e)([^\$<]{2,3}-[^\$<]+))");
 pref("ibw.presentation.syntaxcolor.D.format.3", '$2<a href="http://ld.zdb-services.de/resource/organisations/$3">$3</a>');
 
 //5. Hervorhebung der Vorzugsbenennungen in der GND (1XX, zusaetzlich eventuell 5XX bei Tu) + 7135
