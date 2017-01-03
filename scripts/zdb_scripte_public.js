@@ -637,7 +637,7 @@ function __zdbFeld424XSet(_felder424X)
 // =======================================================================
 // START ***** EZB *****
 // =======================================================================
-function __zdbDruckausgabe(dppn,ld){
+function __zdbDruckausgabe(dppn){
 
     var arr = new Array();
     var eppn = application.activeWindow.getVariable('P3GPP');
@@ -844,7 +844,7 @@ function zdb_EZB(){
         ld = false,
         dppn = false,
         pissn = false,
-        volume1,jahr1,idx, jdx, winsnap, EZB_satz,
+        first_volume,first_date,first_issue,idx, jdx, winsnap, EZB_satz,
         bibid = __checkEZBAccount();
     if(!bibid)
     {
@@ -932,16 +932,24 @@ function zdb_EZB(){
         return __zdbError('Die URL (4085) fehlt.');
     }
 
-//---Feld '4025' , Inhalt nach volume1
-    volume1 = '';
-    jahr1 = '';
-    if(_rec['031@'])
+//---Feld '4024' , Inhalt nach first_volume, first_issue, first_date 
+    first_volume, first_date, first_issue = '';
+    if(_rec['031N'])
+    {
+        if(__zdbCheckSF('031N','d')) {
+            first_volume = _rec['031N'][0]['d'][0];
+        }
+        if(__zdbCheckSF('031N','e')) {
+            first_issue = _rec['031N'][0]['d'][0];
+        }
+        if(__zdbCheckSF('031N','j')) {
+            first_date   = _rec['031N'][0]['j'][0];
+        }
+    }
+    else if(_rec['031@'])
     {
         if(__zdbCheckSF('031@','a')) {
-            volume1 = _rec['031@'][0]['a'][0];
-        }
-        if(__zdbCheckSF('031@','j')) {
-            jahr1   = _rec['031@'][0]['j'][0];
+            first_volume = _rec['031@'][0]['a'][0];
         }
     }
 
@@ -959,35 +967,31 @@ function zdb_EZB(){
     }
 
 //---Druckausgabe: reziproke Verknüpfung und Druck-ISSN
-    var f0600 = application.activeWindow.findTagContent('0600',0,false);
+    /*var f0600 = application.activeWindow.findTagContent('0600',0,false);
     // workaround since findTagContent has errors
     f0600 = f0600.replace(/^\s+|\s?\n$/g,'');
     if('' != f0600) 
     {
         ld  = (f0600.match(/ld/g) != null) ? true : false; // code fuer layoutgetreue Digitalisierung?
-    }
+    }*/
+    
+    // pissn über Verknüpfung ermitteln
     if(_rec['039D'])
     {
         for(var d in _rec['039D'])
         {
-            if(__zdbCheckSF('039D','n',d))
+            if(__zdbCheckSF('039D','n',d,'Druck-Ausgabe'))
             {
-                if(_rec['039D'][d]['n'][0] == 'Druck-Ausgabe')
-                {
-                    if(__zdbCheckSF('039D','9',d))
-                    {
-                        dppn = _rec['039D'][d][9][0];
-                        continue;
-                    }
-                }
-            }
-            else if(__zdbCheckSF('039D','a',d))
-            {
-                if(_rec['039D'][d]['a'][0] == 'Druckausg.')
+                if(__zdbCheckSF('039D','9',d))
                 {
                     dppn = _rec['039D'][d][9][0];
                     continue;
                 }
+            }
+            else if(__zdbCheckSF('039D','a',d,'Druckausg.'))
+            {
+                dppn = _rec['039D'][d][9][0];
+                continue;
             }
         }
     }
@@ -996,15 +1000,26 @@ function zdb_EZB(){
         winsnap = application.windows.getWindowSnapshot();
         pissn   = __zdbDruckausgabe(dppn,ld);
         application.windows.restoreWindowSnapshot(winsnap);
-    }
-
-    if (false == pissn) {
+    } else {
         if (!__zdbYesNo('Eine reziproke Verknüpfung ist nicht möglich. Möchten Sie trotzdem fortfahren?')) {
             return false;
         }
+    }
+
+    // pissn aus Kategorie 2013
+    if (false == pissn) {
         pissn = '';
-    } else {
-        pissn = (!pissn) ? '' : pissn.replace('*','');
+        if(_rec['005P']) {
+            for(var p in _rec['005P'])
+            {
+                if(__zdbCheckSF('005P','S',0,'p'))
+                {
+                    pissn = _rec['005P'][p]['0'][0];
+                    pissn.replace('*','');
+                    continue;
+                }
+            }
+        }
     }
 
 
@@ -1012,8 +1027,9 @@ function zdb_EZB(){
         'title='     + escape(title)  + '&publisher='  + escape(publisher)
                      + '&eissn='      + eissn   + '&pissn='      + pissn
                      + '&zdb_id='     + _rec['006Z'][0][0][0]  + '&url='        + escape(url)
-                     + '&first_volume='    + escape(volume1);
-                     + '&first_date='    + escape(jahr1);
+                     + '&first_volume='    + escape(first_volume)
+                     + '&first_date='    + escape(first_date)
+                     + '&first_issue='    + escape(first_issue);
 
     for(var i in _ezbnota){
         EZB_satz += '&notation[]=' + _ezbnota[i];
@@ -1538,13 +1554,19 @@ function __zdbArrayDiff(a1, a2){
 }
 
 /**
-* Check if subfield exists
+* Check if subfield exists with specific content
 * @return {bool}
 */ 
-function __zdbCheckSF(kat,sf,i){
+function __zdbCheckSF(kat,sf,i,c){
     i = typeof i !== 'undefined' ? i : 0;
     if(!_rec[kat]) return false;
     if(!_rec[kat][i][sf]) return false;
+    if(typeof c !== 'undefined') {
+        for(var x in _rec[kat][i][sf]) {
+            if(_rec[kat][i][sf][x] == c) return true;
+        }
+        return false;
+    }
     return true;
 }
 
