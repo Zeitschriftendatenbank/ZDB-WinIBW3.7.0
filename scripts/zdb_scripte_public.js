@@ -933,14 +933,16 @@ function zdb_EZB(){
     }
 
 //---Feld '4024' , Inhalt nach first_volume, first_issue, first_date 
-    first_volume, first_date, first_issue = '';
+    first_volume = '';
+    first_date = '';
+    first_issue = '';
     if(_rec['031N'])
     {
         if(__zdbCheckSF('031N','d')) {
             first_volume = _rec['031N'][0]['d'][0];
         }
         if(__zdbCheckSF('031N','e')) {
-            first_issue = _rec['031N'][0]['d'][0];
+            first_issue = _rec['031N'][0]['e'][0];
         }
         if(__zdbCheckSF('031N','j')) {
             first_date   = _rec['031N'][0]['j'][0];
