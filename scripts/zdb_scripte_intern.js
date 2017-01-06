@@ -17,12 +17,12 @@ function __enableUserScriptFile(){
 /**
  * zählt Exemplardatensätze
  * 
- * @return int|null
+ * @return array|null
  */ 
 function __exemplareAnzahl(){
     var regexpExe;
     var format = __zdbGetFormat();
-    var strTitle =  application.activeWindow.copyTitle();
+    var strTitle =  application.activeWindow.getVariable("P3CLIP");
     switch(format) {
         case "D": regexpExe = /\n(70[0-9][0-9])/g;
         break;
@@ -30,20 +30,20 @@ function __exemplareAnzahl(){
     }
     var alleExe = new Array();
     alleExe = strTitle.match(regexpExe);
-    //application.messageBox("", alleExe.length, "message-icon");
-    return (!alleExe) ? null : alleExe.length;
+    //application.messageBox("", alleExe, "message-icon");
+    return (!alleExe) ? false : alleExe;
 }
 
 /**
 * iteriert durch Exemplare und ruft für jedes Exemplar eine Funktion auf
 */
-function __iterateExemplare(callback){
+/*function __iterateExemplare(callback){
     var exCount = __exemplareAnzahl();
     for(var i = 1; i <= exCount; i++)
     {
         callback(i);
     }
-}
+}*/
 
 //--------------------------------------------------------------------------------------------------------
 //name:		__zdbGetParallel
