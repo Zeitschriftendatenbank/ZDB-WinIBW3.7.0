@@ -1042,7 +1042,7 @@ function convertOrText ( text, spec, data ) {
 // --------------------------------------------------------------------------------
 
 function convertText ( text, spec, andArr ) {
-	var tmp, idx, idxe, xidx, jdxa, jdxe, test;
+	var tmp, idx, idxe, xidx, jdxa, jdxe, test, tmpArray, tmpSf;
 
 // ZDB: Diese Zeile verusrsacht das Abbrechen der Funktion, wenn das erste Unterfeld nicht vorkommt --> Daher auskommentiert	
 //	if (text.indexOf(andArr[0].sbf) < 0)	return "";
@@ -1050,7 +1050,6 @@ function convertText ( text, spec, andArr ) {
 	tmp = "";
 	idx = -1;
 	test = false;
-	var tmpArray = new Array();
 	
 	while (++idx < andArr.length) {
 		// erstes vorkommen
@@ -1063,15 +1062,16 @@ function convertText ( text, spec, andArr ) {
 			// nur wenn unterfelder wiederholt werden
 			if(jdxa != jdxl)
 			{
+                tmpArray = new Array();
 				while(test == false){
 					jdxe = text.indexOf(String.fromCharCode(charCode),jdxa+1);
 					if (jdxe < 0)	jdxe = text.length;
-					tmp += andArr[idx].pre + text.substr(jdxa+2,jdxe-jdxa-2) + andArr[idx].post;
-					tmpArray.push(tmp);
+					tmpSf = andArr[idx].pre + text.substr(jdxa+2,jdxe-jdxa-2) + andArr[idx].post;
+					tmpArray.push(tmpSf);
 					if (jdxa == jdxl) test = true;
 					jdxa = text.indexOf(andArr[idx].sbf,jdxa+1);
 				}
-				tmp = tmpArray.join(strTrennzeichen);
+				tmp += tmpArray.join(strTrennzeichen);
 			}
 			else
 			{
