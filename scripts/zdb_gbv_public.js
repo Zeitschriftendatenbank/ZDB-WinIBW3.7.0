@@ -356,7 +356,7 @@ function WinIBW3_Verzeichnisse(){
 function sucheHilfe()
 {
 	var einstellungen = "centerscreen,chrome,close,titlebar, resizable, dialog=yes";
-	__open_xul_dialog("chrome://ibw/content/xul/gbv_hilfe_dialog.xul", einstellungen, null);
+	open_xul_dialog("chrome://ibw/content/xul/gbv_hilfe_dialog.xul", einstellungen, null);
 }
 
 function ppnListe()
@@ -388,4 +388,11 @@ function ppnListe()
 	application.messageBox ("PPN-Liste", "Alle PPNs wurden eingesammelt und in den " +
 		"Zwischenspeicher geschrieben. \nSie können die PPNs jetzt mit dem Shortcut Strg+v " +
 		"in eine Datei einfügen.", "message-icon");
+}
+
+function rechercheStapel()
+{
+	//ruft einen Dialog auf, mit dem man alle Einträge suchen kann, die sich im Zwischenspeicher befinden
+	var xulFeatures = "centerscreen, chrome, close, titlebar,resizable, modal=no,dependent=yes, dialog=yes";
+	open_xul_dialog("chrome://ibw/content/xul/gbv_rechercheStapel_dialog.xul", xulFeatures);
 }
