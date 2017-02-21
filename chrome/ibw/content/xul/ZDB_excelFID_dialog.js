@@ -80,7 +80,6 @@ var auswahlDatei; //Standardkonfigurationstabelle oder eigeneAuswahl
 var strTrennzeichen;
 var delimiter = '\u0192'; // Unterfeldzeichen "ƒ" = \u0192
 var charCode = 402; // Unterfeldzeichen "ƒ" = 402, Unterfeldzeichen "$" = 36
-var delimiterReg = '\u0192'; // regualr expression version Unterfeldzeichen "$" = \$
 
 //----------------------------------------------------------------------------
 
@@ -188,22 +187,6 @@ function __M(meldungstext)
 {
 	application.messageBox("Hinweis", meldungstext, "message-icon");
 
-}
-
-function __frage(line){
-	var thePrompter = utility.newPrompter();
-	var antwort = thePrompter.confirmEx("Hinweis zur Konfigurationstabelle", 
-		"Diese Zeile in Ihrer Konfigurationstabelle ist fehlerhaft:\n" + line
-		+ "\n\nInformationen zur Konfigurationstabelle finden Sie im WinIBW3-Wiki."
-		+ "\nJetzt lesen?", 
-		"Ja", "Nein", "", "", "");
-	//alert(antwort);
-	if (antwort == 0) {
-		application.shellExecute ("http://www.gbv.de/wikis/cls/WinIBW3:Excel-Tabelle_erstellen#Konfiguration_des_Excel-Werkzeugs", 5, "open", "");
-		window.close(); //Dialogform wird geschlossen
-	} else {
-		return false;
-	}
 }
 
 function __getExpansionFromP3VTX() {
@@ -336,7 +319,6 @@ function readControl ( inp, must ) {
 //				__hebisError("In einer csv Definition müssen Kategorien "
 //							+ "angegeben werden. Die folgende Zeile "
 //							+ "wird nicht akzeptiert:\n\n" + line);
-				__frage(line);
 				return null;
 			}	
 			theFileContent.push(tmp);
@@ -366,17 +348,28 @@ function readControl ( inp, must ) {
 
 function replaceDefinitions ( defs, content ) {
 
-	var newcont = new Array();
-	
+	var newcont = new Array();	
+
 	for (var idx=0; idx < content.length; idx += 2) {
 		var defval;
 		newcont.push(content[idx]);
 		defval = getDefinition(defs,content[idx+1]);
 		if (defval == null) {
 			if (!checkIfTag(content[idx+1])) {
-				__hebisError("csv Definition nicht gefunden. Die folgende "
-							+ "Zeile konnte nicht akzeptiert werden:\n\n"
-							+ content[idx] + ": " + content[idx+1]);
+				//__hebisError("Diese Zeile in der Konfigurationsdatei ist fehlerhaft:\n\n"
+				//			+ content[idx] + ": " + content[idx+1]);
+				var thePrompter = utility.newPrompter();
+				var antwort = thePrompter.confirmEx("Hinweis zur Konfigurationstabelle", 
+					"Diese Zeile in Ihrer Konfigurationstabelle ist fehlerhaft:\n" + content[idx] + ": " + content[idx+1]
+					+ "\n\nInformationen zur Konfigurationstabelle finden Sie im WinIBW3-Wiki."
+					+ "\nWollen Sie die Informationen jetzt lesen?", 
+					"Ja", "Nein", "", "", "");
+				//alert(antwort);
+				if (antwort == 0) {
+					application.shellExecute ("https://verbundwiki.gbv.de/x/DwAlAQ#Excel-Tabelleerstellen-KonfigurationdesExcel-Werkzeugs", 5, "open", "");
+					window.close(); //Dialogform wird geschlossen
+				}
+
 				return null;
 			}
 			newcont.push(content[idx+1]);
@@ -505,7 +498,6 @@ function createCtrlArray ( content ) {
 //
 // --------------------------------------------------------------------------------
 
-
 function getSpecial ( ctrl, tmpline ) {
 	if (tmpline.startsWithDigit()) {
 		ctrl.spec = " ";
@@ -516,7 +508,6 @@ function getSpecial ( ctrl, tmpline ) {
 	
 	return tmpline;
 }
-
 
 // --------------------------------------------------------------------------------
 //
@@ -550,7 +541,6 @@ function getTagInfos ( ctrl, tmpline ) {
 	return tmpline.substr(idx+1);
 	
 }
-
 
 // --------------------------------------------------------------------------------
 //
@@ -638,7 +628,6 @@ function andPartitions ( termOr, tmpline ) {
 // Rückgabe templine
 //
 // --------------------------------------------------------------------------------
-
 
 function sbfPart ( obj, tmpline ) {
 
@@ -795,7 +784,7 @@ function handleRecord ( satz, ctrl ) {
     //__M("exit:"+exemplare.length);
     //__M("loopcnt:"+loopcnt);
     lineblock = "";
-    re = new RegExp("(-\s?)"+delimiterReg+"x32");
+    re = new RegExp("(-\s?)"+delimiter+"x32");
     for (var x=0; x<exemplare.length; x++)
     {
         tmp_satz = title + "\n" + exemplare[x];
@@ -868,8 +857,6 @@ function getMaxOccurrence ( satz ) {
     }
 }
 
-
-
 // --------------------------------------------------------------------------------
 //
 // Aufbau einer Liste zur Darstellung eines Arrays
@@ -880,9 +867,7 @@ function getMaxOccurrence ( satz ) {
 // Rückgabe aus datensatz stammende Zeile(n)
 //
 // --------------------------------------------------------------------------------
-
 function handleRecordPart ( satz, accept, ctrl, exit ) {
-
 	var idx;
     var line = ""
 
@@ -900,7 +885,6 @@ function handleRecordPart ( satz, accept, ctrl, exit ) {
     createResult(satz,ctrl,exit);
     //EPN wird ermittelt:
     var str7800 = "";
-
 
     line = '"' + application.activeWindow.getVariable("P3GPP") + '"\t';
     //if (global.csvLevel2) {
@@ -931,7 +915,6 @@ function handleRecordPart ( satz, accept, ctrl, exit ) {
     ctrl.cnt++;
 	return line;
 }
-
 
 // --------------------------------------------------------------------------------
 //
@@ -1048,6 +1031,7 @@ function convertOrText ( text, spec, data ) {
 //
 //
 // edited C. Klee 12.10.2011: Wiederholbare Felder/Unterfelder
+// edited C. Klee 07.11.2016: Fehler: Subfield a vanishes with Wiederholbare Felder/Unterfelder
 //
 // text	nutzende Kategorie
 // spec	Spezialzeichen (S oder K oder blank)
@@ -1056,8 +1040,7 @@ function convertOrText ( text, spec, data ) {
 // --------------------------------------------------------------------------------
 
 function convertText ( text, spec, andArr ) {
-
-	var tmp, idx, idxe, xidx, jdxa, jdxe, test;
+	var tmp, idx, idxe, xidx, jdxa, jdxe, test, tmpArray, tmpSf;
 
 // ZDB: Diese Zeile verusrsacht das Abbrechen der Funktion, wenn das erste Unterfeld nicht vorkommt --> Daher auskommentiert	
 //	if (text.indexOf(andArr[0].sbf) < 0)	return "";
@@ -1065,31 +1048,32 @@ function convertText ( text, spec, andArr ) {
 	tmp = "";
 	idx = -1;
 	test = false;
-	var tmpArray = new Array();
+
 	
 	while (++idx < andArr.length) {
-	
+
 		// erstes vorkommen
 		jdxa = text.indexOf(andArr[idx].sbf);
-		
+
 		// letztes vorkommen
 		jdxl = text.lastIndexOf(andArr[idx].sbf);
 		//__M("ctext in while idx:"+idx+"   jdxa:"+jdxa);
-		
+
 		// nur wenn das unterfeld ueberhaupt vorkommt
 		if (jdxa >= 0) {
 			// nur wenn unterfelder wiederholt werden
 			if(jdxa != jdxl)
 			{
-				while(test == false){			
+                tmpArray = new Array();
+				while(test == false){
 					jdxe = text.indexOf(String.fromCharCode(charCode),jdxa+1);
 					if (jdxe < 0)	jdxe = text.length;
-					tmp = andArr[idx].pre + text.substr(jdxa+2,jdxe-jdxa-2) + andArr[idx].post;
-					tmpArray.push(tmp);
+					tmpSf = andArr[idx].pre + text.substr(jdxa+2,jdxe-jdxa-2) + andArr[idx].post;
+					tmpArray.push(tmpSf);
 					if (jdxa == jdxl) test = true;
 					jdxa = text.indexOf(andArr[idx].sbf,jdxa+1);
 				}
-				tmp = tmpArray.join(strTrennzeichen);
+				tmp += tmpArray.join(strTrennzeichen);
 			}
 			else
 			{
@@ -1154,7 +1138,10 @@ function writeCSV()
 	cnt = parseInt(application.activeWindow.getVariable("P3GSZ"));
 	//GBV: keine Begrenzung der Mengen. Anweisungen zur Begrenzung der Sets entfernt.
 	
-	if (global.csvDefinitions == null) {
+	//GBV: Tabelle soll immer neu gelesen werden, denn sonst werden Änderungen 
+	//     und Korrekturen in der Auswahl der Felder nicht berücksichtigt.
+	//     deshalb if-Bedingung auskommentiert
+	//if (global.csvDefinitions == null) {
 		var defInpFile = utility.newFileInput();
 		//die ausgewählte Konfigurationsdatei wird verwendet:
 		if (einstellungKonfigurationstabelle() == 1){
@@ -1172,22 +1159,13 @@ function writeCSV()
 			}
 		}
 		
-		
-		//wenn der Benutzer eigene Konfiguration hat, wird diese gelesen:
-//		if (!defInpFile.openSpecial("ProfD", "\\csvDefinitionUser.txt")) {
-//			if (!defInpFile.openSpecial("BinDir", "ttlcopy\\csvDefinition.txt")) {
-//				__hebisMsg("CSV Definitionen nicht gefunden.\n"
-//						+ "Bitte wenden Sie sich an Ihre Systembetreuer.");
-//				return false;
-//			}
-//		}
+
 		global.csvDefinitions = readControl(defInpFile,true);
 		defInpFile.close();
 		defInpFile = null;
 		if (global.csvDefinitions == null)		return false;
 		//__M(global.csvDefinitions.join("!\n!")); 
-	}
-
+	//} Ende der if-Bedingung auskommentiert
 	//Lesen der Definition:
 	content = global.csvDefinitions;
 	content = replaceDefinitions(global.csvDefinitions,content);
@@ -1196,7 +1174,6 @@ function writeCSV()
 	ctrl = createCtrlArray(content);
 //	__M("ctrl:"+ctrl[0].col+"  spec:"+ctrl[0].spec+"  tag;"+ctrl[0].tag
 //		+"  xsbf:"+ctrl[0].xsbf+"   len or:"+ctrl[0].data.length);
-
 	var xline = "";
 	for (var kdx=0; kdx<ctrl.length; kdx++) {
 		var xline = "ctrl["+kdx+"]\n"
@@ -1213,7 +1190,6 @@ function writeCSV()
 		}
 	//__M(xline);
 	}
-
 	header = createHeader(ctrl);
 	//__M(header+"!");
 	
@@ -1229,7 +1205,6 @@ function writeCSV()
 			}
 		}
 	}
-
 	//Listendatei wird angelegt:
 	global.csvOutFile = utility.newFileOutput();
 	//relativer Pfad + Dateiname:
@@ -1251,14 +1226,12 @@ function writeCSV()
 	//es sollen immer alle (d.h. 1 bis viele) Datensätze ausgewertet werden
 	var outcnt = 0;
 	ctrl.cnt = 0;
-    var format = "pa";
-    if(params) format = params.GetString(0);
+
 	for (var idx=1; idx<=cnt; idx++) {
 		//__M("s "+idx);
-		application.activeWindow.command("show "+idx+" " + format,false);
+		application.activeWindow.command("show "+idx+" p",false);
 		if (application.activeWindow.status != "OK")	continue;
 		satz = "\n" + __getExpansionFromP3VTX();
-        //satz = application.activeWindow.copyTitle();
 		satz = satz.replace(/\r/g, "\n");
 		satz = satz.replace(/\u001b./g,""); // replace /n (Zeilenumbruch) entfernt,
 											// weil hier die $8 Expansion durch Zeilenbruch abgetrennt wurde
@@ -1292,13 +1265,12 @@ function writeCSV()
 	document.getElementById("idLabelErgebnis1").hidden=false;
 	document.getElementById("idLabelErgebnis1").value = ergebnis;
 	document.getElementById("idLabelErgebnis2").hidden=false;
-	document.getElementById("idLabelErgebnis2").value = "Sie finden die Ergebnisdatei im Verzeichnis:"
+	document.getElementById("idLabelErgebnis2").value = "Sie finden die Ergebnisdatei im unten genannten Verzeichnis. Pfad befindet sich im Zwischenspeicher."
 	document.getElementById("idTextboxPfad").value=listenPfad;
 	document.getElementById("idTextboxPfad").hidden=false;
 }
 
 //**************************************************************************
-
 function wikiAnzeigen1()
 {
 	//Hilfe allgemein
@@ -1388,27 +1360,31 @@ try{
 
 function ladeKonfigurationstabelleUser()
 {
-try{
-	var zeile = "";
-	var i = 0;
-	var defInpFile = utility.newFileInput();
-	var arrayTabelle = new Array();
-	
-	if (!defInpFile.openSpecial("ProfD", "\\csvDefinitionUser.txt")) {
-		//es gibt keine Einstellungen des Benutzers. Textfeld wird nicht gefüllt.
-		return;
-	}
+    try{
+        //in dieser Funktion wird die Konfigurationstabelle gelesen  
+        //der Inhalt wird auf der zweiten Registerkarte des Dialogformulars angezeigt
+        var zeile = "";
+        var i = 0;
+        var defInpFile = utility.newFileInput();
+        var arrayTabelle = new Array();
 
-	//Alle Zeilen der Datei lesen:
-	for (zeile = ""; !defInpFile.isEOF(); ) {
-		zeile = defInpFile.readLine();
-			if (zeile.substring(0,2) != "//" && zeile.length != 0){
-				arrayTabelle[i] = zeile;
-				i++
-			}
-	}
-	document.getElementById("idAuswahlZeilen").value = arrayTabelle.join("\n");
-} catch(e) { alert('ladeKonfigurationstabelleUser: '+ e.name + ': ' + e.message); }
+        if (!defInpFile.openSpecial("ProfD", "\\csvDefinitionUser.txt")) {
+
+        //Es gibt keine Konfigrationseinstellungen des Benutzers
+        return;
+        }
+
+        //Alle Zeilen der Datei lesen:
+        for (zeile = ""; !defInpFile.isEOF(); ) {
+            zeile = defInpFile.readLine();
+            if (zeile.substring(0,2) != "//" && zeile.length != 0){
+                arrayTabelle[i] = zeile;
+                i++
+            }
+        }
+        //zeige die Zeilen aus der Konfigurationstabelle im Textfeld an:
+        document.getElementById("idAuswahlZeilen").value = arrayTabelle.join("\n");
+    } catch(e) { alert('ladeKonfigurationstabelleUser: '+ e.name + ': ' + e.message); }
 }
 
 function waehleZeile()
