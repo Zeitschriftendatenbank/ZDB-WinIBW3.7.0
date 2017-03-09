@@ -1232,7 +1232,7 @@ function __zdbGetFormat() {
 */ 
 function __zdbGetZDB(idn) {
     var zdbid;
-    idn = typeof idn !== 'undefined' ? idn : false;
+    idn = idn || false;
     if(idn) // get zdb id of a different title in a work window
     {
         var myWindowId = __zdbOpenWorkWindow();
@@ -1339,7 +1339,7 @@ function __zdbParseExpansion(exp){
     //matches = exp.match(/^(?:--[^-]+--)(.+)?:\s(?:\[)?([^\]]+)(?:\])?$/);
     titel = exp.match(/^(?:--[^-]+--)(?::\s(?:(?:\[(.+)\]$)|(?:(.+)$))?)?/);
     if(titel) {
-        if(titel[1] != undefined) {
+        if(titel[1]) {
             _exp.tit = titel[1];
         } else {
             _exp.tit = titel[2];
@@ -1437,16 +1437,17 @@ function __zdbParseField(field){
 */ 
 function __zdbJSON(idn){
     _rec = {};
-    idn = typeof idn !== 'undefined' ? idn : false;
+    idn = idn || false;
     
     // save format
     var format = __zdbGetFormat();
     
-    var myWindowId = application.activeWindow.windowID;//__zdbOpenWorkWindow();
+    var myWindowId = application.activeWindow.windowID;
     
     if(idn) // get zdb id of a different title in a work window
     {
         application.disableScreenUpdate(true);
+        __zdbOpenWorkWindow();
         application.activeWindow.command('f idn '+idn,true);
     }
 
@@ -1535,7 +1536,7 @@ function __zdbCheckScreen(options,header,message){
             if(opt.indexOf(e) > -1) arr.push(map[e]);
         }
         var list = arr.join(', ');
-        message = typeof message !== 'undefined' ? message : 'Die Funktion kann nur aus '+ list +' aufgerufen werden.';
+        message = message || 'Die Funktion kann nur aus '+ list +' aufgerufen werden.';
         application.messageBox(header,message, 'alert-icon');
         return false;
     }
@@ -1560,10 +1561,11 @@ function __zdbArrayDiff(a1, a2){
 * @return {bool}
 */ 
 function __zdbCheckSF(kat,sf,i,c){
-    i = typeof i !== 'undefined' ? i : 0;
+    i = i || 0;
+    c = c || false;
     if(!_rec[kat]) return false;
     if(!_rec[kat][i][sf]) return false;
-    if(typeof c !== 'undefined') {
+    if(c) {
         for(var x in _rec[kat][i][sf]) {
             if(_rec[kat][i][sf][x] == c) return true;
         }
