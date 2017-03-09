@@ -56,16 +56,16 @@ function __exemplareAnzahl(){
 function __zdbGetParallel(){
     var scr = __zdbCheckScreen(["MT","8A"],"Parallelausgabe");
     if(false == scr) return false;
-    var tag, content,regex,matches;
-    var contents = new Array();
-    var i = 0;
-    var vortext = /Online-Ausg|Druckaus/;
-    var parallel = new Object();
+    var tag, content,regex,matches,
+        contents = [],
+        i = 0,
+        vortext = /Online|Druck/,
+        parallel = {};
 
     if(application.activeWindow.getVariable("P3GDB").match(/P|PA/i))
     {
         tag = "039D";
-        regex = new RegExp(delimiterReg+"a([^"+delimiterReg+"]*)"+delimiterReg+"9([^"+delimiterReg+"]*)");
+        regex = new RegExp(delimiterReg+"a([^"+delimiterReg+"]*)(?:"+delimiterReg+"n([^"+delimiterReg+"]*))?"+delimiterReg+"9([^"+delimiterReg+"]*)");
     }
     else if(application.activeWindow.getVariable("P3GDB").match(/D|DA/i))
     {
@@ -99,7 +99,11 @@ function __zdbGetParallel(){
         if(vortext.test(contents[x]))
         {
             matches = regex.exec(contents[x]);
-            parallel[x] = {votext:matches[1],idn:matches[2]};
+            if(matches[3]) {
+                parallel[x] = {votext:matches[2],idn:matches[3]};
+            } else {
+                 parallel[x] = {votext:matches[1],idn:matches[2]};
+            }
         }
     }
     return (parallel[0]) ? parallel : false;
