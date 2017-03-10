@@ -476,7 +476,7 @@ function insertTableText(theText)
 
 	var ind;
 	var isSpecialTag = false; 
-    var strShortCut = Trim(theTitle.selection);  
+    var strShortCut = Trim(theTitle.selection);
 	if (strShortCut == "") {
 	//	strShortCut = Trim(theTitle.currentField); 
 		strShortCut = theTitle.currentField; 	
@@ -485,7 +485,6 @@ function insertTableText(theText)
 	    theStartField = theTitle.selStart;  
 	    theTitle.setSelection(theSelStart, theSelStart, false);
 	    strShortCut = strShortCut.substr(0, theSelStart-theStartField);
-	     
 		currentTag = Trim(theTitle.tag); 
 	    theFirstLetterOfTag = currentTag.substr(0,1);
 	     
@@ -505,12 +504,14 @@ function insertTableText(theText)
 				strShortCut = strShortCut.substr(ind+1, strShortCut.length-ind-1); 
 				theTitle.selStart = selStart-strShortCut.length-1; 
 		    }		
-		} else if ((ind = strShortCut.lastIndexOf(" ")) >= 0) { 
+		} 
+        // ZDB-Korrektur: Bestehende Werte sollen nicht ersetzt werden
+        /*else if ((ind = strShortCut.lastIndexOf(" ")) >= 0) { 
 		    // If no selection, the text from the last space before the current cursor will be highlighted
 		    theTitle.selEnd   = selStart;  
 		    strShortCut = strShortCut.substr(ind+1, strShortCut.length-ind-1); 
 		    theTitle.selStart = selStart-strShortCut.length; 		    
-		} 
+		} */
 	}
 			
 	theTitle.insertText(theText);
