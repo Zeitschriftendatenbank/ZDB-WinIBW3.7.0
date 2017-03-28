@@ -512,7 +512,7 @@ function excelTabelle(){
 }
 
 function ZDBWinIBWInfo(){
-    application.shellExecute ("http://www.zeitschriftendatenbank.de/erschliessung/winibw/winibw-3/", 5, "open", "");
+    application.shellExecute ("http://www.zeitschriftendatenbank.de/erschliessung/winibw", 5, "open", "");
 }
 
 function WinIBWSupport(){
@@ -523,14 +523,14 @@ function zdbformat(){
     var strkat, re;
     if (!application.activeWindow.title)
     {
-        application.shellExecute ("http://www.zeitschriftendatenbank.de/erschliessung/arbeitsunterlagen/zdbformat/", 5, "open", "");
+        application.shellExecute ("http://www.zeitschriftendatenbank.de/erschliessung/zdbformat/", 5, "open", "");
     }
     else
     {
         strkat = application.activeWindow.title.tag;
-        re = new RegExp("480.|482[02]|6700|7...|8[0-5]..");
+        re = new RegExp("480.|482[02]|6700|7...|8[0-5]..|^...$");
         if(re.test(strkat)) {
-            application.shellExecute ("http://www.zeitschriftendatenbank.de/erschliessung/arbeitsunterlagen/zdbformat/" + strkat, 5, "open", "");
+            application.shellExecute ("http://www.zeitschriftendatenbank.de/erschliessung/zdbformat/" + strkat, 5, "open", "");
         } else {
             application.shellExecute ("http://www.zeitschriftendatenbank.de/fileadmin/user_upload/ZDB/pdf/zdbformat/" + strkat + ".pdf", 5, "open", "");
         }
