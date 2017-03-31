@@ -1229,7 +1229,7 @@ function writeCSV()
 
 	for (var idx=1; idx<=cnt; idx++) {
 		//__M("s "+idx);
-		application.activeWindow.command("show "+idx+" p",false);
+		application.activeWindow.command("show "+idx+" pa",false);
 		if (application.activeWindow.status != "OK")	continue;
 		satz = "\n" + __getExpansionFromP3VTX();
 		satz = satz.replace(/\r/g, "\n");
