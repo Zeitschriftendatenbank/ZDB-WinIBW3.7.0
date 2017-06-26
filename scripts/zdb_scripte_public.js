@@ -906,7 +906,7 @@ function zdb_EZB(){
     eissn = '';
     if(_rec['005A'])
     {
-        eissn = _rec['005A'][0][0][0];
+        eissn = _rec['005A'][0]['0'][0];
         eissn = eissn.replace('*','');
     }
 
