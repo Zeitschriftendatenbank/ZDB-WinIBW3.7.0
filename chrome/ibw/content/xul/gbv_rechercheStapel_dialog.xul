@@ -45,7 +45,8 @@ function onAccept()
 	//alert("1: " + searchString)
 	var searchOperator = "";
 	var searchTrunkierung = "";
-	
+	var groups = [],
+        x = 0;
 	//var entitaetentyp = "";
 	switch(document.getElementById("idOperator").selectedIndex){
 		case 0:
@@ -64,8 +65,8 @@ function onAccept()
 	var zeilen = new Array();
 	zeilen = searchString.split("\n");  
 	//alert("2: " + zeilen)
-	
-	for (i = 0; i < zeilen.length; i++) {
+
+	for (var i = 0; i < zeilen.length; i++) {
 		//02.2016: PPNs mit folgenden Blanks werden nicht gefunden. Evtl. wurde die Indexierung geändert?
 		//trim funktioniert hier nicht. Ersetze Blank am Anfang und Ende:
 		zeilen[i] = zeilen[i].replace(/^ *| *$/g,"");
@@ -75,24 +76,41 @@ function onAccept()
 			zeilen[i]="\\" + zeilen[i];
 		}
 	}
-	searchString = zeilen.join(searchTrunkierung + searchOperator);
-	searchString = searchString + searchTrunkierung;//am Ende des Kommandos nochmals die Trunkierungseinstellung
-	//alert("3: "+searchString);
-	application.activeWindow.command("f " + searchKey + " " + searchString, false);
-	if (application.activeWindow.status!="NOHITS"){
-		//weil das Set in der Kurzanzeige mit merkwürdig breiten Spalten angezeigt wird
-		//hole ich das Set nochmals mit "f s<setnr>", danach ist die Anzeige schön.
-		application.activeWindow.command("f s" + application.activeWindow.getVariable("P3GSE"), false); 
-	} 
-//Anwender erhält auch ohne dies eine hinreichende Meldung vom CBS!
-//	else {
-//		application.messageBox("Hinweis", "Keiner Ihrer Suchbegriffe konnte gefunden werden.", "alert-icon");
-//	}
-	
+    if(i > 500) {
+        // Gruppen erstellen
+        do {
+            groups.push(zeilen.splice(0,500));
+        } while(zeilen.length > 0)
+        
+        var sets = [];
+        // suche jede gruppe
+        for(var y = 0 ; y < groups.length; y += 1) {
+            search(groups[y], searchKey, searchTrunkierung, searchOperator);
+            if (application.activeWindow.status!="NOHITS"){
+                sets.push(application.activeWindow.getVariable("P3GSE"))
+            }
+        }
+        application.activeWindow.command("f s" + sets.join(' or s'), false);
+    } else {
+        search(zeilen, searchKey, searchTrunkierung, searchOperator);
+        if (application.activeWindow.status!="NOHITS"){
+            //weil das Set in der Kurzanzeige mit merkwürdig breiten Spalten angezeigt wird
+            //hole ich das Set nochmals mit "f s<setnr>", danach ist die Anzeige schön.
+            application.activeWindow.command("f s" + application.activeWindow.getVariable("P3GSE"), false); 
+        }
+    }
+
 	//Speichere die Einstellungen:
 	application.writeProfileString("winibw", "GBVsuchboxZeileKey", searchKey);
 	application.writeProfileInt("winibw", "GBVsuchboxZeileOperator", document.getElementById("idOperator").selectedIndex);
 	application.writeProfileInt("winibw", "GBVsuchboxTrunkierung", document.getElementById("idTrunkierung").selectedIndex);
+}
+
+function search(arr, searchKey, searchTrunkierung, searchOperator) {
+	searchString = arr.join(searchTrunkierung + searchOperator);
+	searchString = searchString + searchTrunkierung;//am Ende des Kommandos nochmals die Trunkierungseinstellung
+	//alert("3: "+searchString);
+	application.activeWindow.command("f " + searchKey + " " + searchString, false);
 }
 
 function onCancel()
@@ -112,10 +130,6 @@ function zeigeEntitaeten()
 		document.getElementById("idLabelEntitaet").disabled=false; 
 		document.getElementById("idEntitaet").disabled=false; 
 	}
-	
-}
-
-function einstellungen(){
 	
 }
 
@@ -139,9 +153,9 @@ function einstellungen(){
 			<radiogroup name="radio" orient="horizontal" id="idTrunkierung">
 						<radio label="nicht trunkiert" />
 						<radio label="trunkiert"/>
-			</radiogroup>
+			</radiogroup> 
 		</groupbox>
-		<groupbox>
+        <groupbox>
 			<caption label="Suchbegriffe:"/>
 			<textbox align="left" 
 				size="40" 
