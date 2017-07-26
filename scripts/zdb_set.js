@@ -27,7 +27,7 @@ SET.prototype = {
             application.activeWindow.command("\\mut " + this.format + " " + exe, false);
             var src = application.activeWindow.getVariable("src");
             if ('MEMT'.indexOf(src) == -1) {
-                throw this.getMessages();
+                throw new Error(this.getMessages());
             }
             return application.activeWindow.title;
         },
@@ -35,7 +35,7 @@ SET.prototype = {
         function (eigeneBibliothek) {
             this.eigeneBibliothek = eigeneBibliothek || this.eigeneBibliothek;
             if (!this.eigeneBibliothek) {
-                throw 'PPN der eigenen Bibliothek ist nicht definiert';
+                throw new Error('PPN der eigenen Bibliothek ist nicht definiert');
             }
             if (!this.alleExe) {
                 return false;
