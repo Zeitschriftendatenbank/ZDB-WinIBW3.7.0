@@ -1,22 +1,22 @@
 //============================================================================
 /* gbv_excelTabelle_dialog.js
- Erstellt: als Scriptdatei: Jürgen Schneider, HEBIS
- Anpassungen für GBV, Karen Hachmann 
+ Erstellt: als Scriptdatei: Jï¿½rgen Schneider, HEBIS
+ Anpassungen fï¿½r GBV, Karen Hachmann 
     alles in einem XUL-Formular untergebracht.
     Pfad 'Listen' wird angelegt, wenn noch nicht vorhanden
     Jede Datei bekommt automatisch einen Namen (Datum und Uhrzeit).
  ***************************************************************************
- GBV: zahlreiche Änderungen:
-      writeCSV in Dialogformular übertragen
-      04.2013: Anwender können selbst auswählen, welche Trennzeichen
+ GBV: zahlreiche ï¿½nderungen:
+      writeCSV in Dialogformular ï¿½bertragen
+      04.2013: Anwender kï¿½nnen selbst auswï¿½hlen, welche Trennzeichen
                verwendet werden sollen, wenn ein Feld wiederholbar ist.
                Habe "; " durch strTrennzeichen ersetzt
-      11.2013: writeCSV: if-Bedingung entfernt, da ansonsten gerade vorgenommene Änderungen
+      11.2013: writeCSV: if-Bedingung entfernt, da ansonsten gerade vorgenommene ï¿½nderungen
                in der Konfigurationsdatei des Nutzers nicht gelesen werden
  ***************************************************************************
  ZDB: Wiederholte Felder und Unterfelder
- - Funktionen createResult(), convertText überarbeitet
- - angepasst getMaxOccurrence --> radix hinzugefügt
+ - Funktionen createResult(), convertText ï¿½berarbeitet
+ - angepasst getMaxOccurrence --> radix hinzugefï¿½gt
  - 07.11.16 Fehler Unterfeld a verschwindet bei wiederholbaren Unterfeldern
 */
 //============================================================================
@@ -29,10 +29,10 @@ function onLoad()
 {
 	document.getElementById("idButtonStart").focus();
 	document.getElementById("idLabelInfos1a").value = "Schritt 1: Recherchieren Sie nach den Titeln, die in eine csv-Datei geschrieben werden sollen.";
-	document.getElementById("idLabelInfos1b").value = "Schritt 2: Füllen Sie ggf. die Standortangabe im unteren Feld aus.";
-	document.getElementById("idLabelInfos1c").value = "Schritt 3: Klicken Sie auf 'Start', um ALLE Datensätze des angezeigten Sets in eine csv-Datei zu schreiben. ";
-	document.getElementById("idLabelInfos3").value = "Beim Auswerten der Exemplare werden nur solche berücksichtigt, deren Standortangabe in Kategorie 7100";
-	document.getElementById("idLabelInfos4").value = "mit Ihren Angaben im obigen Feld übereinstimmt. Achten Sie auch auf Groß- und Kleinschreibung!";
+	document.getElementById("idLabelInfos1b").value = "Schritt 2: Fï¿½llen Sie ggf. die Standortangabe im unteren Feld aus.";
+	document.getElementById("idLabelInfos1c").value = "Schritt 3: Klicken Sie auf 'Start', um ALLE Datensï¿½tze des angezeigten Sets in eine csv-Datei zu schreiben. ";
+	document.getElementById("idLabelInfos3").value = "Beim Auswerten der Exemplare werden nur solche berï¿½cksichtigt, deren Standortangabe in Kategorie 7100";
+	document.getElementById("idLabelInfos4").value = "mit Ihren Angaben im obigen Feld ï¿½bereinstimmt. Achten Sie auch auf Groï¿½- und Kleinschreibung!";
 	document.getElementById("idLabelInfos5").value = "Welches Trennzeichen soll zur Unterteilung von wiederholbaren Feldern verwendet werden?";
 	document.getElementById("idLabelInfos6").value = "Standard: Semikolon";
 	strTrennzeichen = application.getProfileString("Exceltool", "Trennzeichen", ""); 
@@ -53,7 +53,7 @@ function onLoad()
 function onAccept()
 {
 	frageSpeichern();
-	//Zurücksetzen, falls erneut ausgeführt:
+	//Zurï¿½cksetzen, falls erneut ausgefï¿½hrt:
 	document.getElementById("idLabelErgebnis1").hidden=false;
 	document.getElementById("idLabelErgebnis2").hidden=false;
 	document.getElementById("idLabelErgebnis1").value = "Bitte warten bis Schlussmeldung angezeigt wird!";
@@ -79,8 +79,8 @@ var bContentsChanged;
 var strSST;
 var auswahlDatei; //Standardkonfigurationstabelle oder eigeneAuswahl
 var strTrennzeichen;
-var delimiter = '\u0192'; // Unterfeldzeichen "ƒ" = \u0192
-var charCode = 402; // Unterfeldzeichen "ƒ" = 402, Unterfeldzeichen "$" = 36
+var delimiter = '\u0192'; // Unterfeldzeichen "ï¿½" = \u0192
+var charCode = 402; // Unterfeldzeichen "ï¿½" = 402, Unterfeldzeichen "$" = 36
 //----------------------------------------------------------------------------
 
 const utility = 
@@ -115,7 +115,7 @@ function getSpecialPath(theDirName, theRelativePath)
 
 function getSpecialDirectory(name)
 {
-	//gibt ein Object zurück
+	//gibt ein Object zurï¿½ck
 	const nsIProperties = Components.interfaces.nsIProperties;
 	var dirService = Components.classes["@mozilla.org/file/directory_service;1"]
 							.getService(nsIProperties);
@@ -203,30 +203,30 @@ function __getExpansionFromP3VTX() {
 //
 //------------------------------------------------------------------------------------
 //
-// Programm zur Generierung einer CSV-Outputdatei (für Excel-Tabelle)
+// Programm zur Generierung einer CSV-Outputdatei (fï¿½r Excel-Tabelle)
 //
 // Version 1	HpS	02.06.2008
-// überarbeitet: KH, GBV
+// ï¿½berarbeitet: KH, GBV
 //
 // Version 2	HpS	18.09.2009
 //			Sobald Tags in Level2 abgefragt wurden, konnte es geschehen,
 //			dass bei fehlenden Tags in einem Exemplar die Werte
 //			verschiedener Exemplare vermischt wurden. Dies ist
 //			jetzt dadurch behoben, dass jeweils sequentiell Titel
-//			mit sigulärem Exemplar zur Auswahl angeboten wird.
-//			Exemplare, die keines der gewünschten Tags aufweisen,
+//			mit sigulï¿½rem Exemplar zur Auswahl angeboten wird.
+//			Exemplare, die keines der gewï¿½nschten Tags aufweisen,
 //			werden in der Tabell nicht nachgewiesen. Sollte kein
-//			Exemplar die gewünschten Tags haben, werden die
+//			Exemplar die gewï¿½nschten Tags haben, werden die
 //			Level0 un d 1-Daten einfach ausgegeben.
 // GBV: keine Begrenzung der Mengen:
 //const noRunLimit = 50;	// maximale Anzahl von Titel im Set
-//const warnLimit = 10;		// Grenze für Warnung wegen Zeitproblen
+//const warnLimit = 10;		// Grenze fï¿½r Warnung wegen Zeitproblen
 
-const specialChars = "KS";	// spezielle Zeichen für die Ausgabe von 
+const specialChars = "KS";	// spezielle Zeichen fï¿½r die Ausgabe von 
 				// Werten dieser Tags.
 				//   K=behalte auch @ und {
-				//   S=lösche Nicht-Sortier-Anteile
-				// Default ist: lösche @ und {
+				//   S=lï¿½sche Nicht-Sortier-Anteile
+				// Default ist: lï¿½sche @ und {
 
 // --------------------------------------------------------------------------
 // Klassendefinitionen
@@ -235,7 +235,7 @@ const specialChars = "KS";	// spezielle Zeichen für die Ausgabe von
 // Kurze Definition:
 // eine Auswahlzeile in csvControl.txt besteht aus
 //
-// Überschrift, optional gefolgt von SpezialZeichen, gefolgt von Tags
+// ï¿½berschrift, optional gefolgt von SpezialZeichen, gefolgt von Tags
 // (PicaPlus) und optional gefolgt vom $x-Wert bei Level-2 Tags. Danach
 // kommen die Auswahlbeschreibungen, die aus einer Kette von Alternativen
 // besteht, die wiederum festlegen, welche Subfelder aus dem angegebenen
@@ -244,15 +244,15 @@ const specialChars = "KS";	// spezielle Zeichen für die Ausgabe von
 // Beispiel:
 // Hrsg:          028C $8+" [$B]" $a+", $d"+" [$B]"
 //
-// Für Herausgeber suche Tag 028C. Als Alternativen werden durchsucht
+// Fï¿½r Herausgeber suche Tag 028C. Als Alternativen werden durchsucht
 //	$8+" [$B]"
 //	$a+", $d"+" [$B]"
 
-// Für jede Zeile in csvControl.txt wird ein Objekt generiert,
+// Fï¿½r jede Zeile in csvControl.txt wird ein Objekt generiert,
 // das dann als Array gespeichert werden.
 // Die Klasse ist aufgebaut:
-//	dim col		// Zeilenüberschriften
-//	dim def		// Definition der Umsetzung (z.Zt. nicht benötigt)
+//	dim col		// Zeilenï¿½berschriften
+//	dim def		// Definition der Umsetzung (z.Zt. nicht benï¿½tigt)
 //	dim val		// aus Tag extrahierter Text
 //	dim adr		// Adresse des Tags im Datensatz
 //	dim spec	// Spezialzeichen (s.o.)
@@ -269,17 +269,17 @@ const specialChars = "KS";	// spezielle Zeichen für die Ausgabe von
 // $x (oder einem anderen Zeichen) oder wird von zwei //"// eingegrenzt. Der
 // Inhalt besteht aus beliebigen Zeichen (kein //"// und kein //$//) gefolgt
 // von einem Subfeld ($x), dem wiederum beliebige Zeichen (kein //"//) folgen
-// können. 
+// kï¿½nnen. 
 // --------------------------------------------------------------------------------
 // --------------------------------------------------------------------------------
 //
 // Lesen der cvs Control und Definition Dateien
 //
-// inp	filehandle für Eingabedatei
+// inp	filehandle fï¿½r Eingabedatei
 // must	muss true sein, wenn Definitionen notwendig sind
 //		(beim Definitionsfile)
 //
-// Rückgabe	Inhalt der Datei, null bei Fehler
+// Rï¿½ckgabe	Inhalt der Datei, null bei Fehler
 // --------------------------------------------------------------------------------
 
 function readControl ( inp, must ) {
@@ -292,10 +292,10 @@ function readControl ( inp, must ) {
 		line = inp.readLine();
 		if (line == null) {
 			if (must)	line = "interne Definitionsdatei";
-			else		line = "ausgewählte Kommandodatei";
+			else		line = "ausgewï¿½hlte Kommandodatei";
 			__hebisError("Die " + line + "kann nicht verarbeitet werden!\n\n"
-						+ "Möglicherweise enthält sie unzulässige Formatanweisungen\n"
-						+ "oder Zeichen außerhalb der Unicode-Zeichen-Darstellung.");
+						+ "Mï¿½glicherweise enthï¿½lt sie unzulï¿½ssige Formatanweisungen\n"
+						+ "oder Zeichen auï¿½erhalb der Unicode-Zeichen-Darstellung.");
 			return null;
 		}
 		if (line.left(2) == "//")		continue;
@@ -306,7 +306,7 @@ function readControl ( inp, must ) {
 		
 		idx = tmp.indexOf(":");
 		if (tmp.indexOf(" ") < idx) {
-			__hebisError("Die Spaltenüberschriften dürfen keine Blanks "
+			__hebisError("Die Spaltenï¿½berschriften dï¿½rfen keine Blanks "
 						+ "enthalten. Die folgende Zeile "
 							+ "wird nicht akzeptiert:\n\n" + line);
 			//__M("tmp:"+tmp+"!  idx:"+idx+"  blank:"+tmp.indexOf(" ")+"  c:"+tmp.charAt(5)+"!");
@@ -315,7 +315,7 @@ function readControl ( inp, must ) {
 		}
 		if (idx < 0) {
 			if (must) {
-//				__hebisError("In einer csv Definition müssen Kategorien "
+//				__hebisError("In einer csv Definition mï¿½ssen Kategorien "
 //							+ "angegeben werden. Die folgende Zeile "
 //							+ "wird nicht akzeptiert:\n\n" + line);
 				return null;
@@ -340,7 +340,7 @@ function readControl ( inp, must ) {
 // defs	Definitionen
 // content	Inhalt der Control-Datei
 //
-// liefert neues Array zurück
+// liefert neues Array zurï¿½ck
 //
 // --------------------------------------------------------------------------------
 
@@ -378,12 +378,12 @@ function replaceDefinitions ( defs, content ) {
 
 // --------------------------------------------------------------------------------
 //
-// Suchen von Definitionen und Rückgabe deren Werts
+// Suchen von Definitionen und Rï¿½ckgabe deren Werts
 //
 // defs	Menge der Definitionen
 // mask	zu suchende Definion
 //
-// liefert neuen Text zurück
+// liefert neuen Text zurï¿½ck
 //
 // --------------------------------------------------------------------------------
 
@@ -403,7 +403,7 @@ function getDefinition ( defs, mask ) {
 //
 // Check, ob Text als Special + Kategorie interpretierbar ist
 //
-// liefert true oder false zurück
+// liefert true oder false zurï¿½ck
 //
 // --------------------------------------------------------------------------------
 
@@ -440,9 +440,9 @@ function checkIfTag ( text ) {
 //
 // Generierung des Control-Arrays
 //
-// content	Daten in ergänzter Control Datei
+// content	Daten in ergï¿½nzter Control Datei
 //
-// Rückgabe Control Array
+// Rï¿½ckgabe Control Array
 //
 // --------------------------------------------------------------------------------
 
@@ -489,7 +489,7 @@ function createCtrlArray ( content ) {
 // tmpline	zu behandelnde Zeile
 //
 // setzt ctrl.spec
-// Rückgabe	modifizierte Zeile
+// Rï¿½ckgabe	modifizierte Zeile
 //
 // --------------------------------------------------------------------------------
 
@@ -508,13 +508,13 @@ function getSpecial ( ctrl, tmpline ) {
 
 // --------------------------------------------------------------------------------
 //
-// Extrahieren der Informationen über Tags
+// Extrahieren der Informationen ï¿½ber Tags
 //
 // ctrl	Control array
 // tmpline	zu behandelnde Zeile
 //
 // setzt ctrl.xsbf und ctrl.tagspec
-// Rückgabe	modifizierte Zeile
+// Rï¿½ckgabe	modifizierte Zeile
 //
 // --------------------------------------------------------------------------------
 
@@ -548,7 +548,7 @@ function getTagInfos ( ctrl, tmpline ) {
 // tmpline	zu behandelnde Zeile
 //
 // setzt ctrl.data
-// Rückgabe	modifizierte Zeile
+// Rï¿½ckgabe	modifizierte Zeile
 //
 // --------------------------------------------------------------------------------
 
@@ -588,7 +588,7 @@ function orPartitions ( ctrl, tmpline ) {
 // tmpline	zu behandelnde Zeile
 //
 // setzt termOt.termAnd
-// Rückgabe	modifizierte Zeile
+// Rï¿½ckgabe	modifizierte Zeile
 //
 // --------------------------------------------------------------------------------
 
@@ -623,7 +623,7 @@ function andPartitions ( termOr, tmpline ) {
 // tmpline	modifizierte Zeile
 //
 // setzt obj.field
-// Rückgabe templine
+// Rï¿½ckgabe templine
 //
 // --------------------------------------------------------------------------------
 
@@ -673,7 +673,7 @@ function sbfPart ( obj, tmpline ) {
 //
 // ctrl	Control-Array
 //
-// Rückgabe Header
+// Rï¿½ckgabe Header
 //
 // --------------------------------------------------------------------------------
 
@@ -692,11 +692,11 @@ function createHeader ( ctrl ) {
 }
 // --------------------------------------------------------------------------------
 //
-// Öffnen der Ausgabedatei
+// ï¿½ffnen der Ausgabedatei
 //
 // filename	Name der datei
 //
-// Rückgabe -1:abbrechen, 0:Daei neu schreiben, +1: überschreiben
+// Rï¿½ckgabe -1:abbrechen, 0:Daei neu schreiben, +1: ï¿½berschreiben
 //
 // --------------------------------------------------------------------------------
 
@@ -706,17 +706,17 @@ function csvTestHeader ( filename, header ) {
 
 	var	txtOutEQ =
 		"Die Ausgabedatei existiert schon. Die in ihr gepeicherte Tabelle hat die gleichen\n"
-	+	"Spaltenüberschriften wie die jetzt zu erzeugende. Soll sie überschrieben werden?\n\n"
+	+	"Spaltenï¿½berschriften wie die jetzt zu erzeugende. Soll sie ï¿½berschrieben werden?\n\n"
 	+	"Antworten Sie bitte mit\n\n"
-	+	"Ja,..........wenn sie überschrieben werden soll\n"
-	+	"Nein,........wenn die neue Werte angehängt werden sollen\n"
+	+	"Ja,..........wenn sie ï¿½berschrieben werden soll\n"
+	+	"Nein,........wenn die neue Werte angehï¿½ngt werden sollen\n"
 	+	"Abbrechen, wenn das Skript ohne Ausgabe beendet werden soll";
 
 	var txtOutNE =
 		"Die Ausgabedatei existiert schon. Die in ihr gepeicherte Tabelle hat aber andere\n"
-	+	"Spaltenüberschriften als die jetzt zu erzeugende. Soll sie überschrieben werden?\n\n"
+	+	"Spaltenï¿½berschriften als die jetzt zu erzeugende. Soll sie ï¿½berschrieben werden?\n\n"
 	+	"Antworten Sie bitte mit\n\n"
-	+	"Ja,..........wenn sie überschrieben werden soll\n"
+	+	"Ja,..........wenn sie ï¿½berschrieben werden soll\n"
 	+	"Abbrechen, wenn das Skript ohne Ausgabe beendet werden soll";
 
 	ant = 0;
@@ -741,7 +741,7 @@ function csvTestHeader ( filename, header ) {
 	
 	if (ant == 1)	return (-1);	// Abbrechen
 	if (ant == 2)	return (+1);	// append
-	return 0;						// überschreiben
+	return 0;						// ï¿½berschreiben
 }
 // --------------------------------------------------------------------------------
 //
@@ -750,19 +750,19 @@ function csvTestHeader ( filename, header ) {
 // satz	Datensatz
 // ctrl	Inhalt Control
 //
-// Rückgabe aus Datensatz stammende(n) Zeile(n)
+// Rï¿½ckgabe aus Datensatz stammende(n) Zeile(n)
 //
 // --------------------------------------------------------------------------------
 
 function handleRecord ( satz, ctrl ) {
 
 	var		lineblock, tmp_satz, tmp_line, idx, loopcnt;
-	//__M(satz);//der vollständige Titel mit allen Exemplaren
+	//__M(satz);//der vollstï¿½ndige Titel mit allen Exemplaren
 //GBV: If-Bedingung entfernt: wenn in der Konfigurationsdatei keine Kategorien der Ebene 2 vorkommen
 //	if (!global.csvLevel2) {
 //		lineblock = handleRecordPart(satz,true,ctrl);
 //	} else {
-		//Dies soll in jedem Fall ausgeführt werden:
+		//Dies soll in jedem Fall ausgefï¿½hrt werden:
 		loopcnt = getMaxOccurrence(satz);
 		//__M("loopcnt:"+loopcnt);
 		lineblock = "";
@@ -790,7 +790,7 @@ function handleRecord ( satz, ctrl ) {
 
 // --------------------------------------------------------------------------------
 //
-// Laden der höchsten Occurrence der Exemplare eines Titels
+// Laden der hï¿½chsten Occurrence der Exemplare eines Titels
 //
 //
 // edited C. Klee 14.10.2011: added radix (10) to parseInt
@@ -806,19 +806,19 @@ function getMaxOccurrence ( satz ) {
 
 	idx = satz.lastIndexOf("\n203@/");//GBV: Kat. 7800 
 	if (idx < 0)	return (0);
-	return (parseInt(satz.substr(idx+6,2),10));
+	return (parseInt(satz.substr(idx+6,3),10));
 }
 
 // --------------------------------------------------------------------------------
 //
-// Aufbau eines temporären Satzes, der neben Level0 und 1
+// Aufbau eines temporï¿½ren Satzes, der neben Level0 und 1
 // nur die Daten des Exemplars mit der Occurrence occ hat
 //
 // satz	Datensatz
 // occ	Occurrence String "/xx"
 //
 // liefert leeren String, falls kein entsprechendes Exemplar
-// gefunden (Lücke in Zählung)
+// gefunden (Lï¿½cke in Zï¿½hlung)
 //
 // --------------------------------------------------------------------------------
 
@@ -836,7 +836,7 @@ function filterCopy ( satz, occ ) {
 		if (arr[idx].left(1) != "2") {
 			tmp_satz += arr[idx] + "\n";
 		} else {
-			if (arr[idx].substr(4,3) == occ) {
+			if ((arr[idx].substr(7,1) == " " && arr[idx].substr(4,3) == occ) || arr[idx].substr(4,4) == occ) {
 				tmp_satz += arr[idx] + "\n";
 				found = true;
 			}
@@ -845,10 +845,10 @@ function filterCopy ( satz, occ ) {
 	
 	if (!found)	tmp_satz = "";
 
-	//GBV: Prüfung nur wenn Feld "Standort" ausgefüllt wurde
-	// wenn der SST nicht übereinstimmt, soll das Exemplar nicht
+	//GBV: Prï¿½fung nur wenn Feld "Standort" ausgefï¿½llt wurde
+	// wenn der SST nicht ï¿½bereinstimmt, soll das Exemplar nicht
 	// in die Tabelle
-	//Prüfung, ob Kat. 7100 vorkommt:
+	//Prï¿½fung, ob Kat. 7100 vorkommt:
 	var regex7100 = /209A\/.*?x00/;
 	if (strSST != ""){
 		strSST = strSST.replace(/!/g,"") //Standort ohne !!
@@ -856,7 +856,7 @@ function filterCopy ( satz, occ ) {
 			tmp_satz = "";
 		} else{
 			var arr7100 = tmp_satz.match(regex7100);
-			// Unterfeldzeichen "ƒ" = \u0192
+			// Unterfeldzeichen "ï¿½" = \u0192
 			if (arr7100[0].indexOf(delimiter+"f"+strSST+delimiter) == -1){
 				tmp_satz = "";
 			}
@@ -874,7 +874,7 @@ function filterCopy ( satz, occ ) {
 // satz	Datensatz
 // ctrl	Inhalt Control
 //
-// Rückgabe aus datensatz stammende Zeile(n)
+// Rï¿½ckgabe aus datensatz stammende Zeile(n)
 //
 // --------------------------------------------------------------------------------
 
@@ -920,7 +920,7 @@ function handleRecordPart ( satz, accept, ctrl ) {
 		line += '"' + ctrl[idx].val.replace(/\u0022/g,"'") + '"\t';
 	}
 	line = line.replace(/;$/,"");
-	//__M("line:"+line); //ganze Zeile, die in Tabelle eingefügt wird.
+	//__M("line:"+line); //ganze Zeile, die in Tabelle eingefï¿½gt wird.
 	ctrl.cnt++;
 	return line;
 }
@@ -937,7 +937,7 @@ function handleRecordPart ( satz, accept, ctrl ) {
 // satz Datensatz
 // ctrl	 Control array
 //
-// Rückgabe true, wenn okay
+// Rï¿½ckgabe true, wenn okay
 // --------------------------------------------------------------------------------
 
 function createResult ( satz, ctrl ) {
@@ -1010,7 +1010,7 @@ function createResult ( satz, ctrl ) {
 //
 // text	nutzende Kategorie
 // spec	Spezialzeichen
-// data	Referenz für data Part
+// data	Referenz fï¿½r data Part
 // --------------------------------------------------------------------------------
 
 function convertOrText ( text, spec, data ) {
@@ -1029,7 +1029,7 @@ function convertOrText ( text, spec, data ) {
 // --------------------------------------------------------------------------------
 //
 // Extraktion der interessierenden Daten aus Datensatz
-// (hier Übernahme der Daten unter Beachtung des Spezialzeichens)
+// (hier ï¿½bernahme der Daten unter Beachtung des Spezialzeichens)
 //
 //
 // edited C. Klee 12.10.2011: Wiederholbare Felder/Unterfelder
@@ -1103,7 +1103,7 @@ function convertText ( text, spec, andArr ) {
 	} else if (spec == "K") {
 		idx = idx;	// dummy
 	} else {
-		tmp = tmp.replace("@",""); //GBV: evtl. Blank eingefügen, weil sonst bei Personen in $8 Blank zwischen Vorn. u. Nachn. fehlt
+		tmp = tmp.replace("@",""); //GBV: evtl. Blank eingefï¿½gen, weil sonst bei Personen in $8 Blank zwischen Vorn. u. Nachn. fehlt
 		tmp = tmp.replace("{","");
 	}
 	//__M("ctext nach spec tmp:"+tmp);
@@ -1129,19 +1129,19 @@ function writeCSV()
 	scr = application.activeWindow.getVariable("scr");
 	if ( (scr != "8A") && (scr != "7A") ) {
 		__hebisError("Das Skript kann nur aus einer Kurztitelliste oder "
-					+ "der Präsentation eines Titels aufgerufen werden.");
+					+ "der Prï¿½sentation eines Titels aufgerufen werden.");
 		return false;
 	}
 	//Anzahl der Titel:
 	cnt = parseInt(application.activeWindow.getVariable("P3GSZ"));
 	//GBV: keine Begrenzung der Mengen. Anweisungen zur Begrenzung der Sets entfernt.
 	
-	//GBV: Tabelle soll immer neu gelesen werden, denn sonst werden Änderungen 
-	//     und Korrekturen in der Auswahl der Felder nicht berücksichtigt.
+	//GBV: Tabelle soll immer neu gelesen werden, denn sonst werden ï¿½nderungen 
+	//     und Korrekturen in der Auswahl der Felder nicht berï¿½cksichtigt.
 	//     deshalb if-Bedingung auskommentiert
 	//if (global.csvDefinitions == null) {
 		var defInpFile = utility.newFileInput();
-		//die ausgewählte Konfigurationsdatei wird verwendet:
+		//die ausgewï¿½hlte Konfigurationsdatei wird verwendet:
 		if (einstellungKonfigurationstabelle() == 1){
 			if (!defInpFile.openSpecial("ProfD", "\\csvDefinitionUser.txt")) {
 				__hebisMsg("Die Konfigurationsdatei des Anwenders wurde nicht gefunden.\n"
@@ -1210,7 +1210,7 @@ function writeCSV()
 	global.csvOutFile = utility.newFileOutput();
 	//relativer Pfad + Dateiname:
 	//var theRelativePath = "listen\\liste_" + datumHeute() + ".csv";
-	//Änderung von csv in txt, weil dann in Excel sofort der Importierassistent aufgerufen wird.
+	//ï¿½nderung von csv in txt, weil dann in Excel sofort der Importierassistent aufgerufen wird.
 	var theRelativePath = "listen\\liste_" + datumHeute() + ".txt";
 	//Datei wird angelegt:
 	global.csvOutFile.createSpecial("ProfD", theRelativePath);
@@ -1223,8 +1223,8 @@ function writeCSV()
 	global.csvOutFile.writeLine("\ufeff"+header);
 	
 	//GBV:
-	//Anweisungen für Template 8A entfernt. Hier wurde nur der in der Vollanzeige befindliche Titel heruntergeladen.
-	//es sollen immer alle (d.h. 1 bis viele) Datensätze ausgewertet werden
+	//Anweisungen fï¿½r Template 8A entfernt. Hier wurde nur der in der Vollanzeige befindliche Titel heruntergeladen.
+	//es sollen immer alle (d.h. 1 bis viele) Datensï¿½tze ausgewertet werden
 	var outcnt = 0;
 	ctrl.cnt = 0;
 	for (var idx=1; idx<=cnt; idx++) {
@@ -1248,15 +1248,15 @@ function writeCSV()
 	if (outcnt != cnt) {
 		ergebnis = "Leider konnten in " + (cnt-outcnt) + " Titel die gesuchten Kategorien nicht gefunden werden.";
 	} else {
-		ergebnis = ctrl.cnt + " Zeilen für " + outcnt + " Titel ausgegeben.";
+		ergebnis = ctrl.cnt + " Zeilen fï¿½r " + outcnt + " Titel ausgegeben.";
 	}
 	//__hebisMsg(outval);
 	
 	global.csvOutFile.close();
 	global.csvOutFile.setTruncate(false);
-	global.csvDefinitions = null;//zurücksetzen, damit Konfigdatei beim nächsten Mal neu gelesen wird.
+	global.csvDefinitions = null;//zurï¿½cksetzen, damit Konfigdatei beim nï¿½chsten Mal neu gelesen wird.
 	
-	//zurücksetzen auf Anzeigeformat d
+	//zurï¿½cksetzen auf Anzeigeformat d
 	application.activeWindow.command("s d",false);
 	//Kurzanzeige
 	application.activeWindow.command("s k",false);
@@ -1291,7 +1291,7 @@ function wikiWinibw()
 function dateiOeffnen()
 {
 	//funktioniert zwar, aber dann werden die Zeilen nicht richtig formatiert.
-	//führende Nullen bei PPNs und EPNs entfallen
+	//fï¿½hrende Nullen bei PPNs und EPNs entfallen
 	//man kann nicht einstellen, dass aller Inhalt als Text gelesen werden soll
 	//nur wenn man in Excel die Daten importiert, dann kann man Semikolon als Trennzeichen
 	//und aller Inhalt als Text einstellen.
@@ -1310,11 +1310,11 @@ function allesZuruecksetzen()
 //-----------------------------------------------------------------------------
 /*
 	Registerkarte 2:
-	Die Anwender können Kategorien auswählen
+	Die Anwender kï¿½nnen Kategorien auswï¿½hlen
 */
 //-----------------------------------------------------------------------------
 var arrayTabelle = new Array();
-var currentIndex = 0; //der aus einer Liste ausgewählte Wert
+var currentIndex = 0; //der aus einer Liste ausgewï¿½hlte Wert
 function ladeKonfigurationstabelle()
 {
 try{
@@ -1394,7 +1394,7 @@ function waehleZeile()
 	if (document.getElementById("idAuswahlZeilen").value == ""){
 		document.getElementById("idAuswahlZeilen").value += arrayTabelle[lAuswahl];
 	} else {
-		//Einfügen auf neuer Zeile:
+		//Einfï¿½gen auf neuer Zeile:
 		document.getElementById("idAuswahlZeilen").value += "\n" + arrayTabelle[lAuswahl];
 	}
 	bContentsChanged = true;
@@ -1415,7 +1415,7 @@ function frageSpeichern(){
 	if (bContentsChanged) {
 		var prompt = utility.newPrompter();
 		prompt.setDebug(true);
-		if (prompt.confirmEx("Speichern?", "Änderungen in der Konfiguration speichern?", "Yes", "No", "", "", false) == 0) {
+		if (prompt.confirmEx("Speichern?", "ï¿½nderungen in der Konfiguration speichern?", "Yes", "No", "", "", false) == 0) {
 			auswahlSpeichern();
 		}
 		bContentsChanged = false;
@@ -1433,15 +1433,15 @@ try {
 	theFileOutput.close();
 	theFileOutput = null;
 	
-	//wenn alle Zeilen gelöscht, wird Datei gelöscht.
+	//wenn alle Zeilen gelï¿½scht, wird Datei gelï¿½scht.
 	if (newContents == ""){
 		auswahlLoeschen();
 	} else {
-		//Falls noch die Standardtabelle gewählt ist:
+		//Falls noch die Standardtabelle gewï¿½hlt ist:
 		if (document.getElementById("idRadioTabelle").selectedIndex == 0){
 			var prompt = utility.newPrompter();
 			prompt.setDebug(true);
-			if (prompt.confirmEx("Neue Auswahl", "Soll Ihre Auswahl von Kategorien für die nächste Exceltabelle verwendet werden?",
+			if (prompt.confirmEx("Neue Auswahl", "Soll Ihre Auswahl von Kategorien fï¿½r die nï¿½chste Exceltabelle verwendet werden?",
 				"Yes", "No", "", "", false) == 0) {
 				document.getElementById("idRadioTabelle").selectedIndex = 1;
 				application.writeProfileInt("winibw", "GBVexcelTabelle", 1);
@@ -1461,11 +1461,11 @@ try {
 function auswahlLoeschen()
 {
 	//Anwender will  alle Kategorien aus der eigenen Auswahl entfernen#
-	//Textfeld und Konfigurationsdatei werden gelöscht
+	//Textfeld und Konfigurationsdatei werden gelï¿½scht
 	var prompt = utility.newPrompter();
 	prompt.setDebug(true);
-	if (prompt.confirmEx("Alles löschen?", "Soll Ihre Auswahl und Ihre persönliche Konfigurationstabelle " +
-			"gelöscht werden? \nFür zukünftige Listen wird die Standardtabelle verwendet.", 
+	if (prompt.confirmEx("Alles lï¿½schen?", "Soll Ihre Auswahl und Ihre persï¿½nliche Konfigurationstabelle " +
+			"gelï¿½scht werden? \nFï¿½r zukï¿½nftige Listen wird die Standardtabelle verwendet.", 
 			"Yes", "No", "", "", false) == 0) {
 		document.getElementById("idAuswahlZeilen").value = "";
 		var theFile = getSpecialDirectory("ProfD");
@@ -1474,13 +1474,13 @@ function auswahlLoeschen()
 			theFile.remove(false);
 		}
 		//Meldung:
-		document.getElementById("idLabelAuswahl").value = "Auswahl gelöscht.";
+		document.getElementById("idLabelAuswahl").value = "Auswahl gelï¿½scht.";
 		
 		//default ist jetzt die Standardtabelle:
 		document.getElementById("idRadioTabelle").selectedIndex = 0;
 		application.writeProfileInt("winibw", "GBVexcelTabelle", 0);
 		
-		//es soll keine Rückfrage kommen, falls zuerst Kategorien eingefügt und dann gelöscht wurden:
+		//es soll keine Rï¿½ckfrage kommen, falls zuerst Kategorien eingefï¿½gt und dann gelï¿½scht wurden:
 		bContentsChanged = false;
 	}
 }
@@ -1498,10 +1498,10 @@ function waehleKonfigurationstabelle()
 {
 	//Im Userprofile wird eingetragen, welche  Konfigurationstabelle verwendet werden soll
 	var auswahlRadio = document.getElementById("idRadioTabelle").selectedIndex; //gibt 0 oder 1 aus
-	//wenn eigene Konfigurationsdatei leer, kann diese nicht ausgewählt werden
+	//wenn eigene Konfigurationsdatei leer, kann diese nicht ausgewï¿½hlt werden
 	if (auswahlRadio == 1 && document.getElementById('idAuswahlZeilen').value == ""){
 		document.getElementById("idRadioTabelle").selectedIndex = 0;
-		alert("Ihre Konfigurationsdatei ist leer. Bitte wählen Sie Kategorien aus der Standardtabelle aus!");
+		alert("Ihre Konfigurationsdatei ist leer. Bitte wï¿½hlen Sie Kategorien aus der Standardtabelle aus!");
 		return;
 	}
 	application.writeProfileInt("winibw", "GBVexcelTabelle", auswahlRadio);
