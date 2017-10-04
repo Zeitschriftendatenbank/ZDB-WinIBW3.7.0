@@ -7,9 +7,9 @@
 // auto Suchbox
 var anfangsfenster;
 // delimiter
-var delimiter = '\u0192'; // Unterfeldzeichen "ƒ" = \u0192
+var delimiter = '\u0192'; // Unterfeldzeichen "ï¿½" = \u0192
 var delimiterReg = '\u0192'; // regualr expression version Unterfeldzeichen "$" = \$
-var charCode = 402; // Unterfeldzeichen "ƒ" = 402, Unterfeldzeichen "$" = 36
+var charCode = 402; // Unterfeldzeichen "ï¿½" = 402, Unterfeldzeichen "$" = 36
 // message box 
 var messageBoxHeader = 'Header';
 // JSON
@@ -53,7 +53,7 @@ function zdb_KennungWechseln(){
     if (wert.indexOf('ZDB-Hauptbestand') >= 0 || wert.indexOf('ZDB-Uebungsbestand') >= 0) {
         open_xul_dialog('chrome://ibw/content/xul/ZDB_KennungWechseln.xul', null);
     } else {
-        application.messageBox('KennungWechseln', "Die Funktion \"KennungWechseln\" kann nur im ZDB-Hauptbestand oder ZDB-Übungsbestand aufgerufen werden", 'alert-icon');
+        application.messageBox('KennungWechseln', "Die Funktion \"KennungWechseln\" kann nur im ZDB-Hauptbestand oder ZDB-ï¿½bungsbestand aufgerufen werden", 'alert-icon');
         return;
     }
 }
@@ -61,39 +61,49 @@ function zdb_KennungWechseln(){
 function zdb_ExemplarErfassen(){
     if(false == __zdbCheckScreen(['8A','7A','MT'],'ExemplarErfassen')) return false;
     var eigene_bibliothek =  application.getProfileString('zdb.userdata', 'eigeneBibliothek', '');
+    var exNum = __zdbExemplarNummer();
+    var content = "4800 " + eigene_bibliothek + "\n7100 \n7109 \n8031 \n8032 \n";
+    var goToLine = function(){
+        // Definiert, wo Cursor im Titelbildschirm plaziert wird
+        var zeile = 1;
+        if (eigene_bibliothek) {
+            zeile = 2;
+        }
+        application.activeWindow.title.startOfBuffer(false);
+        application.activeWindow.title.lineDown(zeile, false);
+        application.activeWindow.title.charRight(5, false);
+    };
+    __zdbExemplarErfassen(exNum, content, goToLine);
+
+}
+
+function __zdbExemplarNummer(){
     application.activeWindow.command('show d', false);
-    // Sichert Inhalt des Zwischenspeichers, da dieser sonst durch copyTitle() überschrieben würde
-    try{
-        var clipboard = application.activeWindow.clipboard;
-    } catch(e){
-        // do nothing
-    }
-    // Kopiert Titel
-    var kopie = application.activeWindow.copyTitle();
-    application.activeWindow.clipboard = clipboard;
-    //Schleife von 1 bis 99, da max. 99 Exemplare pro Bibliothek erfasst werden können
+    var record = application.activeWindow.getVariable("P3CLIP");
+    //Schleife von 1 bis 99, da max. 99 Exemplare pro Bibliothek erfasst werden kï¿½nnen
     for (var i = 1; i <= 99; i++) {
         var vergleich = 7000 + i;
-        if (kopie.indexOf(vergleich) == -1) {
-            var eingabe = vergleich + " x\n4800 " + eigene_bibliothek + "\n7100 \n7109 \n8031 \n8032 \n";
-            // Definiert, wo Cursor im Titelbildschirm plaziert wird
-            var zeile = 1;
-            if (eigene_bibliothek) {
-                zeile = 2;
-            }
-            // Exemplarsatz anlegen und befüllen
-            application.activeWindow.command('e e' + i, false);
-            if (application.activeWindow.status != 'ERROR') {
-                application.activeWindow.title.startOfBuffer(false);
-                application.activeWindow.title.insertText(eingabe);
-                application.activeWindow.title.startOfBuffer(false);
-                application.activeWindow.title.lineDown(zeile, false);
-                application.activeWindow.title.charRight(5, false);
-                return;
-            } else {
-                return;
-            }
+        if (record.indexOf(vergleich) == -1) {
+            return i;
         }
+    }
+}
+
+/**
+ * Kategorie "70XX x" wird automatisch befÃ¼llt
+ * @param {*} exNum 
+ * @param string content 
+ * @param function|undefined callback 
+ */
+function __zdbExemplarErfassen(exNum, content, callback){
+    // Exemplarsatz anlegen und befÃ¼llen
+    application.activeWindow.command('e e' + exNum, false);
+    var kat70xx = 7000 + exNum; // addition
+    kat70xx = kat70xx + " x\n";
+    application.activeWindow.title.insertText(kat70xx);
+    application.activeWindow.title.insertText(content);
+    if(typeof callback !== 'undefined') {
+        callback();
     }
 }
 
@@ -103,7 +113,7 @@ function zdb_MailboxsatzAnlegen(){
     ppn = application.activeWindow.getVariable('P3GPP');
     application.activeWindow.command('ein t', false);
     if (application.activeWindow.status != 'OK') {
-        application.messageBox('MailboxsatzAnlegen', 'Sie haben nicht die nötigen Berechtigungen, um einen Mailboxsatz anzulegen.', 'alert-icon');
+        application.messageBox('MailboxsatzAnlegen', 'Sie haben nicht die nÃ¶tigen Berechtigungen, um einen Mailboxsatz anzulegen.', 'alert-icon');
         return false;
     }
     application.activeWindow.title.insertText (
@@ -124,9 +134,9 @@ function zdb_AutomatischeSuchBox(){
 }
 
 function zdb_HoleIDN(){
-    // Wurde vorab eine Suche mit dem Skript "Automatische Suchbox" ausgeführt?
+    // Wurde vorab eine Suche mit dem Skript "Automatische Suchbox" ausgefï¿½hrt?
     if (typeof anfangsfenster == 'undefined') {
-        application.messageBox('HoleIDN', "Vor Aufruf des Skriptes \"HoleIDN\" muss zunächst eine automatische Suche mit Hilfe des Skriptes \"AutomatischeSuchBox\" gestartet werden.", 'alert-icon');
+        application.messageBox('HoleIDN', "Vor Aufruf des Skriptes \"HoleIDN\" muss zunï¿½chst eine automatische Suche mit Hilfe des Skriptes \"AutomatischeSuchBox\" gestartet werden.", 'alert-icon');
     } else {
         // Ist das aktive Fenster eine Trefferliste?
         if(false == __zdbCheckScreen(['7A','8A'],'HoleIDN')) return false;
@@ -136,14 +146,14 @@ function zdb_HoleIDN(){
         var fenster = application.activeWindow.windowID;
         // Falls das Bearbeitungsfenster ( = anfangsfenster) geschlossen wurde, gibt das System einen "uncaught exception"-Fehler aus. Um diesen abzufangen, wird mit TRY CATCH gearbeitet.
         try {
-            // Zurück zum Anfangsfenster gehen
+            // Zurï¿½ck zum Anfangsfenster gehen
             application.activateWindow(anfangsfenster);
-            // IDN einfügen
+            // IDN einfï¿½gen
             application.activeWindow.title.insertText('!' + idn + '!');
-            // Trefferliste schließen
+            // Trefferliste schlieï¿½en
             application.closeWindow(fenster);
         } catch(e) {
-            application.messageBox('HoleIDN', 'Das Bearbeitungsfenster, in welches die IDN eingefügt werden soll, ist nicht mehr geöffnet.', 'alert-icon');
+            application.messageBox('HoleIDN', 'Das Bearbeitungsfenster, in welches die IDN eingefï¿½gt werden soll, ist nicht mehr geï¿½ffnet.', 'alert-icon');
         }
     }
     return true;
@@ -179,7 +189,7 @@ function __zdbTiteldatenKopie(){
 
     __zdbJSON();
 
-    // Überschrift und IDN einfügen
+    // ï¿½berschrift und IDN einfï¿½gen
     application.overwriteMode = false;
     var idn = application.activeWindow.getVariable('P3GPP');
     application.activeWindow.command('show d', false);
@@ -203,7 +213,7 @@ function __zdbTiteldatenKopie(){
         __zdbMediatype();
         application.activeWindow.title.insertText("\n0502 $b" + _rec['002D'][0]['b'][0]);
     }
-    if(!_rec['002E']) { // 0503 Datenträgertyp
+    if(!_rec['002E']) { // 0503 Datentrï¿½gertyp
         __zdbDatentraeger();
         application.activeWindow.title.insertText("\n0503 $b" + _rec['002E'][0]['b'][0]);
     }
@@ -237,7 +247,7 @@ function __zdbTiteldatenKopie(){
 }
 
 /**
-* Der Inhalt von 0503 ist abhängig von 0500 und 0502
+* Der Inhalt von 0503 ist abhï¿½ngig von 0500 und 0502
 * 
 * Die Funktion erwartet ein globales Objekt _rec
 * Der Medientyp wird in _rec['002E'][0]['b'][0] geschrieben 
@@ -258,7 +268,7 @@ function __zdbDatentraeger() {
 }
 
 /**
-* Der Inhalt von 0502 ist abhängig von 0500 und 0501
+* Der Inhalt von 0502 ist abhï¿½ngig von 0500 und 0501
 * 
 * Die Funktion erwartet ein globales Objekt _rec
 * Der Medientyp wird in _rec['002D'][0]['b'][0] geschrieben 
@@ -287,23 +297,23 @@ function __zdbMediatype() {
 
 function zdb_Datensatzkopie() {
     if(false == __zdbCheckScreen(['8A'],'Datensatzkopie')) return false;
-    //Persönliche Einstellung des Titelkopie-Pfades ermitteln
+    //Persï¿½nliche Einstellung des Titelkopie-Pfades ermitteln
     var titlecopyfileStandard = application.getProfileString('winibw.filelocation', 'titlecopy', '');
     if (application.activeWindow.materialCode.charAt(0) == 'T') {
         __zdbNormdatenKopie();
         } else {
         __zdbTiteldatenKopie();
     }
-    //Wiederherstellen des ursprünglichen Pfades der Titelkopie-Datei:
+    //Wiederherstellen des ursprï¿½nglichen Pfades der Titelkopie-Datei:
     application.activeWindow.titleCopyFile = titlecopyfileStandard;
 }
 
 function zdb_Digitalisierung() {
     if(false == __zdbCheckScreen(['8A'],'Digitalisierung')) return false;
-    // Prüfen, ob Titeldatensatz mit bibliographischer Gattung "A" aufgerufen, bei "T" oder "O" Fehlermeldung ausgeben
+    // Prï¿½fen, ob Titeldatensatz mit bibliographischer Gattung "A" aufgerufen, bei "T" oder "O" Fehlermeldung ausgeben
     var matCode = application.activeWindow.materialCode.charAt(0);
     if(matCode == 'T' || matCode == 'O') {
-        application.messageBox('Digitalisierung', "Die Funktion kann nur für Titelsätze des Satztyps \"A\" verwendet werden.", 'alert-icon');
+        application.messageBox('Digitalisierung', "Die Funktion kann nur fï¿½r Titelsï¿½tze des Satztyps \"A\" verwendet werden.", 'alert-icon');
         return false;
     }
     // Titelkopie auf zdb_titeldatenkopie_digi.ttl setzen
@@ -318,16 +328,16 @@ function zdb_Digitalisierung() {
     application.activeWindow.title.endOfBuffer(false);
     application.activeWindow.title.insertText('4201 Gesehen am ++');
     application.activeWindow.title.charLeft(1,false);
-    //Wiederherstellen des ursprünglichen Pfades der Titelkopie-Datei:
+    //Wiederherstellen des ursprï¿½nglichen Pfades der Titelkopie-Datei:
     application.activeWindow.titleCopyFile = titlecopyfileStandard;
 }
 
 function zdb_Parallelausgabe(){
     if(false == __zdbCheckScreen(['8A'],'Parallelausgabe')) return false;
-    // Prüfen, ob Titeldatensatz mit bibliographischer Gattung "A" aufgerufen, bei "T" oder "O" Fehlermeldung ausgeben
+    // Prï¿½fen, ob Titeldatensatz mit bibliographischer Gattung "A" aufgerufen, bei "T" oder "O" Fehlermeldung ausgeben
     var matCode = application.activeWindow.materialCode.charAt(0);
     if(matCode == 'T' || matCode == 'O') {
-        application.messageBox('Digitalisierung', "Die Funktion kann nur für Titelsätze des Satztyps \"A\" verwendet werden.", "alert-icon");
+        application.messageBox('Digitalisierung', "Die Funktion kann nur fï¿½r Titelsï¿½tze des Satztyps \"A\" verwendet werden.", "alert-icon");
         return false;
     }
 
@@ -337,16 +347,16 @@ function zdb_Parallelausgabe(){
     var showComment = " *** Titeldatenkopie Parallelausgabe *** \n"
     if(!__zdbOnlineRessource('resource:/ttlcopy/zdb_titeldatenkopie_parallel.ttl',showComment,[],false)) return false;
 
-    // Kategorie 4234: anlegen und mit Text "4243 Erscheint auch als$nDruckausgabe![...IDN...]!" befüllen
+    // Kategorie 4234: anlegen und mit Text "4243 Erscheint auch als$nDruckausgabe![...IDN...]!" befï¿½llen
     application.activeWindow.title.endOfBuffer(false);
     application.activeWindow.title.insertText("\n4243 Erscheint auch als$nDruck-Ausgabe!" + idn + "!\n");
 
-    // Kategorie 4213: individuell gefüllt oder leer ausgeben
+    // Kategorie 4213: individuell gefï¿½llt oder leer ausgeben
     application.activeWindow.title.endOfBuffer(false);
     application.activeWindow.title.insertText('4201 Gesehen am ++');
     application.activeWindow.title.charLeft(1,false);
     
-    //Wiederherstellen des ursprünglichen Pfades der Titelkopie-Datei:
+    //Wiederherstellen des ursprï¿½nglichen Pfades der Titelkopie-Datei:
     application.activeWindow.titleCopyFile = titlecopyfileStandard;
 }
 
@@ -366,7 +376,7 @@ function __zdbOnlineRessource(copyFile,showComment,add0600,digi){
     application.activeWindow.pasteTitle();
 
     
-    // Kategorie 0500: Bibliographische Gattung/Status ändern
+    // Kategorie 0500: Bibliographische Gattung/Status ï¿½ndern
     var f0500 = application.activeWindow.title.findTag('0500', 0, false, true, true);
     f0500 = f0500.replace('A','O');
     f0500 = f0500.replace('v','x');
@@ -404,7 +414,7 @@ function __zdbOnlineRessource(copyFile,showComment,add0600,digi){
         application.activeWindow.title.insertText("\n2051 "+application.getProfileString('zdb.userdata.digiconfig', '2051', ''));
     }
 
-    // Kategorie 2010,4215,4225 ändern
+    // Kategorie 2010,4215,4225 ï¿½ndern
     var content,y;
     var fieldmap = {
         '2010': '2013 |p|',
@@ -431,7 +441,7 @@ function __zdbOnlineRessource(copyFile,showComment,add0600,digi){
         y++;
     }
 
-    // neues Feld für Sekundärköperschaft 312X -> 311X
+    // neues Feld fï¿½r Sekundï¿½rkï¿½perschaft 312X -> 311X
     content = '';
     y = 0;
     while( (content = application.activeWindow.title.findTag('312', y, false, true, true)) !='')
@@ -486,7 +496,7 @@ function __zdbTitelAnpassen()
     var feld4000 = application.activeWindow.title.findTag('4000',0, true, true, true);
     application.activeWindow.title.deleteLine(1);
     
-    if(__zdbCheckSF('021A','e')) // Körperschaftsergänzungen vhd.
+    if(__zdbCheckSF('021A','e')) // Kï¿½rperschaftsergï¿½nzungen vhd.
     {
         for(var e in _rec['021A'][0]['e']) 
         {
@@ -515,7 +525,7 @@ function __zdbFeld424XGet()
         rda = ('rda' == _rec['010E'][0]['e'][0]) ? true : false;
     }
     
-    // Verknüpfungsfelder einsammeln und auf verbale Form ändern
+    // Verknï¿½pfungsfelder einsammeln und auf verbale Form ï¿½ndern
     var _felder424X = {
         '039B' : {p:'4241',c:[]},
         '039C' : {p:'4242',c:[]},
@@ -542,7 +552,7 @@ function __zdbFeld424XGet()
                 code = (__zdbCheckSF(f,'b',e)) ? _code[_rec[f][e]['b'][0]] : '';
                 if(__zdbCheckSF(f,'a',e)) // Vortext vorhanden
                 {
-                    if('039E' != f || rda ) // kein Vortext für 4244 ohne rda
+                    if('039E' != f || rda ) // kein Vortext fï¿½r 4244 ohne rda
                     {
                         code += _rec[f][e]['a'][0];
                     }
@@ -554,7 +564,7 @@ function __zdbFeld424XGet()
                     expText = __zdbExpansionToText(_exp); // Text with subfields $l and/or $t
                     _felder424X[f].c.push(code+expText); // $bf#Fortsetzung von$lVerantwortl$tTitel
                 }
-                else if(__zdbCheckSF(f,'r',e)) // something like 039E ƒbsƒr2014 Sonderh. zu u. ab 2015 Forts. als Online-Ausg. ---> Lexware-Unternehmer-Wissen
+                else if(__zdbCheckSF(f,'r',e)) // something like 039E ï¿½bsï¿½r2014 Sonderh. zu u. ab 2015 Forts. als Online-Ausg. ---> Lexware-Unternehmer-Wissen
                 {
                     if(match = _rec[f][e]['r'][0].match(re)[1])
                     {
@@ -580,7 +590,7 @@ function __zdbFeld424XSet(_felder424X)
 {
     var _lang = {
         'Dt':'Parallele Sprachausgabe$ndeutsch',
-        'Fr':'Parallele Sprachausgabe$nfranzösisch',
+        'Fr':'Parallele Sprachausgabe$nfranzï¿½sisch',
         'En':'Parallele Sprachausgabe$nenglisch',
         'Sp':'Parallele Sprachausgabe$nspanisch',
     };
@@ -647,7 +657,7 @@ function __zdbDruckausgabe(dppn){
     application.activeWindow.command('f idn ' + dppn, true);
 
     if (application.activeWindow.status != 'OK') {
-        return __zdbError('Die über 4243 verlinkte Druckausgabe existiert nicht.');
+        return __zdbError('Die ï¿½ber 4243 verlinkte Druckausgabe existiert nicht.');
     }
 
 //	DocType = 1. Zeichen im Feld 0500
@@ -667,7 +677,7 @@ function __zdbDruckausgabe(dppn){
     if (arr == null) {
         application.activeWindow.command('k',false);
         if (application.activeWindow.status != 'OK') {
-            __zdbMSG('Sie sind nicht berechtigt, den Datensatz zu ändern.');
+            __zdbMSG('Sie sind nicht berechtigt, den Datensatz zu ï¿½ndern.');
             return false;
         }
 
@@ -675,19 +685,19 @@ function __zdbDruckausgabe(dppn){
         application.activeWindow.title.insertText('4243 Erscheint auch als$nOnline-Ausgabe!' + eppn + "!\n");
         
         application.activeWindow.simulateIBWKey('FR');
-        //	Korrektur ausgeführt, dann ist der Titel im diagn. Format
+        //	Korrektur ausgefï¿½hrt, dann ist der Titel im diagn. Format
         //	sonst im Korrekturformat
         //application.messageBox('SCR', application.activeWindow.getVariable('scr'), 'alert-icon');
         if (application.activeWindow.getVariable('scr') != '8A') {
             __zdbMsg('Die Korrektur des Titel ist fehlgeschlagen. Bitte holen'
-                    + 'Sie dies direkt über die WinIBW nach.');
+                    + 'Sie dies direkt ï¿½ber die WinIBW nach.');
             return false;
         }
     } else {
-        application.messageBox('Test','Die Verknüpfung zur Internetausgabe im Feld 4243 ist schon vorhanden.', 'alert-icon');
+        application.messageBox('Test','Die Verknï¿½pfung zur Internetausgabe im Feld 4243 ist schon vorhanden.', 'alert-icon');
     }
 
-//---Feld '2010' , zurückgeben
+//---Feld '2010' , zurï¿½ckgeben
     arr = satz.match(/^2010 .*/gm);
     if (arr == null)			return false;
 
@@ -810,7 +820,7 @@ function __EZBNota(maske){
 }
 
 function zdb_EZB_BibID(){
-    //Anwender können BibID prüfen und ggf. korrigieren
+    //Anwender kï¿½nnen BibID prï¿½fen und ggf. korrigieren
     open_xul_dialog('chrome://ibw/content/xul/ZDB_EZBAccountDefinieren.xul', null);
 }
 
@@ -848,7 +858,7 @@ function zdb_EZB(){
         bibid = __checkEZBAccount();
     if(!bibid)
     {
-        return __zdbError('Sie müssen ein gültige EZB-bibid angeben.');
+        return __zdbError('Sie mï¿½ssen ein gï¿½ltige EZB-bibid angeben.');
     }
 
 //	url zur EZB
@@ -867,7 +877,7 @@ function zdb_EZB(){
     }
     
 
-    //---Feld '4005' , Inhalt an title anhängen
+    //---Feld '4005' , Inhalt an title anhï¿½ngen
     if(_rec['021C'])
     {
         var unterreihe_bez = '',
@@ -968,7 +978,7 @@ function zdb_EZB(){
         _ezbnota = __zdbArrayUnique(_ezbnota);
     }
 
-//---Druckausgabe: reziproke Verknüpfung und Druck-ISSN
+//---Druckausgabe: reziproke Verknï¿½pfung und Druck-ISSN
     /*var f0600 = application.activeWindow.findTagContent('0600',0,false);
     // workaround since findTagContent has errors
     f0600 = f0600.replace(/^\s+|\s?\n$/g,'');
@@ -977,7 +987,7 @@ function zdb_EZB(){
         ld  = (f0600.match(/ld/g) != null) ? true : false; // code fuer layoutgetreue Digitalisierung?
     }*/
     
-    // pissn über Verknüpfung ermitteln
+    // pissn ï¿½ber Verknï¿½pfung ermitteln
     if(_rec['039D'])
     {
         for(var d in _rec['039D'])
@@ -1003,7 +1013,7 @@ function zdb_EZB(){
         pissn   = __zdbDruckausgabe(dppn,ld);
         application.windows.restoreWindowSnapshot(winsnap);
     } else {
-        if (!__zdbYesNo('Eine reziproke Verknüpfung ist nicht möglich. Möchten Sie trotzdem fortfahren?')) {
+        if (!__zdbYesNo('Eine reziproke Verknï¿½pfung ist nicht mï¿½glich. Mï¿½chten Sie trotzdem fortfahren?')) {
             return false;
         }
     }
@@ -1044,19 +1054,19 @@ function zdb_EZB(){
     if (__zdbYesNo (
                 "Falls nicht automatisch Ihr Browser mit der EZB-Darstellung\n"
             + "in den Vordergrund kommt, wechseln Sie bitte in den Browser\n"
-            + "und kontrollieren die Übereinstimmung Ihrer Aufnahme mit dem\n"
+            + "und kontrollieren die ï¿½bereinstimmung Ihrer Aufnahme mit dem\n"
             + "im Browser gezeigten Titel.\n\n"
             + "Ist die EZB-Aufnahme korrekt und soll die Frontdoor-url\n"
             + "eingetragen werden?") ) {
     //	Press the "Korrigieren" button
         application.activeWindow.command('k d', false);
         if (application.activeWindow.status != 'OK') {
-            __zdbMsg('Sie sind nicht berechtigt, den Datensatz zu ändern.');
+            __zdbMsg('Sie sind nicht berechtigt, den Datensatz zu ï¿½ndern.');
             return false;
         }
     //	Go to end of buffer without expanding the selection
         application.activeWindow.title.endOfBuffer(false);
-    //	EZB-Frontdoor einfügen
+    //	EZB-Frontdoor einfï¿½gen
         application.activeWindow.title.insertText('4085 =u ' + frontDoor);
         application.activeWindow.title.insertText(_rec['006Z'][0][0][0].substr(0,_rec['006Z'][0][0][0].length-2));
         application.activeWindow.title.insertText('=x F');
@@ -1066,7 +1076,7 @@ function zdb_EZB(){
     //	Dokumenttyp  8A: korrekt, MT: Fehler
         if (application.activeWindow.getVariable('scr') != '8A') {
             __zdbMsg('Die Korrektur des Titel ist fehlgeschlagen. Bitte holen'
-                    + 'Sie dies direkt über die WInIBW nach.');
+                    + 'Sie dies direkt ï¿½ber die WInIBW nach.');
             return false;
         }
 
@@ -1166,7 +1176,7 @@ function __zdbCheckKurztitelAuswahl() {
     application.activeWindow.simulateIBWKey('FR');
     if (__zdbYesNo("Sie haben das Skript aus der Kurztitelliste aufgerufen.\n"
                 + "Zur Sicherheit:\n\n"
-                + "Ist dies der gewünschte Datensatz?"))		return true;
+                + "Ist dies der gewï¿½nschte Datensatz?"))		return true;
     //application.activeWindow.simulateIBWKey('FE');
     return false;
 }
@@ -1323,9 +1333,9 @@ function __zdbCloseWorkWindow(myWindowId){
 * }
 *
 * weitere Tests:
-* --Abvz--: Adreß- und Geschäftshandbuch für den k[öniglich] b[ayerischen] Markt Berchtesgaden und Berchtesgadener-Land
+* --Abvz--: Adreï¿½- und Geschï¿½ftshandbuch fï¿½r den k[ï¿½niglich] b[ayerischen] Markt Berchtesgaden und Berchtesgadener-Land
 * 
-* --Abvz--International Legal Center$xAllgemeine Unterteilung$gNew York, NY$BVerfasser: Adreß- und Geschäftshandbuch für den k[öniglich] b[ayerischen] Markt Berchtesgaden und Berchtesgadener-Land
+* --Abvz--International Legal Center$xAllgemeine Unterteilung$gNew York, NY$BVerfasser: Adreï¿½- und Geschï¿½ftshandbuch fï¿½r den k[ï¿½niglich] b[ayerischen] Markt Berchtesgaden und Berchtesgadener-Land
 * 
 * --Abvz--International Legal Center$xAllgemeine Unterteilung$gNew York, NY$BVerfasser: [????test]
 * 
@@ -1385,7 +1395,7 @@ function __zdbExpansionToText(e){
 /**
 * Liest ein Feldinhalt in ein Object
 * Bsp.:
-* 039E ƒbfƒaFortsetzung vonƒ9942987667ƒ8--Cbvz--Deutsche Zentralbücherei für Blinde zu Leipzig: DZB-Nachrichten
+* 039E ï¿½bfï¿½aFortsetzung vonï¿½9942987667ï¿½8--Cbvz--Deutsche Zentralbï¿½cherei fï¿½r Blinde zu Leipzig: DZB-Nachrichten
 * wird zu
 * {
 *   "039E":
@@ -1393,14 +1403,14 @@ function __zdbExpansionToText(e){
 *      "b": ["f"],
 *      "a": ["Fortsetzung von"],
 *      "9": ["942987667"],
-*      "8": ["--Cbvz--Deutsche Zentralbücherei für Blinde zu Leipzig: DZB-Nachrichten"]
+*      "8": ["--Cbvz--Deutsche Zentralbï¿½cherei fï¿½r Blinde zu Leipzig: DZB-Nachrichten"]
 *   }
 * }
 *
 * Zugriff: obj['039E'][9][0] --> "942987667"
 * Zugriff: obj['039E']['b'][0] --> "f"
 * 
-* 017A ƒaeeƒamgƒanw wird zu
+* 017A ï¿½aeeï¿½amgï¿½anw wird zu
 * {
 *   "017A":
 *   {
@@ -1579,7 +1589,7 @@ function isil_online() {
     var strScreen = __zdbCheckScreen(['8A','MT','IT','MI'],'ISIL Online');
     if(false == strScreen) return false;
     if('Tw' != application.activeWindow.getVariable('P3VMC')) {
-        return __zdbError('Die Funktion kann nur in Verbindung mit Tw-Sätzen genutzt werden.');
+        return __zdbError('Die Funktion kann nur in Verbindung mit Tw-Sï¿½tzen genutzt werden.');
     }
     __zdbJSON(application.activeWindow.getVariable('P3GPP'));
     application.shellExecute('http://ld.zdb-services.de/resource/organisations/'+_rec['008H'][0]['e'][0],5,'open','');
