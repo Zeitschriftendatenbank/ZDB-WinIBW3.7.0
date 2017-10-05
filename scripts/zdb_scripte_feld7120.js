@@ -158,7 +158,7 @@ function __Feldauf7120(inhalt8032, feldnummer){
             inhalt7120 = inhalt7120 + "; ";
         }
 
-        if (feldnummer == "7120") {
+        if (feldnummer == "8032" || feldnummer == "7120") {
         // Feld 7120 aufbauen
             if (band1 != "") {
                 inhalt7120 = inhalt7120 + "\/v" + band1;
