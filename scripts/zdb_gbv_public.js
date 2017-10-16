@@ -31,18 +31,18 @@ function __matCode3(){
 }
 function __Materialbenennung()
 {
-	// Funktion wird von Aaup() und Avu() verwendet, um den Materialcode f¸r 1108 zu ermitteln
-	// auﬂerdem beim Anlegen von Aufs‰tzen
+	// Funktion wird von Aaup() und Avu() verwendet, um den Materialcode f√ºr 1108 zu ermitteln
+	// au√üerdem beim Anlegen von Aufs√§tzen
 	switch (__matCode1())
 	{
 		case "B":
-			Materialart = "\n1108 Bildtontr‰ger";
+			Materialart = "\n1108 Bildtontr√§ger";
 			break;
 		case "E":
 			Materialart = "\n1108 Mikroform";
 			break;
 		case "G":
-			Materialart = "\n1108 Tontr‰ger";
+			Materialart = "\n1108 Tontr√§ger";
 			break;
 		case "M":
 			Materialart = "\n1108 Musikdruck";
@@ -65,45 +65,45 @@ function __Materialbenennung()
 
 function __formatD()
 {
-	//Pr‰sentationsformat pr¸fen und auf "D" umstellen
+	//Pr√§sentationsformat pr√ºfen und auf "D" umstellen
 	if (application.activeWindow.getVariable("P3GPR") != "D") {
 		application.activeWindow.command ("\\too d", false);
 	}
 }
 function __formatP()
 {
-	//Pr‰sentationsformat pr¸fen und auf "D" umstellen
+	//Pr√§sentationsformat pr√ºfen und auf "D" umstellen
 	if (application.activeWindow.getVariable("P3GPR") != "P") {
 		application.activeWindow.command ("\\too p", false);
 	}
 }
 
 //----------------------------------------------------------
-//Beide Funktionen gehˆren zusammen!
+//Beide Funktionen geh√∂ren zusammen!
 function __loescheBisKategorieEnde()
 {
-	//Im WinIBW3-Men¸ 'Bearbeiten', Men¸befehl 'Lˆsche bis Ende der Kategorie', Strg+E
+	//Im WinIBW3-Men√º 'Bearbeiten', Men√ºbefehl 'L√∂sche bis Ende der Kategorie', Strg+E
 	if (!application.activeWindow.title) {
 	return false;
 	}
 }
 function loescheBisKategorieEnde()
 {
-	//steht nur zur Verf¸gung, wenn __loescheBisKategorieEnde() nicht false
+	//steht nur zur Verf√ºgung, wenn __loescheBisKategorieEnde() nicht false
 	application.activeWindow.title.deleteToEndOfLine();
 }
 //----------------------------------------------------------
-//Beide Funktionen gehˆren zusammen!
+//Beide Funktionen geh√∂ren zusammen!
 function __loescheKategorie()
 {
-	//Im WinIBW3-Men¸ 'Bearbeiten', Men¸befehl 'Lˆsche Kategorie', Stry+Y
+	//Im WinIBW3-Men√º 'Bearbeiten', Men√ºbefehl 'L√∂sche Kategorie', Stry+Y
 	if (!application.activeWindow.title) {
 	return false;
 	}
 }
 function loescheKategorie()
 {
-	//steht nur zur Verf¸gung, wenn __loescheKategorie() nicht false
+	//steht nur zur Verf√ºgung, wenn __loescheKategorie() nicht false
 	application.activeWindow.title.deleteLine(1);
 }
 //----------------------------------------------------------
@@ -148,11 +148,11 @@ function __kategorieInhalt(strTitle, kategorie, bPlus)
 {
 	/*Ermitteln von Kategorien aus der Vollanzeige (nicht Korrekturstatus!)
 	Kategorie + Inhalt werden ausgegeben
-	In strTitle muss der kopierte Datensatz ¸bergeben werden
+	In strTitle muss der kopierte Datensatz √ºbergeben werden
 	In kategorie muss die gesuchte Kategorie genannt werden
 	Mit bPlus wird festgelegt, ob Ausgabewert mit Kategorie (true) oder ohne Kategorie (false) 
 	Funktionsaufruf: __kategorieInhalt(strTitle, "4000", true)
-	auch Pica+ mˆglich: __kategorieInhalt(strTitle, "209A", true);
+	auch Pica+ m√∂glich: __kategorieInhalt(strTitle, "209A", true);
 	*/
 	var strKategorie, strKategoriePlus;
 	var zeilen = strTitle.split("\r\n");
@@ -168,7 +168,7 @@ function __kategorieInhalt(strTitle, kategorie, bPlus)
 			strKategorie = "";
 		}
 	}
-	//R¸ckgabewert mit Kategorie oder ohne?
+	//R√ºckgabewert mit Kategorie oder ohne?
 	if (bPlus == true){
 		return strKategoriePlus;
 		} else {
@@ -238,7 +238,7 @@ function __datumUhrzeit()
 function ppnlisteDownload()
 {
 	//PPN-Datei muss im Profiles-Verzeichnis des Benutzers gespeichert werden
-	//liest Datei, ruft jede PPN auf und f¸hrt Download aus.
+	//liest Datei, ruft jede PPN auf und f√ºhrt Download aus.
 	var theFileInput = utility.newFileInput();
 	var theLine;
 	var fileName = "\\" + "ppnliste.txt";
@@ -260,7 +260,7 @@ function ppnlisteDownload()
 //-------------------------------------------------------------------
 
 function inputBox(ttl,txt,dflt) {
-/* Die interne Funktion oeffnet eine Input-Box und gibt den eingegebenen Wert zur¸ck.
+/* Die interne Funktion oeffnet eine Input-Box und gibt den eingegebenen Wert zur√ºck.
 Mit Parameter ttl kann der Text fuer die Titelzeile der Eingabebox uebergeben werden. 
 Parameter txt enthaelt den Text der Input-Box und mit dflt kann ein Default-Wert definiert werden.
 Historie:
@@ -336,7 +336,7 @@ function getSpecialDirectory(name)
 	return dirService.get(name, Components.interfaces.nsIFile);
 }
 function WinIBW3_Verzeichnisse(){
-	//Funktion gibt Informationen ¸ber Installations- und Benutzerverzeichnis aus.
+	//Funktion gibt Informationen √ºber Installations- und Benutzerverzeichnis aus.
 	var verzeichnisProgramme = getSpecialDirectory("BinDir");
 	var verzeichnisBenutzer = getSpecialDirectory("ProfD");
 	var verzeichnisStart = application.getProfileString("ibw.startup", "homepage", "");
@@ -350,7 +350,7 @@ function WinIBW3_Verzeichnisse(){
 	application.activeWindow.clipboard = dieVerzeichnisse;
 	
 	application.messageBox("Verzeichnisse der WinIBW3", dieVerzeichnisse + "\n\n--- Die hier angezeigten Informationen wurden im Zwischenspeicher abgelegt ---" +
-		"\n--- Einf¸gen mit Strg+v ---", "message-icon");
+		"\n--- Einf√ºgen mit Strg+v ---", "message-icon");
 }
 
 function sucheHilfe()
@@ -368,12 +368,12 @@ function ppnListe()
 	var setSize = application.activeWindow.getVariable("P3GSZ");
 
 	if (setSize == "") {
-		application.messageBox ("PPN-Liste", "Diese Funktion kann nur in einer Kurzanzeige ausgef¸hrt werden!", "error-icon");
+		application.messageBox ("PPN-Liste", "Diese Funktion kann nur in einer Kurzanzeige ausgef√ºhrt werden!", "error-icon");
 		return;
 	}
 	if (setSize > 200) {
-		antwort = prompter.confirmEx("PPN-Liste", "Das Set enth‰lt " + setSize +
-			" Datens‰tze. \nDas Erstellen der PPN-Liste wird eine kleine Weile dauern.\n"+
+		antwort = prompter.confirmEx("PPN-Liste", "Das Set enth√§lt " + setSize +
+			" Datens√§tze. \nDas Erstellen der PPN-Liste wird eine kleine Weile dauern.\n"+
 			"Wollen Sie trotzdem weitermachen?", "Ja", "Nein", "", "", "")
 		if (antwort == 1) {return}
 	}
@@ -386,13 +386,13 @@ function ppnListe()
 	alleppn.shift();//entfernt das 0. Glied der Kette, das leer ist	
 	application.activeWindow.clipboard = alleppn.join("\r\n");
 	application.messageBox ("PPN-Liste", "Alle PPNs wurden eingesammelt und in den " +
-		"Zwischenspeicher geschrieben. \nSie kˆnnen die PPNs jetzt mit dem Shortcut Strg+v " +
-		"in eine Datei einf¸gen.", "message-icon");
+		"Zwischenspeicher geschrieben. \nSie k√∂nnen die PPNs jetzt mit dem Shortcut Strg+v " +
+		"in eine Datei einf√ºgen.", "message-icon");
 }
 
 function rechercheStapel()
 {
-	//ruft einen Dialog auf, mit dem man alle Eintr‰ge suchen kann, die sich im Zwischenspeicher befinden
+	//ruft einen Dialog auf, mit dem man alle Eintr√§ge suchen kann, die sich im Zwischenspeicher befinden
 	var xulFeatures = "centerscreen, chrome, close, titlebar,resizable, modal=no,dependent=yes, dialog=yes";
 	open_xul_dialog("chrome://ibw/content/xul/gbv_rechercheStapel_dialog.xul", xulFeatures);
 }
