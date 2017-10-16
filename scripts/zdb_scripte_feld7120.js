@@ -1,10 +1,10 @@
 // Datei:           zdb_scripte_feld7120.js
-// Autor:           Johann Rolschewski, Wenke R�per, Carsten Klee (ZDB)
+// Autor:           Johann Rolschewski, Wenke Röper, Carsten Klee (ZDB)
 // =======================================================================
 // START ***** FELD 7120 *****
 // =======================================================================
 // Das Script muss im Editierbildschirm aufgerufen werden im Feld 8032 oder 7121 oder 4025.
-// Das Feld 7120 (oder 4026) wird erzeugt und �ber dem Feld ausgegeben.
+// Das Feld 7120 (oder 4026) wird erzeugt und über dem Feld ausgegeben.
 // Unterfunktionen:
 //  __Feldauf7120()
 //  __Klammern7120()
@@ -38,7 +38,7 @@ function __feld7120(displayError,write,direct) {
         var feld8032 = application.activeWindow.title.selection;
         // Feldnummer ermitteln
         feldnummer = feld8032.substring(0, 4);
-        // In Abh�ngigkeit der Feldnummer, wird festgelegt, welches Feld zu erzeugen ist (7120 oder 4025)
+        // In Abhängigkeit der Feldnummer, wird festgelegt, welches Feld zu erzeugen ist (7120 oder 4025)
         if(feldnummer == "8032" || feldnummer == "7120")
         {
             feldnummer = "7120";
@@ -46,7 +46,7 @@ function __feld7120(displayError,write,direct) {
         else
         {
         // Skriptabbruch, falls Aufruf aus falschem Feld erfolgt
-            application.messageBox("Feld7120", "Die Funktion darf nicht f�r das Feld " + feldnummer + " aufgerufen werden.", "alert-icon");
+            application.messageBox("Feld7120", "Die Funktion darf nicht für das Feld " + feldnummer + " aufgerufen werden.", "alert-icon");
             return;
         }
     }
@@ -80,7 +80,7 @@ function __feld7120(displayError,write,direct) {
 function __Feldauf7120(inhalt8032, feldnummer){
 
     // '==================================================
-    // ' Auswertung von Heftnummern f�r Feld 4024
+    // ' Auswertung von Heftnummern für Feld 4024
     // '   Komma7120 --> Komma71204024
     // '   Punkt7120 --> Punkt71204024
     // '==================================================
@@ -100,7 +100,7 @@ function __Feldauf7120(inhalt8032, feldnummer){
     var inhalt7120 = "";
     // Klammern und Rautezeichen (#) entfernen
     hilfsfeld = __Klammern7120(hilfsfeld);
-    // Vortexte l�schen
+    // Vortexte löschen
     hilfsfeld = __Vor7120(hilfsfeld);
     // Ziffer, Punkt, Ziffer bzw. Ziffer Punkt Leerzeichen Ziffer wird ersetzt durch Ziffer*Ziffer 
     hilfsfeld = hilfsfeld.replace(/([0-9])\.\s{0,1}([0-9])/g, "$1*$2");
@@ -218,7 +218,7 @@ function __Klammern7120(feld) {
     // Nummernzeichen und Inhalt weglassen
     klammern7120 = klammern7120.replace(/#[^#]*#/gi, "");
 
-    // Muster = 4 Ziffern oder 4 Ziffern, Schr�gstrich, 2 Ziffern
+    // Muster = 4 Ziffern oder 4 Ziffern, Schrägstrich, 2 Ziffern
     // Eckige Klammern mit Inhalt Fragezeichen weglassen
     klammern7120 = klammern7120.replace(/(\[\?\])/gi, "");
     // Eckige Klammern mit Inhalt: Muster, Semikolon weglassen
@@ -235,13 +235,13 @@ function __Klammern7120(feld) {
 
 function __Vor7120(feld) {
 
-    // Vom Anfang her alles vor 1. Ziffer l�schen
+    // Vom Anfang her alles vor 1. Ziffer löschen
 
     var vor7120 = feld;
     var len = vor7120.length;
     // Erstes Zeichen ermitteln
     var first = vor7120.substring(0,1);
-    // Wenn erstes Zeichen keine Zahl und auch kein Leerzeichen ist, wird es gel�scht
+    // Wenn erstes Zeichen keine Zahl und auch kein Leerzeichen ist, wird es gelöscht
     while (isNaN(first) || first == " ") {
         vor7120 = vor7120.substring(1,len);
         first = vor7120.substring(0,1);
@@ -259,7 +259,7 @@ function __Bindestrich7120(feld) {
     var kommada = false;
     var bindestrich7120 = "";
     var len = hilfsfeld.length;
-    // "ff." am Ende durch "-" ersetzen, sofern Inhalt l�nger als 3 Zeichen lang
+    // "ff." am Ende durch "-" ersetzen, sofern Inhalt länger als 3 Zeichen lang
     if (len > 3 && hilfsfeld.substring(len - 3, len) == "ff.") {
         hilfsfeld = hilfsfeld.substring(0, len - 3) + "-";
         len = hilfsfeld.length;
@@ -316,7 +316,7 @@ function __Tilde7120(feld, teil1, teil2) {
 function __Punkt71204024(feld, band, jahr, heft) {
     // Unterfunktion zu Feld7120 -> Feldauf7120
     // Aufgaben:
-    //  - Entfernen von "zu", "F.", "S.", "Ser.", "Trim." mit jeweils zugeh�rigem Vortext
+    //  - Entfernen von "zu", "F.", "S.", "Ser.", "Trim." mit jeweils zugehörigem Vortext
     //  - Teilen und speichern von Band und Jahr in einzelnen variablen
 
     var len = feld.length;
@@ -385,7 +385,7 @@ function __Punkt71204024(feld, band, jahr, heft) {
             band = jahr;
             jahr = "";
         }
-        // Pr�fungen an den Zahlen
+        // Prüfungen an den Zahlen
         if (jahr != "") {
             jahr = __Musterjahr7120(jahr);
         }
@@ -459,7 +459,7 @@ function __Ziffer7120(feld) {
         }
     }
     if (falschezeichen != "") {
-        fehlerin7120 = fehlerin7120 + "Ung�ltige Zeichen werden weggelassen: " + falschezeichen + "\n";
+        fehlerin7120 = fehlerin7120 + "Ungültige Zeichen werden weggelassen: " + falschezeichen + "\n";
     }
     
     return ziffern7120;
@@ -470,7 +470,7 @@ function __Ziffer7120(feld) {
 function __Musterjahr7120(feld) {
 
     // Unterfunktion zu Feld7120 -> Feldauf7120 -> Punkt7120
-    // Aufgaben: verschiedene Zahlenpr�fungen
+    // Aufgaben: verschiedene Zahlenprüfungen
 
     var musterjahr = feld;
     // RegEx-Muster = zzzz/zzzz oder zzzz/zz oder zzzz/z oder zzzz
