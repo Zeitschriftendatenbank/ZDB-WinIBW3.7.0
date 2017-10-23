@@ -160,7 +160,7 @@ function FrageSpeichern()
 	if (bContentsChanged) {
 		var prompt = utility.newPrompter();
 		prompt.setDebug(true);
-		if (prompt.confirmEx("Speichern?", "Änderungen in " + currentFilename
+		if (prompt.confirmEx("Speichern?", "Ã„nderungen in " + currentFilename
 							+ " speichern?", "Yes", "No", "", "", false) == 0) {
 			DatenmaskeSpeichern(false);
 		}
@@ -203,7 +203,7 @@ try {
 			// the directory doesn't exist yet, create it
 			theDir.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0600);
 			if (!theDir.exists()) {
-				alert("Verzeichnis für Datenmasken konnte nicht erstellt werden!");
+				alert("Verzeichnis fÃ¼r Datenmasken konnte nicht erstellt werden!");
 				return;
 			}
 		}
@@ -272,7 +272,7 @@ function cmdDatenmaskeFileNew()
 		// Check if the given file name exists already
 	    makeFileNameValid();
 		if (fileExists()) {
-			var msg = "Die Datei '" + theFileName + "' besteht bereits. Bitte wählen Sie einen andere Namen.";
+			var msg = "Die Datei '" + theFileName + "' besteht bereits. Bitte wÃ¤hlen Sie einen andere Namen.";
 			prompter.alert(dialogTitle, msg);
 			    theFileName = "";
 		}
@@ -301,7 +301,7 @@ function cmdDatenmaskeFileSaveAs()
 		// Check if the given file name exists already
 		makeFileNameValid();
 		if (fileExists()) {
-			var msg = "Die Datei '" + theFileName + "' besteht bereits. Bitte wählen Sie einen andere Namen.";
+			var msg = "Die Datei '" + theFileName + "' besteht bereits. Bitte wÃ¤hlen Sie einen andere Namen.";
 		    prompter.alert(dialogTitle, msg);
 		    theFileName = "";
 		}
@@ -326,10 +326,10 @@ function cmdDatenmaskeFileDelete()
 
 	theFile.append("datenmasken");
 	theFile.append(currentFilename);
-	dialogTitle = "Datei löschen";
+	dialogTitle = "Datei lÃ¶schen";
 	if (theFile.exists()) {
 		var prompter = utility.newPrompter();
-		if (!prompter.confirm(dialogTitle, "Möchten Sie die Datei '" + currentFilename + "' wirklich löschen?")) {
+		if (!prompter.confirm(dialogTitle, "MÃ¶chten Sie die Datei '" + currentFilename + "' wirklich lÃ¶schen?")) {
 			return;
 		}
 		theFile.remove(false);
