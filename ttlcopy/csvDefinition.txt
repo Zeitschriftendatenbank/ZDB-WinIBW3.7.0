@@ -1,4 +1,4 @@
-﻿//
+//
 // Diese Datei dient zur Definition bestimmter Begriffe,
 // die für eine Ausgabe von Titeln im CSV Format genutzt
 // werden können.
@@ -86,8 +86,8 @@ Bestandsschutz:        220Bx00 $a
 Provenienzvermerke:    220A "@a$a"+"@b$b"+"@e$e"+"@k$k"+"@m$m"+"@p$p"
 LokaleNotation6700:    245Z $a
 Exemplarfeld:          208@ $a+" : $b"
-Standort:              209Ax00 $f
-Signatur+Standort:     K209Ax00 $a+" (($c))"+" @ $d"+"!!$f!!"+" ; $g"+" % $l"
+Standort:              209Ax09 $f
+Signatur+Standort:     K209A $a+" (($c))"+" @ $d"+"!!$f!!"+" ; $g"+" % $l"
 Signatur:              K209Ax00 $a
 Zugriffsrechte:        209K $a+"+$b"+"*$c"
 CodAngaben7134:        209L $a+"#$b"+"+$c"+"*$d"
