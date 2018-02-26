@@ -3,6 +3,8 @@
 <dt> 3010.tab
 <tag> 3010
 <row>edt QQ $4edt QQ Herausgeber
-<row>oth QQ $4oth QQ BegrÃ¼nder des Werks
+<row>oth QQ $4oth QQ Begründer des Werks
 <row>pdb QQ $4pdb QQ Chefredakteur
+<row>pdb QQ $4pbl QQ Verleger
+<row>pdb QQ $4prt QQ Drucker
 </tbl>
