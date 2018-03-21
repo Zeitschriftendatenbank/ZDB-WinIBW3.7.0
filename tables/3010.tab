@@ -5,6 +5,6 @@
 <row>edt QQ $4edt QQ Herausgeber
 <row>oth QQ $4oth QQ Begründer des Werks
 <row>pdb QQ $4pdb QQ Chefredakteur
-<row>pdb QQ $4pbl QQ Verleger
-<row>pdb QQ $4prt QQ Drucker
+<row>pbl QQ $4pbl QQ Verleger
+<row>prt QQ $4prt QQ Drucker
 </tbl>
