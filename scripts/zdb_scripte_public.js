@@ -433,7 +433,7 @@ function __zdbOnlineRessource(copyFile,showComment,add0600,digi){
         }
     }
     
-    y = 0;
+    /*y = 0;
     while('' != application.activeWindow.title.findTag('3100',y, false, true, true))
     {
         if(/\$aut/.test(application.activeWindow.title.selection))
@@ -442,7 +442,7 @@ function __zdbOnlineRessource(copyFile,showComment,add0600,digi){
             application.activeWindow.title.insertText('$4aut');
         }
         y++;
-    }
+    }*/
 
     // neues Feld für Sekundärköperschaft 312X -> 311X
     content = '';
@@ -457,7 +457,7 @@ function __zdbOnlineRessource(copyFile,showComment,add0600,digi){
     y = 0;
     while('' != application.activeWindow.title.findTag('311', y, false, true, true))
     {
-        if(/\$isb/.test(application.activeWindow.title.selection))
+        if(!/\$4isb/.test(application.activeWindow.title.selection))
         {
             application.activeWindow.title.endOfField(false);
             application.activeWindow.title.insertText("$4isb\n");
