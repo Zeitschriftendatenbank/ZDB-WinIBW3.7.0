@@ -3,14 +3,11 @@
 // =======================================================================
 // START ***** FELD 7120 *****
 // =======================================================================
-// Das Script muss im Editierbildschirm aufgerufen werden im Feld 8032 oder 7121 oder 4025.
-// Das Feld 7120 (oder 4026) wird erzeugt und über dem Feld ausgegeben.
 // Unterfunktionen:
 //  __Feldauf7120()
 //  __Klammern7120()
 //  __Vor7120()
 //  __Bindestrich7120()
-//  __Tilde7120()
 //  __Punkt71204024()
 //  __Gleich7120()
 //  __Komma71204024()
@@ -84,169 +81,107 @@ function __Feldauf7120(inhalt8032, feldnummer){
     // '   Komma7120 --> Komma71204024
     // '   Punkt7120 --> Punkt71204024
     // '==================================================
+    var inhalt7120 = [],
+        teil;
 
-    pos = new Array();
-    feld = new Array();
-    var temp_felder = new Array();
-    var temp_felder2 = new Array();
-    var temp_felder3 = new Array();
-    var teil1;
-    var teil2;
-    var band1;
-    var jahr1;
-    var band2;
-    var jahr2;
-    var hilfsfeld = inhalt8032;
-    var inhalt7120 = "";
-    // Klammern und Rautezeichen (#) entfernen
-    hilfsfeld = __Klammern7120(hilfsfeld);
-    // Vortexte löschen
-    hilfsfeld = __Vor7120(hilfsfeld);
-    // Ziffer, Punkt, Ziffer bzw. Ziffer Punkt Leerzeichen Ziffer wird ersetzt durch Ziffer*Ziffer 
-    hilfsfeld = hilfsfeld.replace(/([0-9])\.\s{0,1}([0-9])/g, "$1*$2");
-    // bzw. Ziffer Punkt Leerzeichen (Fall: Band.[?] -> Band. -> Band*) // cs 02.11.2010
-    //hilfsfeld = hilfsfeld.replace(/([0-9])\.\s{0,1}([0-9]){0,1}/g, "$1*$2");
-    // Bindestrich mit Leerzeichen durch ~ ersetzen
-    hilfsfeld = __Bindestrich7120(hilfsfeld);
+    // Nummernzeichen und Inhalt weglassen
+    inhalt8032 = inhalt8032.replace(/#[^#]*#/gi, "");
+    // Texte entfernen
+    inhalt8032 = inhalt8032.replace(/SS/g, "");
+    inhalt8032 = inhalt8032.replace(/WS/g, "");
+    inhalt8032 = inhalt8032.replace(/Nr\./g, "");
+    inhalt8032 = inhalt8032.replace(/u\./g, ",");
+    inhalt8032 = inhalt8032.replace(/nachgewiesen/gi, "");
+    inhalt8032 = inhalt8032.replace(/\.Danachabbestellt/gi, "");
 
-    // Leerzeichen und Texte entfernen
-    hilfsfeld = hilfsfeld.replace(/\s/g, "");
-    hilfsfeld = hilfsfeld.replace(/SS/g, "");
-    hilfsfeld = hilfsfeld.replace(/WS/g, "");
-    hilfsfeld = hilfsfeld.replace(/Nr\./g, "");
-    hilfsfeld = hilfsfeld.replace(/u\./g, ",");
-    hilfsfeld = hilfsfeld.replace(/nachgewiesen/gi, "");
-    hilfsfeld = hilfsfeld.replace(/\.Danachabbestellt/gi, "");
+    // Teile 8032 in Blöcke auf
+    var blocks = inhalt8032.split(';');
 
-    // Ermitteln, ob und an welchen Stellen Semikola vorkommen
-    var j = 0;
-    var posi = 2;
-    pos[0] = 0;
-    while (posi > -1) {
-        posi = hilfsfeld.indexOf(";", posi);
-        if (posi > -1) {
-            j++;
-            posi++
-            pos[j] = posi;
+    // für jeden Block
+    for (var b = 0; b < blocks.length; b += 1) {
+        teil = '';
+        // Klammern entfernen
+        blocks[b] = __Klammern7120(blocks[b]);
+
+        // Start- und Endgruppe erstellen
+        blocks[b] = __Bindestrich7120(blocks[b]);
+
+        // Startgruppe
+        blocks[b].start = __Vor7120(blocks[b].start);
+        if('' == blocks[b].start) {
+           delete blocks[b];
+           continue; 
         }
-    }
-    j++;
-    pos[j] = hilfsfeld.length + 2;
-
-    for (var i = 0; i < j; i++) {
-        feld[i] = hilfsfeld.substring(pos[i], pos[i+1] - 1);
-        temp_felder = __Tilde7120(feld[i], "", "");
-        teil1 = temp_felder[0];
-        teil2 = temp_felder[1];
-        band1 = "";
-        jahr1 = "";
-        heft1 = "";
-        band2 = "";
-        jahr2 = "";
-        heft2 = "";
-        temp_felder2 = __Punkt71204024(teil1, band1, jahr1, heft1);
-        band1 = temp_felder2[0];
-        jahr1 = temp_felder2[1];
-        heft1 = temp_felder2[2];
-        if (teil2 !== "-" && teil2 !== "") {
-            temp_felder3 = __Punkt71204024(teil2, band2, jahr2, heft2);
-            band2 = temp_felder3[0];
-            jahr2 = temp_felder3[1];
-            heft2 = temp_felder3[2];
+        blocks[b].start = __Punkt71204024(blocks[b].start, 'start');
+        if(blocks[b].start.band != '') {
+            blocks[b].start.band = '/v' + blocks[b].start.band;
         }
-        if (inhalt7120 != "" && (band1 || jahr1 || band2 || jahr2 != "")) {
-            inhalt7120 = inhalt7120 + "; ";
+        if(blocks[b].start.jahr != '') {
+            blocks[b].start.jahr = '/b' + blocks[b].start.jahr;
         }
-
-        if (feldnummer == "8032" || feldnummer == "7120") {
-        // Feld 7120 aufbauen
-            if (band1 != "") {
-                inhalt7120 = inhalt7120 + "\/v" + band1;
-            }
-            if (jahr1 != "") {
-                inhalt7120 = inhalt7120 + "\/b" + jahr1;
-            }
-            if (band2 != "") {
-                inhalt7120 = inhalt7120 + "\/V" + band2;
-            }
-            if (jahr2 != "") {
-                inhalt7120 = inhalt7120 + "\/E" + jahr2;
-            }
-        } else {
-        // Feld 4024 aufbauen
-          if (heft1 != "") {
-                inhalt7120 = inhalt7120 + "\/a" + heft1;
-            }
-            if (jahr1 != "") {
-                inhalt7120 = inhalt7120 + "\/b" + jahr1;
-            }
-            else if (band1 != "") {
-                inhalt7120 = inhalt7120 + "\/v" + band1;
-            }
-
-            if (heft2 != "") {
-                inhalt7120 = inhalt7120 + "\/A" + heft2;
-            }
-            if (jahr2 != "") {
-                inhalt7120 = inhalt7120 + "\/E" + jahr2;
-            }
-            else if (band2 != "") {
-                inhalt7120 = inhalt7120 + "\/V" + band2;
-            }
-        }
+        teil = blocks[b].start.band + blocks[b].start.jahr;
         
-        if (teil2 == "-") {
-            inhalt7120 = inhalt7120 + "-";
+        // Endgruppe
+        if(blocks[b].end) {
+            if(blocks[b].end == '-') {
+                teil += blocks[b].end;
+            } else {
+                blocks[b].end = __Vor7120(blocks[b].end);
+                blocks[b].end = __Punkt71204024(blocks[b].end, 'end');
+                if(blocks[b].end != '-') {
+                    if(blocks[b].end.band != '') {
+                        blocks[b].end.band = '/V' + blocks[b].end.band;
+                    }
+                    if(blocks[b].end.jahr != '') {
+                        blocks[b].end.jahr = '/E' + blocks[b].end.jahr;
+                    }
+                    blocks[b].end = blocks[b].end.band + blocks[b].end.jahr;
+                }
+                teil += blocks[b].end;
+            }
         }
+        inhalt7120.push(teil.replace(/\s/g, ""));
+
     }
-    return inhalt7120;
 
-    //inhalt7120 = hilfsfeld
-    //return inhalt7120;
-
+    return inhalt7120.join('; ');
 }
 
 
 function __Klammern7120(feld) {
-
-    var klammern7120 = feld;
-
     // Runde Klammern und Inhalt weglassen
-    klammern7120 = klammern7120.replace(/\([^)]*\)/gi, "");
+    feld = feld.replace(/\([^)]*\)/g, "");
     // Geschweifte Klammern und Inhalt weglassen
-    klammern7120 = klammern7120.replace(/\{[^}]*\}/gi, "");
-    // Nummernzeichen und Inhalt weglassen
-    klammern7120 = klammern7120.replace(/#[^#]*#/gi, "");
+    feld = feld.replace(/\{[^}]*\}/gi, "");
+    
 
     // Muster = 4 Ziffern oder 4 Ziffern, Schrägstrich, 2 Ziffern
     // Eckige Klammern mit Inhalt Fragezeichen weglassen
-    klammern7120 = klammern7120.replace(/(\[\?\])/gi, "");
-    // Eckige Klammern mit Inhalt: Muster, Semikolon weglassen
-    klammern7120 = klammern7120.replace(/\[\d{4}];|\[\d{4}\/\d\d];/gi, ";");
-    // Eckige Klammern mit Inhalt: Muster, Bindestrich, Blank weglassen
-    klammern7120 = klammern7120.replace(/\[\d{4}]- |\[\d{4}\/\d\d]- /, " -");
-    // Eckige Klammern mit Inhalt: Muster am Feldende weglassen
-    //klammern7120 = klammern7120.replace(/\[\d{4}]|\[\d{4}\/\d\d]/, "");
-    klammern7120 = klammern7120.replace(/\[[^\]]+?\]/, "");
+    feld = feld.replace(/(\[[^\]]*?\?\])/gi, "");
 
-    return klammern7120;
+    //Texte in Klammern entfernen z.b. [Band 1]. -> [1.]
+    feld = feld.replace(/(\[)(\D+)(.*)(\])/g, "$1$3$4");
+
+    // Eckige Klammern mit Nummern und Slash zulassen
+    feld = feld.replace(/(\[)(\d+(:?\/?\d+)?\.?)*?(\])/g, "$2");
+
+    // restliche eckige Klammern löschen
+    feld = feld.replace(/\[[^\]]+?\]/, "");
+
+    return feld;
 }
 
 
 function __Vor7120(feld) {
-
     // Vom Anfang her alles vor 1. Ziffer löschen
-
-    var vor7120 = feld;
-    var len = vor7120.length;
     // Erstes Zeichen ermitteln
-    var first = vor7120.substring(0,1);
+    var first = feld.substring(0,1);
     // Wenn erstes Zeichen keine Zahl und auch kein Leerzeichen ist, wird es gelöscht
     while (isNaN(first) || first == " ") {
-        vor7120 = vor7120.substring(1,len);
-        first = vor7120.substring(0,1);
+        feld = feld.substring(1,feld.length);
+        first = feld.substring(0,1);
     }
-    return vor7120;
+    return feld;
 
 }
 
@@ -280,49 +215,39 @@ function __Bindestrich7120(feld) {
         }
     }
     // Bindestrich mit Leerzeichen durch "~" ersetzen
-    bindestrich7120 = bindestrich7120.replace(/\s-\s/g, "~");
-    bindestrich7120 = bindestrich7120.replace(/\s-/g, "~");
-    bindestrich7120 = bindestrich7120.replace(/-\s/g, "~");
-    len = bindestrich7120.length;
-    if (bindestrich7120.substring(len - 1, len) == "-") {
-        bindestrich7120 = bindestrich7120.substring(0, len - 1) + "~";
+    bindestrich7120 = bindestrich7120.replace(/\s-\s?|-\s/g, "~");
+    bindestrich7120 = bindestrich7120.replace(/~$/, "~-");
+
+    var start_end_split = bindestrich7120.split("~", 2);
+    var start_end = {};
+    start_end.start = '';
+    start_end.end = '';
+    if(1 < start_end_split.length) {
+        start_end.end = start_end_split[1].replace(/^\s+|\s+$/g,'');
     }
-    return bindestrich7120;
+    start_end.start = start_end_split[0].replace(/^\s+|\s+$/g,'');
+
+    return start_end;
 
 }
 
-
-function __Tilde7120(feld, teil1, teil2) {
-    // Unterfunktion zu Feld7120 -> Feldauf7120
-    // Aufgabe: Feld bei Tilde in Teil1 und Teil2 zerlegen
-
-    var posi = feld.indexOf("~");
-    if (posi == -1) {
-        teil1 = feld;
-        teil2 = "";
-    } else if (posi == feld.length - 1) {
-        teil1 = feld.substring(0, feld.length - 1);
-        teil2 = "-";
-    } else {
-        teil1 = feld.substring(0, posi);
-        teil2 = feld.substring(posi + 1, feld.length);
-    }
-    var felder = new Array(teil1, teil2);
-    return felder;
-
-}
-
-
-function __Punkt71204024(feld, band, jahr, heft) {
+function __Punkt71204024(feld, startEnd) {
     // Unterfunktion zu Feld7120 -> Feldauf7120
     // Aufgaben:
     //  - Entfernen von "zu", "F.", "S.", "Ser.", "Trim." mit jeweils zugehörigem Vortext
     //  - Teilen und speichern von Band und Jahr in einzelnen variablen
 
+    // Ziffer, Punkt, Ziffer bzw. Ziffer Punkt Leerzeichen Ziffer wird ersetzt durch Ziffer*Ziffer 
+    feld = feld.replace(/([0-9])\.\s{0,1}([0-9])/g, "$1*$2");
+    // bzw. Ziffer Punkt Leerzeichen (Fall: Band.[?] -> Band. -> Band*) // cs 02.11.2010
+    //inhalt8032 = inhalt8032.replace(/([0-9])\.\s{0,1}([0-9]){0,1}/g, "$1*$2");
+    var band_jahr = {};
+    band_jahr.band = '';
+    band_jahr.jahr = '';
     var len = feld.length;
     if (feld == "") {
-        band = "";
-        jahr = "";
+        band_jahr.band = "";
+        band_jahr.jahr = "";
     } else {
         var posi = feld.indexOf("zu");
         if (posi > -1 && posi < len) {
@@ -348,57 +273,46 @@ function __Punkt71204024(feld, band, jahr, heft) {
         posi = feld.indexOf("*");
 
         if (posi == -1) {
-            jahr = feld;
+            band_jahr.jahr = feld;
         } else if (posi == len) {
-            band = feld;
+            band_jahr.band = feld;
         } else {
-            band = feld.substring(0, posi);
-            jahr = feld.substring(posi + 1, len);
+            band_jahr.band = feld.substring(0, posi);
+            band_jahr.jahr = feld.substring(posi + 1, len);
         }
-
-        if (band != "") {
-            band = __Gleich7120(band);
+        if (band_jahr.band != "") {
+            band_jahr.band = __Gleich7120(band_jahr.band);
         }
-        if (band != "") {
-            var temp = __Komma71204024(band, heft);
-            band = temp[0];
-            heft = temp[1];
+        if (band_jahr.band != "") {
+            band_jahr.band = __Komma71204024(band_jahr.band);
         }
-        if (band != "") {
-            band = __Ziffer7120(band);
+        if (band_jahr.band != "") {
+            band_jahr.band = __Ziffer7120(band_jahr.band);
         }
-        if (jahr != "") {
-            jahr = __Gleich7120(jahr);
+        if (band_jahr.jahr != "") {
+            band_jahr.jahr = __Gleich7120(band_jahr.jahr);
         }
-        if (jahr != "") {
-            var temp = __Komma71204024(jahr, heft);
-            jahr = temp[0];
-            heft = temp[1];
+        if (band_jahr.jahr != "") {
+            band_jahr.jahr = __Komma71204024(band_jahr.jahr);
         }
-        if (jahr != "") {
-            jahr = __Ziffer7120(jahr);
+        if (band_jahr.jahr != "") {
+            band_jahr.jahr = __Ziffer7120(band_jahr.jahr);
         }
-        if (heft != "") {
-            heft = __Ziffer7120(heft);
-        }
-        if (band == "" && (isNaN(jahr.substring(0,4)) || jahr.length < 4)) {
-            band = jahr;
-            jahr = "";
+        if ("" == band_jahr.band && (isNaN(band_jahr.jahr.substring(0,4)) || band_jahr.jahr.length < 4)) {
+            band_jahr.band = band_jahr.jahr;
+            band_jahr.jahr = "";
         }
         // Prüfungen an den Zahlen
-        if (jahr != "") {
-            jahr = __Musterjahr7120(jahr);
+        if (band_jahr.jahr != "") {
+            band_jahr.jahr = __Musterjahr7120(band_jahr.jahr, startEnd);
         }
     }
-    var felder = new Array(band, jahr, heft);
 
-    return felder;
-
+    return band_jahr;
 }
 
 
 function __Gleich7120(feld) {
-
     // Unterfunktion zu Feld7120 -> Feldauf7120 -> Punkt7120
     // Aufgaben: Alles hinter Gleichheitszeichen bis Zeilenende entfernen
 
@@ -406,28 +320,23 @@ function __Gleich7120(feld) {
     if (posi > -1 ) {
         feld = feld.substring(0, posi);
     }
-    return feld;
+    return feld.replace(/^\s+|\s+$/g, '');
 
 }
 
 
-function __Komma71204024(feld, heft) {
-
+function __Komma71204024(feld) {
     // Unterfunktion zu Feld7120 -> Feldauf7120 -> Punkt7120
     // Aufgaben: Feld bei Komma abschneiden
     var posi = feld.indexOf(",");
     if (posi > -1 ) {
-        heft = feld.substring(posi + 1, feld.length);
         feld = feld.substring(0, posi);
     }
-    var return_vars = new Array(feld, heft);
-    return return_vars;
-
+    return feld;
 }
 
 
 function __Ziffer7120(feld) {
-
     // Unterfunktion zu Feld7120 -> Feldauf7120 -> Punkt7120
     // Aufgaben: Falsche Zeichen (~ *) entfernen
     var falschezeichen = "";
@@ -467,20 +376,32 @@ function __Ziffer7120(feld) {
 }
 
 
-function __Musterjahr7120(feld) {
+function __Musterjahr7120(feld, startEnd) {
 
-    // Unterfunktion zu Feld7120 -> Feldauf7120 -> Punkt7120
-    // Aufgaben: verschiedene Zahlenprüfungen
+    if(/\//.test(feld)) {
+        var jahre = /^(\d{4})\/(\d{4}|\d{2})$/.exec(feld);
+        if(null == jahre) {
+            fehlerin7120 = fehlerin7120 + "Falsche Jahreszahl wird weggelassen: " + feld + "\n";
+            return feld = '';
+        }
+        
+        /*if('start' == startEnd) {
+            fehlerin7120 = fehlerin7120 + "Startgruppe: weitere Jahre werden weggelassen: " + jahre[2] + "\n";
+            feld = jahre[1];
+        } else if(2 == jahre[2].length) {
+            fehlerin7120 = fehlerin7120 + "Endgruppe: weitere Jahre werden weggelassen: " + jahre[1] + "\n";
+            feld = jahre[1].substring(0,2) + jahre[2];
+        } else {
+            fehlerin7120 = fehlerin7120 + "Endgruppe: weitere Jahre werden weggelassen: " + jahre[1] + "\n";
+            feld = jahre[2];
+        }*/
 
-    var musterjahr = feld;
-    // RegEx-Muster = zzzz/zzzz oder zzzz/zz oder zzzz/z oder zzzz
-    var suche = /\d{4}\/\d{4}|\d{4}\/\d{2}|\d{4}\/\d{1}|\d{4}/;
-    var ergebnis = suche.exec(musterjahr);
-    if (ergebnis == null || (feld.length == 8 || feld.length > 9)) {
-        fehlerin7120 = fehlerin7120 + "Falsche Jahreszahl wird weggelassen: " + musterjahr + "\n";
-        musterjahr = "";
+    } else if(feld.length !== 4) {
+        fehlerin7120 = fehlerin7120 + "Falsche Jahreszahl wird weggelassen: " + feld + "\n";
+        return feld = '';
     }
-    return musterjahr;
+
+    return feld;
 }
 
 // =======================================================================
