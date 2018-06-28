@@ -140,7 +140,7 @@ function __zeigeEigenschaften(object){
 
     // initialize the prompter
     var thePrompter = utility.newPrompter();
-    thePrompter.setDebug(true); // only for debugging
+    thePrompter.setDebug(false); // only for debugging
     
     // get the selection as string
     var theAnswer = thePrompter.select("Eigenschaften von " + typeof object, "Zeige Eigenschaften von", namen);
