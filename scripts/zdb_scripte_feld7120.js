@@ -63,9 +63,7 @@ function __feld7120(displayError,write,direct) {
     {
         // Feld ausgeben
         application.activeWindow.title.startOfField(false);
-        application.activeWindow.title.insertText("\n");
-        application.activeWindow.title.lineUp(1, false);
-        application.activeWindow.title.insertText(feldnummer + " " + inhalt7120);
+        application.activeWindow.title.insertText(feldnummer + ' ' + inhalt7120 + "\n");
     }
     else
     {
