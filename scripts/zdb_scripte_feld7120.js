@@ -160,7 +160,7 @@ function __Klammern7120(feld) {
     feld = feld.replace(/(\[[^\]]*?\?\])/gi, "");
 
     //Texte in Klammern entfernen z.b. [Band 1]. -> [1.]
-    feld = feld.replace(/(\[)(\D*)([0-9\/]+)(\D*)(\])/g, "$1$3$5");
+    feld = feld.replace(/(\[)(\D*)([0-9\/.]+)(\D*)(\])/g, "$1$3$5");
 
     // Eckige Klammern mit Nummern und Slash zulassen
     feld = feld.replace(/(\[)(\d+(:?\/?\d+)?\.?)*?(\])/g, "$2");
