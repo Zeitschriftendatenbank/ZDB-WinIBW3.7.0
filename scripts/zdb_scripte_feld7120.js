@@ -29,23 +29,14 @@ function __feld7120(displayError,write,direct) {
     var feldnummer;
     if(false == direct) // lese aktuelles Feld
     {
-        // Feld markieren, in dem der Cursor steht
-        application.activeWindow.title.startOfField(false);
-        application.activeWindow.title.endOfField(true);
-        var feld8032 = application.activeWindow.title.selection;
-        // Feldnummer ermitteln
-        feldnummer = feld8032.substring(0, 4);
-        // In Abhängigkeit der Feldnummer, wird festgelegt, welches Feld zu erzeugen ist (7120 oder 4025)
-        if(feldnummer == "8032" || feldnummer == "7120")
-        {
-            feldnummer = "7120";
-        }
-        else
-        {
-        // Skriptabbruch, falls Aufruf aus falschem Feld erfolgt
+        feldnummer = application.activeWindow.title.tag;
+        if(feldnummer != "8032"){
+            // Skriptabbruch, falls Aufruf aus falschem Feld erfolgt
             application.messageBox("Feld7120", "Die Funktion darf nicht für das Feld " + feldnummer + " aufgerufen werden.", "alert-icon");
             return;
         }
+        feld8032 = application.activeWindow.title.currentField;
+        feldnummer = "7120";
     }
     else // nehme direkten input
     {
