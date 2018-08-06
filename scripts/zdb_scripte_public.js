@@ -533,8 +533,7 @@ function __zdbFeld424XGet()
         '039B' : {p:'4241',c:[]},
         '039C' : {p:'4242',c:[]},
         '039D' : {p:'4243',c:[]},
-        '039E' : {p:'4244',c:[]},
-        '039S' : {p:'4245',c:[]}
+        '039E' : {p:'4244',c:[]}
     };
     
     var re = new RegExp('^.*--->.(.+)$'); // 2014 Sonderh. zu u. ab 2015 Forts. als Online-Ausg. ---> Lexware-Unternehmer-Wissen
