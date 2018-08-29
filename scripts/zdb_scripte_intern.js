@@ -941,3 +941,50 @@ function stapelJob()
     var xulFeatures = "centerscreen, chrome, close, titlebar,resizable, modal=no, dependent=yes, dialog=no";
     open_xul_dialog("chrome://ibw/content/xul/ZDB_stapelJob_dialog.xul", xulFeatures);
 }
+
+function Pruezibik() {
+    __zdbPruezibik();
+}
+
+function __zdbPruezibik(bin) {
+    bin = (typeof bin !== 'undefined') ?  bin : '';
+    var bik_in = inputBox('Prüfziffer-Berechnung','Bitte die sechstellige Grund-BIK eingeben', bin);
+    if(!bik_in) {
+        return false;
+    }
+    if(bik_in.length != 6) {
+        __zdbError('Die BIK muss aus genau 6 Ziffern bestehen');
+        __zdbPruezibik(bik_in);
+        return;
+    }
+    var z1 = bik_in[5] * 2,
+        z2 = bik_in[4] * 3,
+        z3 = bik_in[3] * 4,
+        z4 = bik_in[2] * 5,
+        z5 = bik_in[1] * 6,
+        z6 = bik_in[0] * 7;
+
+    var sum = z1 + z2 + z3 + z4 + z5 + z6;
+    var sum2 = Math.floor(sum / 11);
+    var prue = sum - ( sum2 * 11);
+    if(prue == 10) {
+        prue = 'X'
+    }
+    var bik = bik_in + "-" + prue;
+    application.activeWindow.clipboard = bik;
+
+    __meldung('Einzelne Schritte der Berechnung für BIK ' + bik_in + " :\n"
+            + "Wert Ziffer 1: " + z6 + "\n"
+            + "Wert Ziffer 2: " + z5 + "\n"
+            + "Wert Ziffer 3: " + z4 + "\n"
+            + "Wert Ziffer 4: " + z3 + "\n"
+            + "Wert Ziffer 5: " + z2 + "\n"
+            + "Wert Ziffer 6: " + z1 + "\n"
+            + "Summe der Werte: " + sum + "\n"
+            + "INTEGER von Summe/11: " + sum2 + "\n"
+            + "Prüfziffer ist " + prue + "\n"
+            + "-------------------------------------\n"
+            + "BIK = " + bik + "\n"
+            + "... wurde in die Zwischenablage kopiert."
+    );
+}
