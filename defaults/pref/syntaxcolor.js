@@ -50,6 +50,10 @@ pref("ibw.presentation.syntaxcolor.D.format.10", ' <span style="direction: ltr;"
 pref("ibw.presentation.syntaxcolor.D.regex.11", "(\$T.*?&amp;&amp;)");
 pref("ibw.presentation.syntaxcolor.D.format.11", '<span style="color:660099">$1</span>');
 
+// 12. URLs in 4203
+pref("ibw.presentation.syntaxcolor.D.regex.12", "(4203.*\s)(http[^<\s]+)(\s.*?<|<)");
+pref("ibw.presentation.syntaxcolor.D.format.12", '$1<a href="$2">$2</a>$3');
+
 //
 // DA
 //
