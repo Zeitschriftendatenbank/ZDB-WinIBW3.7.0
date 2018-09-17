@@ -410,6 +410,7 @@ function __zdbOnlineRessource(copyFile,showComment,add0600,digi){
     {
         application.activeWindow.title.insertText("\n1100 "+application.getProfileString('zdb.userdata.digiconfig', '1100', ''));
         application.activeWindow.title.insertText("\n1101 "+application.getProfileString('zdb.userdata.digiconfig', '1101', ''));
+        application.activeWindow.title.insertText("\n1700 "+application.getProfileString('zdb.userdata.digiconfig', '1700', ''));
         application.activeWindow.title.insertText("\n2050 "+application.getProfileString('zdb.userdata.digiconfig', '2050', ''));
         application.activeWindow.title.insertText("\n2051 "+application.getProfileString('zdb.userdata.digiconfig', '2051', ''));
     }
