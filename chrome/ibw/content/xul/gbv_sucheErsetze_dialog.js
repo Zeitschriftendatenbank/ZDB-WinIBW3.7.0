@@ -642,7 +642,7 @@ function bearbeiteZeilenErsetzen() {
         regex = false,
         regexBed1 = false,
         zeilenNr,
-        bed1 = true,
+        bed1,
         current,
         replaced,
         lZeilen,
@@ -660,6 +660,7 @@ function bearbeiteZeilenErsetzen() {
 
     //alle Zeilen im Datensatz prüfen:
     for (zeilenNr = 1; zeilenNr <= lZeilen; zeilenNr += 1) {
+        bed1 = true;
         strTag = application.activeWindow.title.tag;
         //alert("strTag: " + strTag + "\nKat1: " + Kat1 + "\nKat2: " + Kat2);
         //alle Vorkommnisse in der Kategorie werden ersetzt:
