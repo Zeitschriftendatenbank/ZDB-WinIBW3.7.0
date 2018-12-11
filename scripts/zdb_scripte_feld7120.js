@@ -42,6 +42,10 @@ function __feld7120(displayError,write,direct) {
     {
         feld8032 = direct;
         feldnummer = feld8032.substring(0, 4);
+        if(feldnummer != '8032' | feldnummer != '4025') {
+            feldnummer = '8032';
+            feld8032 = '8032 ' + feld8032;
+        }
     }
     // Feldinhalt ermitteln
     var inhalt8032 = feld8032.substring(5, feld8032.length);
