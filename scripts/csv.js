@@ -206,8 +206,6 @@ CSV.prototype =
             
             if(!csv.openSpecial("ProfD", "\csv\\" + this.csvFilename)){
                 throw "Datei " + this.csvFilename + " wurde nicht gefunden.";
-                throw "Das Skript wird abgebrochen. Datei " + this.csvFilename + " wurde nicht gefunden.";
-                return false;
             }
 
             // read the start line
