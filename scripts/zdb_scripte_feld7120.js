@@ -42,14 +42,14 @@ function __feld7120(displayError,write,direct) {
     {
         feld8032 = direct;
         feldnummer = feld8032.substring(0, 4);
-        if(feldnummer != '8032' | feldnummer != '4025') {
+        if(feldnummer != '8032' && feldnummer != '4025') {
             feldnummer = '8032';
             feld8032 = '8032 ' + feld8032;
         }
     }
     // Feldinhalt ermitteln
     var inhalt8032 = feld8032.substring(5, feld8032.length);
-    var inhalt7120 = __Feldauf7120(inhalt8032, feldnummer);
+    var inhalt7120 = __Feldauf7120(inhalt8032);
     if (fehlerin7120 != "")
     {
         if(displayError) application.messageBox("Feld7120", fehlerin7120, "alert-icon");
@@ -67,7 +67,7 @@ function __feld7120(displayError,write,direct) {
 }
 
 
-function __Feldauf7120(inhalt8032, feldnummer){
+function __Feldauf7120(inhalt8032){
 
     // '==================================================
     // ' Auswertung von Heftnummern für Feld 4024
