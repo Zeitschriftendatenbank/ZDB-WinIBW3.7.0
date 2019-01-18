@@ -15,6 +15,7 @@
 //  __Musterjahr7120()
 // =======================================================================
 
+var fehlerin7120;
 
 function zdb_Feld7120() {
     if(false == __zdbCheckScreen(["IE","IT","ME","MT"],"Feld7120")) return false;
@@ -103,7 +104,7 @@ function __Feldauf7120(inhalt8032){
         blocks[b].start = __Vor7120(blocks[b].start);
         if('' == blocks[b].start) {
            delete blocks[b];
-           continue; 
+           continue;
         }
         blocks[b].start = __Punkt71204024(blocks[b].start, 'start');
         if(blocks[b].start.band != '') {
@@ -113,7 +114,7 @@ function __Feldauf7120(inhalt8032){
             blocks[b].start.jahr = '/b' + blocks[b].start.jahr;
         }
         teil = blocks[b].start.band + blocks[b].start.jahr;
-        
+
         // Endgruppe
         if(blocks[b].end) {
             if(blocks[b].end == '-') {
@@ -146,7 +147,7 @@ function __Klammern7120(feld) {
     feld = feld.replace(/\([^)]*\)/g, "");
     // Geschweifte Klammern und Inhalt weglassen
     feld = feld.replace(/\{[^}]*\}/gi, "");
-    
+
 
     // Muster = 4 Ziffern oder 4 Ziffern, Schrägstrich, 2 Ziffern
     // Eckige Klammern mit Inhalt Fragezeichen weglassen
@@ -230,7 +231,7 @@ function __Punkt71204024(feld, startEnd) {
     //  - Entfernen von "zu", "F.", "S.", "Ser.", "Trim." mit jeweils zugehörigem Vortext
     //  - Teilen und speichern von Band und Jahr in einzelnen variablen
 
-    // Ziffer, Punkt, Ziffer bzw. Ziffer Punkt Leerzeichen Ziffer wird ersetzt durch Ziffer*Ziffer 
+    // Ziffer, Punkt, Ziffer bzw. Ziffer Punkt Leerzeichen Ziffer wird ersetzt durch Ziffer*Ziffer
     feld = feld.replace(/([0-9])\.\s{0,1}([0-9])/g, "$1*$2");
     // bzw. Ziffer Punkt Leerzeichen (Fall: Band.[?] -> Band. -> Band*) // cs 02.11.2010
     //inhalt8032 = inhalt8032.replace(/([0-9])\.\s{0,1}([0-9]){0,1}/g, "$1*$2");
@@ -336,9 +337,9 @@ function __Ziffer7120(feld) {
     var zeich = "";
     var ziffern7120 = "";
     for (i = 0; i < feld.length; i++) {
-    
+
         zeich = feld.substring(i, i + 1);
-        
+
         if (zeich == "~") {
             zeich = "-";
         }
@@ -348,22 +349,22 @@ function __Ziffer7120(feld) {
         if (isNaN(zeich)) {
             //if (zeich == "/" && i > 0) {
             // edit: z.B. 1-4/5; vorher 4/5; jetzt 1-4/5
-           
+
             if (zeich.match(/[\/\-]/) && i > 0) {
-             
+
                 ziffern7120 = ziffern7120 + zeich;
             } else {
                 falschezeichen = falschezeichen + zeich;
             }
         } else {
             ziffern7120 = ziffern7120 + zeich;
-            
+
         }
     }
     if (falschezeichen != "") {
         fehlerin7120 = fehlerin7120 + "Ungültige Zeichen werden weggelassen: " + falschezeichen + "\n";
     }
-    
+
     return ziffern7120;
 
 }
@@ -377,7 +378,7 @@ function __Musterjahr7120(feld, startEnd) {
             fehlerin7120 = fehlerin7120 + "Falsche Jahreszahl wird weggelassen: " + feld + "\n";
             return feld = '';
         }
-        
+
         /*if('start' == startEnd) {
             fehlerin7120 = fehlerin7120 + "Startgruppe: weitere Jahre werden weggelassen: " + jahre[2] + "\n";
             feld = jahre[1];
