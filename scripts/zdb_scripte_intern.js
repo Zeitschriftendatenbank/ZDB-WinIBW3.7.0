@@ -1,4 +1,88 @@
 // Datei:		zdb_scripte_intern.js
+
+if (!Array.prototype.filter) {
+    Array.prototype.filter = function (fun /*, thisArg */) {
+        "use strict";
+
+        if (this === void 0 || this === null)
+            throw new TypeError();
+
+        var t = Object(this);
+        var len = t.length >>> 0;
+        if (typeof fun !== "function")
+            throw new TypeError();
+
+        var res = [];
+        var thisArg = arguments.length >= 2 ? arguments[1] : void 0;
+        for (var i = 0; i < len; i++) {
+            if (i in t) {
+                var val = t[i];
+
+                // NOTE: Technically this should Object.defineProperty at
+                //       the next index, as push can be affected by
+                //       properties on Object.prototype and Array.prototype.
+                //       But that method's new, and collisions should be
+                //       rare, so use the more-compatible alternative.
+                if (fun.call(thisArg, val, i, t))
+                    res.push(val);
+            }
+        }
+
+        return res;
+    };
+}
+
+if (!Array.prototype.indexOf) {
+    Array.prototype.indexOf = function (searchElement, fromIndex) {
+        if (this === undefined || this === null) {
+            throw new TypeError('"this" is null or not defined');
+        }
+
+        var length = this.length >>> 0; // Hack to convert object.length to a UInt32
+
+        fromIndex = +fromIndex || 0;
+
+        if (Math.abs(fromIndex) === Infinity) {
+            fromIndex = 0;
+        }
+
+        if (fromIndex < 0) {
+            fromIndex += length;
+            if (fromIndex < 0) {
+                fromIndex = 0;
+            }
+        }
+
+        for (; fromIndex < length; fromIndex++) {
+            if (this[fromIndex] === searchElement) {
+                return fromIndex;
+            }
+        }
+
+        return -1;
+    };
+}
+
+
+if(!Array.prototype.unique) {
+    Array.prototype.unique = function() {
+        if (this === void 0 || this === null)
+            throw new TypeError();
+        var r = [];
+        o:for(var i = 0, n = this.length; i < n; i++)
+        {
+            for(var x = 0, y = r.length; x < y; x++)
+            {
+                if(r[x]==this[i]) continue o;
+            }
+            r[r.length] = this[i];
+        }
+        return r;
+    }
+}
+
+
+
 /**
  * checks if a user script file is already configured . If not a file is created and path configured
  * this function is called on startup
@@ -16,9 +100,9 @@ function __enableUserScriptFile(){
 }
 /**
  * zählt Exemplardatensätze
- * 
+ *
  * @return array|null
- */ 
+ */
 function __exemplareAnzahl(){
     var regexpExe;
     var format = __zdbGetFormat();
@@ -72,7 +156,7 @@ function __zdbGetParallel(){
         tag = "4243";
         regex = /([^!]*)!([^!]*)/;
     }
-    
+
     if("MT" == scr)
     {
         while((content = application.activeWindow.title.findTag(tag,i,false,false,false)) != "")
@@ -93,7 +177,7 @@ function __zdbGetParallel(){
             i++;
         }
     }
-    
+
     for(var x = 0; x < contents.length; x++)
     {
         if(vortext.test(contents[x]))
@@ -128,7 +212,7 @@ function __zeigeEigenschaften(object){
     // make a properties list for the prompter
     //for(var name in object) namen += name + "\n";
     for(var name in object) Namen.push(name);
-    
+
     // get out if objects count zero prperties
     if (Namen.length == 0)
     {
@@ -141,12 +225,12 @@ function __zeigeEigenschaften(object){
     // initialize the prompter
     var thePrompter = utility.newPrompter();
     thePrompter.setDebug(false); // only for debugging
-    
+
     // get the selection as string
     var theAnswer = thePrompter.select("Eigenschaften von " + typeof object, "Zeige Eigenschaften von", namen);
     // return if nothing have been selected
     if (!theAnswer) {
-        return;	
+        return;
     } else {
         // eval the answer as an object
         /*for(var n in object) {
@@ -176,7 +260,7 @@ function __zeigeEigenschaften(object){
             catch(exception)
             {
                 application.messageBox("Fehler",exception,false);
-            } 
+            }
             finally
             {
                 return;
@@ -195,7 +279,7 @@ function zdbFIDcsv(){
     if(params.GetString(1) == "cancel") {
         return;
     }
-    
+
     var csv = new CSV();
     var file = params.GetString(1);
     csv.delimiter = params.GetString(2);
@@ -205,7 +289,7 @@ function zdbFIDcsv(){
     params = null;
     var lineArray;
     var zdbids = new Array();
-    
+
     // load file object
     var theFileInput = utility.newFileInput();
     if (!theFileInput.open(file))
@@ -232,7 +316,7 @@ function zdbFIDcsv(){
             i++;
         }
         theFileInput.close();
-        
+
         application.activeWindow.command("del s0",false);
         var parallel = new Array();
         for(var y = 0; y < zdbids.length; y++)
@@ -242,7 +326,7 @@ function zdbFIDcsv(){
             application.activeWindow.command("sav " + tinumber,false);
             if(parallel = __zdbGetParallel())
             {
-            
+
                 for(var o in parallel)
                 {
                     application.activeWindow.command("f idn " + parallel[o].idn,false);
@@ -262,7 +346,7 @@ function zdbFIDcsv(){
     {
         prompter.alert("Abbruch","Habe Vorgang abgebrochen.")
     }
-    
+
 }
 
 function zdbFIDset(){
@@ -273,14 +357,14 @@ function zdbFIDset(){
     if (currentSet == 0){
         open_xul_dialog("chrome://ibw/content/xul/ZDB_excelFID_dialog.xul");
         return;
-    }    
+    }
     if(prompter.confirm("Set erstellen","Erstelle ein Set anhand des Sets " + currentSet + " mit " + setSize + " Titeln. Melde mich wieder, wenn ich fertig bin."))
     {
         application.activeWindow.command("del s0",false);
         var parallel = new Array();
         i = 1;
         do {
-            
+
             application.activeWindow.command("s s" + currentSet + " " + i,false);
             var tinumber = application.activeWindow.getVariable("P3GTI");
             application.activeWindow.command("sav " + tinumber,false);
@@ -294,9 +378,9 @@ function zdbFIDset(){
                 }
             }
             i++;
-            
+
         } while (i <= setSize)
-        
+
         application.activeWindow.command("s s0",false);
         if(prompter.confirm("Set erstellt","Fertig! Habe Set erstellt. Soll das Excel-Skript zum Download geöffnet werden?"))
         {
@@ -307,7 +391,7 @@ function zdbFIDset(){
     {
         prompter.alert("Abbruch","Habe Vorgang abgebrochen.")
     }
-    
+
 }
 
 function csvBatchTitel(){
@@ -320,7 +404,7 @@ function csvBatchTitel(){
         application.activeWindow.command("k", false);
         for(var f in fields){
             // we don't want empty fields
-            if(fields[f] != "") 
+            if(fields[f] != "")
             {
                 //	check if field alredy exists
                     if((codes = application.activeWindow.title.findTag(fields[f], 0, false, true, false)) == false)
@@ -329,7 +413,7 @@ function csvBatchTitel(){
                         application.activeWindow.title.endOfBuffer(false);
                 //		insert a new field with the params value
                         application.activeWindow.title.insertText(fields[f] + " " + values[f] + "\n");
-                //	field does already exist		
+                //	field does already exist
                     }
                     else
                     {
@@ -346,26 +430,26 @@ function csvBatchTitel(){
                         if(codeFalse == 0) {
                             application.activeWindow.title.endOfField(false);
                         //		insert params value
-                                    
+
                             application.activeWindow.title.insertText(";" + values[f]);
                         }
                     }
-            } 
+            }
             else
             {
                 //do nothing
             }
         }
-        //			save buffer		
+        //			save buffer
             return csv.__csvSaveBuffer(true,"hinzugefuegt " + values[f]);
     }
-    
+
     csv.__csvSetProperties(csv.__csvBatchTitle,["","ZDB-ID"],'ZDB-ID','zdb',false,"ZDB_LOG.txt");
     try
     {
         csv.__csvConfig();
         csv.__csvBatch();
-    } 
+    }
     catch(e)
     {
         csv.__csvError(e);
@@ -395,36 +479,36 @@ function csvBatchExemplar() {
         // start volume
         var v = (csv.line['Band Beginn'] == "" || !csv.line['Band Beginn']) ? "" : "/v" + csv.line['Band Beginn'];
         var v2 = (csv.line['Band Beginn'] == "" || !csv.line['Band Beginn']) ? "" : csv.line['Band Beginn'];
-        
+
         var b2trenner = (csv.line['Band Beginn'] == "" || !csv.line['Band Beginn']) ? "" : ".";
-        
+
         // issue start
         var h = (csv.line['Heft Beginn'] == "" || !csv.line['Heft Beginn']) ? "" : ","+ csv.line['Heft Beginn'];
-        
+
         // start year
         var b = (csv.line['Jahr Beginn'] == "" || !csv.line['Jahr Beginn']) ? "" : "/b" + csv.line['Jahr Beginn'];
         var b2 = (csv.line['Jahr Beginn'] == "" || !csv.line['Jahr Beginn']) ? "" : csv.line['Jahr Beginn'];
-        
+
         // volume end
         var V = (csv.line['Band Ende'] == "" || !csv.line['Band Ende']) ? "" : "/V" + csv.line['Band Ende'];
         var V2 = (csv.line['Band Ende'] == "" || !csv.line['Band Ende']) ? "" : csv.line['Band Ende'];
-        
+
         var E2trenner = (csv.line['Band Ende'] == "" || !csv.line['Band Ende']) ? "" : ".";
-        
+
         // issue end
         var H = (csv.line['Heft Ende'] == "" || !csv.line['Heft Ende']) ? "" : ","+csv.line['Heft Ende'];
-        
+
         // year end
         var E = (csv.line['Jahr Ende'] == "" || !csv.line['Jahr Ende']) ? "" : "/E" + csv.line['Jahr Ende'];
         var E2 = (csv.line['Jahr Ende'] == "" || !csv.line['Jahr Ende']) ? "" : csv.line['Jahr Ende'];
-        
+
         if((csv.line['Band Ende'] == "" || !csv.line['Band Ende']) && (csv.line['Jahr Ende']  == "" || !csv.line['Jahr Ende'])) {
             V = "-";
         }
-        
+
         var bestandsangaben = v + b + V + E;
         var bestandsangaben2 = v2 + b2trenner + b2 + h + " - " + V2 + E2trenner + E2 + H;
-        
+
         var movingWall = false;
         var mw7140 = "";
         var mw8032 = "";
@@ -448,7 +532,7 @@ function csvBatchExemplar() {
             mw8032 = " ["+mwTeile[1]+mwTeile[2]+" "+entity+"]";
         }
 
-        
+
     //	create value for field 7135
         var lizenz = "";
         switch(csv.code){
@@ -464,8 +548,8 @@ function csvBatchExemplar() {
             break;
             default: lizenz = "";
         }
-        
-        
+
+
         application.activeWindow.command("show d", false);
         // Sichert Inhalt des Zwischenspeichers, da dieser sonst durch copyTitle() überschrieben würde
 
@@ -499,7 +583,7 @@ function csvBatchExemplar() {
     {
         csv.__csvConfig();
         csv.__csvBatch();
-    } 
+    }
     catch(e)
     {
         csv.__csvError("csvBatchExemplar:" + e);
@@ -549,39 +633,39 @@ function sucheErsetze(){
 function tf_vollenden()
 {
     var katString;
-    var temp;	
+    var temp;
     var pos=0;
     var strCounter=0;
     var windstat;
-    
 
-    // String der Kat. 111 auslesen	
+
+    // String der Kat. 111 auslesen
     katString = application.activeWindow.title.findTag("111", 0, false, false, true);
-    
-    
+
+
     // Merker alt_ppn auf '0' setzen. Naeheres siehe tf_vollenden_fortsetzen().
     alt_ppn = 0;
-    
-    
+
+
         //-------------------------------------------
     // Behandlung von $d (Datum)
     //-------------------------------------------
-    
+
     temp = katString;  // Urspruenglichen Kategoriestring in temp einspeichern
-    
-    
+
+
     // String $d bis Ende
     pos = temp.indexOf(delimiter+"d");
     if ((pos > 0) && (temp.length > pos+2)) {
         temp = temp.substring(pos+2);
     }
-    
+
     //** Eine Jahreszahl muss vorhanden sein. Deshalb die unsaubere Programmierung. **
-    
+
     // Falls $c vorhanden, dann nur den Inhalt *bis* $c verwenden
     var pos1 = temp.indexOf(delimiter+"c");
     var pos2 = temp.indexOf(delimiter+"g");
-    
+
     // Den kleineren (aber positiven) Wert verwenden.
     // Beachte: $c kommt immer vor $g (Reihenfolge)
     if (pos1 > 0) {
@@ -592,7 +676,7 @@ function tf_vollenden()
             pos = pos2;
         }
     }
-    
+
     // Nur wenn ein Positionswert gefunden wurde und.. s.u.
     if (pos > 0) {
         temp = temp.substring(0,pos);
@@ -601,46 +685,46 @@ function tf_vollenden()
             temp = delimiter+"c" + temp;
         }
     }
-    
-    
-    
+
+
+
     // Enthaelt das Ergebis zwei Jahreszahlen, getrennt durch Bindestrich,
     // ist der Zielwert durch $b zu trennen.
     if (temp.indexOf("-") > 0) {
-        
+
         // Leerzeichen mehrfach durch nichts ersetzen, da es kein allg. replaceAll gibt.
         temp = temp.replace(" ", "");
         temp = temp.replace(" ", "");
-        
+
         // Sonderfall: Kein Endedatum, String endet mit Bindestrich
         if (temp.charAt(temp.length-1) == "-")
             temp = temp.replace("-" , "");
-        
+
         temp = temp.replace("-", delimiter+"b");
     }
-        
+
     application.activeWindow.title.endOfBuffer(false);
     application.activeWindow.title.insertText("\n548 " + temp + delimiter+"datv");
-    
-        
-    
+
+
+
     //-------------------------------------------
     // Behandlung der Veranstaltungsorte ($c)
     //-------------------------------------------
-        
+
     var ppn="";
-        
+
     temp = katString;  // Urspruenglichen Kategoriestring in temp einspeichen
-    
-        
+
+
     //-- Erstes $c suchen und den String danach mit split aufteilen (in ein Orte-Array)
-    
+
     pos = temp.indexOf(delimiter+"c");
     if ((pos > 0) && (temp.length > pos+2)) {
         temp = temp.substring(pos+2);
-        
+
         //_showMessage("$c ist vorhanden");
-        
+
         // Falls noch $g vorkommt
         pos = temp.indexOf(delimiter+"g");
         if (pos > 0) {
@@ -658,126 +742,126 @@ function tf_vollenden()
         // Array leeren
         search_winIdArray.length = 0;
         search_ortArray.length = 0;
-        
+
         // Hochzaehlen, nur wenn Suchfenster fuer die Orte angezeigt sind.
-        var ortSuchfensterZaehler = 0;  
+        var ortSuchfensterZaehler = 0;
         var zusatzText = "";
-        
-        
+
+
         // Schleife ueber die Orte (gelistet im Editfenster)
         for (var i=0; i<anzOrte; i++) {
-            
+
             ort = ortArray[i];
-            
+
             // Ggf. 'u.a.' aus Ortsnamen entfernen
             //ort = ort.replace(/u\.a\./, "");
-            //ort = ort.replace(/u\.\sa\./, "");			
+            //ort = ort.replace(/u\.\sa\./, "");
             ort = ort.replace(/\s+u\.\s*a\./, "");
-            
-                        
+
+
             //_showMessage("Ort (nach Bereinigung): " + ort, "vollenden()");  // TEST
-                        
+
             // Suchbefehl u. gleichzeitiges OEFFNEN eines neuen Fensters
             application.activeWindow.command("rec n;f kor " + ort + " and bbg tg* and ent gik", true);
-            
+
             // Eintraege in die globalen Arrays einstellen
             winId = application.activeWindow.windowID;  // ID des Suchfensters
             search_winIdArray.push( winId );
             search_ortArray.push( ort );
-            
+
             windstat = application.activeWindow.status;  // Fuer den Nohits-Fall
-            
+
             // Bei Gleichheit der Variablen erscheint die Review-Anzeige.
             // Problem: Die Trefferanzahl kann dann nicht korrekt ausgelesen werden.
             // (Die Treffer erscheinen nicht auf einer Seite..).
             if (application.activeWindow.getVariable("P3GSZ") == application.activeWindow.getVariable("P3GSE"))
                 strCounter = "viele";
-            else			
+            else
                 strCounter = application.activeWindow.getVariable("P3GSZ");
-            
-            
+
+
             if (windstat == "NOHITS") {
                 application.messageBox("", "Ortssuche ergab keinen Treffer, bitte prüfen Sie den Suchstring. Ort wird als reiner Text hinterlegt", "");
-                
+
                 application.activeWindow.closeWindow();  // Schliessen des Suchfensters
                 application.activateWindow(edit_winId);  // Editfenster aktivieren
                 application.activeWindow.title.insertText("\n551 " + ort + delimiter+"4ortv");
-                
+
                 // Eintraege aus den globalen Arrays entfernen.
                 // (Relevant bei mehreren Orten/Suchfenstern.)
                 search_winIdArray.pop();
                 search_ortArray.pop();
-                
+
                 // Wechsel zu einem evtl. noch vorhandenen Suchfenster
                 if (search_winIdArray.length > 0) {
                     application.activateWindow( search_winIdArray[search_winIdArray.length-1] )
-                }				
-            }			
+                }
+            }
             else { // Es gibt Treffer -> zwei Faelle
                 if (strCounter == 1) {
                     // Fall 1: Genau ein Treffer
                     //application.messageBox("", "Treffer: " + strCounter, "");
-                    
+
                     ppn = application.activeWindow.getVariable("P3GPP");
-                    
+
                     application.activeWindow.closeWindow();  // Schliessen des Suchfensters
                     application.activateWindow(edit_winId);  // Editfenster aktivieren
-                    application.activeWindow.title.insertText("\n551 !" + ppn + "!"+delimiter+"4ortv");								
-                    
+                    application.activeWindow.title.insertText("\n551 !" + ppn + "!"+delimiter+"4ortv");
+
                     // Eintraege aus den globalen Arrays entfernen.
                     // (Relevant bei mehreren Orten/Suchfenstern.)
                     search_winIdArray.pop();
                     search_ortArray.pop();
-                    
+
                     // Wechsel zu einem evtl. noch vorhandenen Suchfenster
                     if (search_winIdArray.length > 0) {
                         application.activateWindow( search_winIdArray[search_winIdArray.length-1] )
-                    }					
+                    }
                 }
-                else {  
+                else {
                     // Fall 2: strCounter ist groesser 1 (Anzeige eines Suchfensters).
                     // Die notwendigen Aktionen dieses Else-Zweiges werden in der
                     // Funktion 'vollenden_fortsetzen' abgearbeitet.
-                    
+
                     //application.messageBox("", "Treffer (strCounter): " + strCounter, "");  // TEST
 
                     //-- Vor den weiteren Aktionen erfolgt ein prophylaktischer
                     // Eintrag der Ortsvorgabe.
                     // Hintergrund: Wuerde der Nutzer das Suchfenster (fuer die Orte)
                     // einfach schliessen, so gaebe es ueberhaupt einen Eintrag.
-                    
+
                         // Zum Editfenster wechseln
                     application.activateWindow(edit_winId);
                         // Der prophylaktische Eintrag
                     application.activeWindow.title.insertText("\n551 " + ort + delimiter+"4ortv");
                         // Wiederaktivieren des Suchfensters
                     application.activateWindow( winId );
-                    
-                    
+
+
                     ortSuchfensterZaehler++;  // Hochzaehlen
-                                        
+
                     // Zusatztext fuer die Message-Box (ab zwei Orten)
                     if (ortSuchfensterZaehler > 1) {
                         zusatzText = "Achtung, Suchfenster fuer den "
                                    + ortSuchfensterZaehler + "-ten Ort\n\n";
                     }
-                                        
+
                     application.messageBox("", zusatzText
-                      + "Die Körperschaftensuche ergab " + strCounter 
+                      + "Die Körperschaftensuche ergab " + strCounter
                       + " Treffer, bitte wählen Sie einen Satz aus aktivieren Sie"
                       + " dann die Funktion 'TF_Vollenden_Forsetzen'.\n"
                       + "Wenn Sie den passenden Ort nicht finden, können Sie in"
                        + " dem Fenster eine erneute Suche tätigen und dann erst die"
                       + " Funktion 'TF_Vollenden_Fortsetzen' ausführen", "");
-                    // "Sollten Sie keinen entsprechenden Normdatensatz vorfinden, 
-                    //so schließen Sie einfach das aktuelle Fenster.", "");			
-                }			
+                    // "Sollten Sie keinen entsprechenden Normdatensatz vorfinden,
+                    //so schließen Sie einfach das aktuelle Fenster.", "");
+                }
             }
-            
+
         }  // end-for
-        
+
     }
-    
+
 }
 
 /**
@@ -789,41 +873,41 @@ function tf_vollenden_fortsetzen()
     var anzSuchfenster = search_winIdArray.length;  // Anzahl der geoeffneten Suchfenster
     var ppn;
     var winId;
-    
+
     var flgWinId = true;
     var flg = true;
     var suchZeile;
 
 
-    //-- Stets nur das letzte Suchfenster 'abarbeiten' (sofern es mehrere gibt).		
+    //-- Stets nur das letzte Suchfenster 'abarbeiten' (sofern es mehrere gibt).
     winId = search_winIdArray[anzSuchfenster-1];  // ID des (letzten) Suchfensters
-    
+
     //_showMessage("WINID: " + winId + " -- Ort: " + search_ortArray[anzSuchfenster-1]);
-    
+
     try {
-        flgWinId = application.activateWindow(winId);  // Fenster aktivieren (zur Sicherheit)	
+        flgWinId = application.activateWindow(winId);  // Fenster aktivieren (zur Sicherheit)
     } catch (e) {
         // Fehlerzweig zum Bereinigen/Reduzieren der Array.
         // Ursache: Haendisches Schliessen eine Suchfensters.
-        
+
         //application.messageBox("", "Fehler mit WinID: " +winId +" " +search_ortArray[anzSuchfenster-1], "error_icon");
-        
+
         if (search_winIdArray.length > 0) {
             search_winIdArray.pop();  // Array-Elemente entfernen
             search_ortArray.pop();
         }
 
         //_showMessage("Anz. Such-WinIDs (nachher 1): " +search_winIdArray.length, "vollenden_fortsetzen()");
-                
+
         // Selbstaufruf, sofern noch Array-Elemente vorhanden sind
         if (search_winIdArray.length > 0) {
             tf_vollenden_fortsetzen();  // >>>>> Selbstaufruf der Funktion
         }
-        
+
         return;  // >>>>> Funktion beenden (..sollte erfolgen)
     }
 
-    
+
 
     //-- Start PPN auslesen --------------------
     //
@@ -843,9 +927,9 @@ function tf_vollenden_fortsetzen()
 
     // PPN des gewaehlten Eintrags aus dem aktiven Suchfenster auslesen
     ppn = application.activeWindow.getVariable("P3GPP");
-        
-    //_showMessage(ppn + "\nCursor Position: " + application.activeWindow.getVariable("P3G!P") );	
-    
+
+    //_showMessage(ppn + "\nCursor Position: " + application.activeWindow.getVariable("P3G!P") );
+
     xx = ppn;
     // Erst fuer das zweite Suchfenster verwenden
     if ((alt_ppn != 0) && (ppn == alt_ppn)) {
@@ -859,17 +943,17 @@ function tf_vollenden_fortsetzen()
 
 //_showMessage("alt_ppn: " + alt_ppn + "\n\n"   + "XX: " + xx + " -- PPN: " + ppn);
 //_showMessage("XX: " + xx + " -- PPN: " + ppn);
-    
+
     alt_ppn = ppn;  // Merker belegen (alt_ppn ist eine glob. Variable)
-    
+
     //-- Ende PPN auslesen --------------------------
-    
-    
-    
+
+
+
     // Aktives Suchfenster schliessen
-    application.activeWindow.closeWindow();  						
-    
-        
+    application.activeWindow.closeWindow();
+
+
     //-- Zum Edit-Fenster wechseln, prophylaktischen Eintrag suchen u. ersetzen
     application.activateWindow(edit_winId);
 
@@ -882,7 +966,7 @@ function tf_vollenden_fortsetzen()
         //_showMessage("gefunden");
         application.activeWindow.title.deleteLine(1);  // Zeile loeschen
         //application.activeWindow.title.lineUp(1,false);
-        
+
         //application.activeWindow.title.endOfBuffer(false);
         application.activeWindow.title.insertText("551 !" + ppn + "!"+delimiter+"4ortv\n");
     }
@@ -890,37 +974,37 @@ function tf_vollenden_fortsetzen()
         _showMessage("Fehler Ortsnamenvorage: Keine Uebereinstimmung Array-Editfenster" + suchZeile);
     }
 
-    
+
     // Letzte Array-Eintraege entfernen
     // (Darf erst an dieser Programmstelle vorgenommen werden).
     search_winIdArray.pop();
     search_ortArray.pop();
-    
-        
+
+
     // Wechsel zum naechsten Suchfenster (sofern vorhanden).
     // Das letzte wurde abgearbeitet und geschlossen. Nun wird das neue letzte
     // Suchfenster zur Abarbeitung aktiviert.
     if (search_winIdArray.length > 0) {
         //_showMessage("Anz. Such-WinIDs (nachher 2): " + search_winIdArray.length, "vollenden_fortsetzen()");
         winId = search_winIdArray[ search_winIdArray.length-1 ];
-        
+
         // Die Try-Struktur wird benoetigt, wenn bei zwei Suchfenstern das
         // erst-geoeffnete haendich geschlossen wurde.
         try {
-            flgWinId = application.activateWindow(winId);    // Suchfenster aktivieren	
-        
+            flgWinId = application.activateWindow(winId);    // Suchfenster aktivieren
+
             // Im FEHLERFALL abarbeiten
             if (! flgWinId) {
                 _showMessage("Fehler mit WinID (Restfenster): " + winId , "vollenden_fortsetzen");
                 search_winIdArray.pop();  // WinID aus dem Array entfernen
                 search_ortArray.pop();
-            }		
+            }
         } catch (e) {
             //_showMessage("Fehler mit WinID (Restfenster): " + winId , "vollenden_fortsetzen");
         }
     }
-    
-    return;	
+
+    return;
 }
 
 //--------------------------------------------------------------------------------------------------------
