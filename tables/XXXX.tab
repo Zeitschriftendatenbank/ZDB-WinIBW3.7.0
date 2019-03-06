@@ -1,0 +1,135 @@
+<tbl>
+<tt> Schöpfer,Körperschaft
+<dt> 31XX.tab
+<tag> 31XX
+<row>aut QQ $4aut QQ Verfasser
+<row>isb QQ $4isb QQ Herausgebendes Organ
+<row>abr QQ $4abr QQ Kürzender
+<row>act QQ $4act QQ Schauspieler
+<row>adi QQ $4adi QQ Art Director
+<row>anm QQ $4anm QQ Trickfilmzeichner
+<row>ann QQ $4ann QQ annotierende Person
+<row>ape QQ $4ape QQ Berufungsbeklagter / Revisionsbeklagter
+<row>apl QQ $4apl QQ Berufungskläger / Revisionskläger
+<row>arc QQ $4arc QQ Architekt
+<row>arr QQ $4arr QQ Arrangeur
+<row>art QQ $4art QQ Künstler
+<row>ato QQ $4ato QQ Unterzeichner
+<row>aus QQ $4aus QQ Drehbuchautor
+<row>bkd QQ $4bkd QQ Buchgestalter
+<row>bnd QQ $4bnd QQ Buchbinder
+<row>brd QQ $4brd QQ Sender
+<row>brl QQ $4brl QQ Brailleschriftpräger
+<row>cas QQ $4cas QQ Formgießer
+<row>chr QQ $4chr QQ Choreograph
+<row>clt QQ $4clt QQ Lichtdrucker
+<row>cmm QQ $4cmm QQ Kommentator
+<row>cmp QQ $4cmp QQ Komponist
+<row>cnd QQ $4cnd QQ Dirigent
+<row>cng QQ $4cng QQ Bildregisseur
+<row>col QQ $4col QQ Sammler
+<row>com QQ $4com QQ Zusammenstellender
+<row>cor QQ $4cor QQ Registrar
+<row>cou QQ $4cou QQ Durch Verfahrensvorschriften geregeltes Gericht
+<row>cre QQ $4cre QQ Geistiger Schöpfer
+<row>crt QQ $4crt QQ Gerichtsstenograf
+<row>csl QQ $4csl QQ Berater
+<row>cst QQ $4cst QQ Kostümbildner
+<row>ctg QQ $4ctg QQ Kartograf
+<row>cur QQ $4cur QQ Kurator
+<row>dfd QQ $4dfd QQ Angeklagter/Beklagter
+<row>dgg QQ $4dgg QQ Grad-verleihende Institution
+<row>dgs QQ $4dgs QQ Akademischer Betreuer
+<row>dnc QQ $4dnc QQ Tänzer
+<row>dnr QQ $4dnr QQ Stifter
+<row>dpt QQ $4dpt QQ Leihgeber
+<row>drm QQ $4drm QQ Technischer Zeichner
+<row>drt QQ $4drt QQ Regisseur
+<row>dsr QQ $4dsr QQ Designer
+<row>dst QQ $4dst QQ Vertrieb
+<row>dte QQ $4dte QQ Widmungsempfänger
+<row>dte QQ $4dte QQ Widmungsempfänger
+<row>dto QQ $4dto QQ Widmender
+<row>edm QQ $4edm QQ Cutter
+<row>edt QQ $4edt QQ Herausgeber
+<row>egr QQ $4egr QQ Graveur
+<row>enj QQ $4enj QQ normerlassende Gebietskörperschaft
+<row>etr QQ $4etr QQ Radierer
+<row>fds QQ $4fds QQ Filmvertrieb
+<row>fmc QQ $4fmc QQ Filmemacher
+<row>fmd QQ $4fmd QQ Filmregisseur
+<row>fmo QQ $4fmo QQ früherer Eigentümer
+<row>fmp QQ $4fmp QQ Filmproduzent
+<row>his QQ $4his QQ Gastgebende Institution
+<row>hnr QQ $4hnr QQ Gefeierte Person
+<row>hnr QQ $4hnr QQ Gefeierter
+<row>hst QQ $4hst QQ Gastgeber
+<row>ill QQ $4ill QQ Illustrator
+<row>ilu QQ $4ilu QQ Buchmaler
+<row>ins QQ $4ins QQ beschriftende Person
+<row>inv QQ $4inv QQ Erfinder
+<row>itr QQ $4itr QQ Instrumentalmusiker
+<row>ive QQ $4ive QQ Interviewter
+<row>ivr QQ $4ivr QQ Interviewer
+<row>jud QQ $4jud QQ Richter
+<row>jug QQ $4jug QQ Geregelte Gebietskörperschaft
+<row>lbt QQ $4lbt QQ Librettist
+<row>lsa QQ $4lsa QQ Landschaftsarchitekt
+<row>ltg QQ $4ltg QQ Lithograph
+<row>lyr QQ $4lyr QQ Textdichter
+<row>med QQ $4med QQ Medium
+<row>mfr QQ $4mfr QQ Hersteller
+<row>mod QQ $4mod QQ Moderator
+<row>msd QQ $4msd QQ Musikalischer Leiter
+<row>mtk QQ $4mtk QQ Protokollant
+<row>nrt QQ $4nrt QQ Erzähler
+<row>orm QQ $4orm QQ Veranstalter
+<row>osp QQ $4osp QQ On-screen Präsentator
+<row>oth QQ $4oth QQ Mitwirkender
+<row>oth QQ $4oth QQ Sonstige
+<row>oth QQ $4oth QQ Sonstige
+<row>own QQ $4own QQ Eigentümer
+<row>pan QQ $4pan QQ Diskussionsteilnehmer
+<row>pbl QQ $4pbl QQ Verlag
+<row>pht QQ $4pht QQ Fotograf
+<row>plt QQ $4plt QQ Druckformhersteller
+<row>ppm QQ $4ppm QQ papermaker
+<row>ppt QQ $4ppt QQ Puppenspieler
+<row>pra QQ $4pra QQ Praeses
+<row>pre QQ $4pre QQ Präsentator
+<row>prf QQ $4prf QQ Ausführender
+<row>prg QQ $4prg QQ Programmierer
+<row>prm QQ $4prm QQ Druckgrafiker
+<row>prn QQ $4prn QQ Produktionsfirma
+<row>pro QQ $4pro QQ Produzent
+<row>prs QQ $4prs QQ Szenenbildner
+<row>prt QQ $4prt QQ Drucker
+<row>ptf QQ $4ptf QQ Zivilkläger
+<row>rcd QQ $4rcd QQ Tonmeister
+<row>rce QQ $4rce QQ Toningenieur
+<row>rcp QQ $4rcp QQ Adressat
+<row>rdd QQ $4rdd QQ Hörfunkregisseur
+<row>rpc QQ $4rpc QQ Hörfunkproduzent
+<row>rsp QQ $4rsp QQ Respondent
+<row>rsr QQ $4rsr QQ Restaurator
+<row>scl QQ $4scl QQ Bildhauer
+<row>sgd QQ $4sgd QQ Bühnenregisseur
+<row>sll QQ $4sll QQ Verkäufer
+<row>sng QQ $4sng QQ Sänger
+<row>spk QQ $4spk QQ Redner
+<row>spn QQ $4spn QQ Sponsor
+<row>srv QQ $4srv QQ Landvermesser
+<row>stl QQ $4stl QQ Geschichtenerzähler
+<row>tch QQ $4tch QQ Lehrer
+<row>tld QQ $4tld QQ Fernsehregisseur
+<row>tlp QQ $4tlp QQ Fernsehproduzent
+<row>trc QQ $4trc QQ Transkribierer
+<row>trl QQ $4trl QQ Übersetzer
+<row>vac QQ $4vac QQ Synchronsprecher
+<row>wac QQ $4wac QQ Kommentarverfasser
+<row>wal QQ $4wal QQ Verfasser von zusätzlichen Lyrics
+<row>wat QQ $4wat QQ Verfasser von Zusatztexten
+<row>win QQ $4win QQ Verfasser einer Einleitung
+<row>wpr QQ $4wpr QQ Verfasser eines Vorworts
+<row>wst QQ $4wst QQ Verfasser von ergänzendem Text
+</tbl>

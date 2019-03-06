@@ -1,0 +1,634 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?> 
+<?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
+<!-- Include your own stylesheet here. -->
+
+<!-- Define the dialog: -->
+<dialog
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+	onload="onLoad();"
+	buttons=" " 
+	ondialogaccept="return onAccept();"
+	ondialogcancel="return onCancel();"
+	onclose="return onCancel();"
+	style="min-width: 50em;"
+	id="TableFunction"
+>
+
+<script>
+<![CDATA[
+
+var application = Components.classes["@oclcpica.nl/kitabapplication;1"].getService(Components.interfaces.IApplication);
+const utility = 
+{
+	newFileInput: function() {
+		return Components.classes["@oclcpica.nl/scriptinputfile;1"]
+								.createInstance(Components.interfaces.IInputTextFile);
+	},
+
+     newFileOutput: function() {
+        return Components.classes["@oclcpica.nl/scriptoutputfile;1"]
+                                 .createInstance(Components.interfaces.IOutputTextFile);
+	},
+
+	newPrompter: function() {
+         return Components.classes["@oclcpica.nl/scriptpromptutility;1"]
+                                   .createInstance(Components.interfaces.IPromptUtilities);
+   },
+   
+	getSpecialDirectory: function(name) {
+		const nsIProperties = Components.interfaces.nsIProperties;
+		var dirService = Components.classes["@mozilla.org/file/directory_service;1"]
+    					.getService(nsIProperties);
+
+		return dirService.get(name, Components.interfaces.nsIFile);
+	}
+};
+
+const theIOService = Components.classes["@mozilla.org/network/io-service;1"]
+					.getService(Components.interfaces.nsIIOService);
+const thePrefs = Components.classes["@mozilla.org/preferences-service;1"]
+					.getService(Components.interfaces.nsIPrefBranch);	
+const titleMarker = "<tt>";
+const rowMarker = "<row>";
+const delimiter = "QQ";
+var tablesFortheTag;
+
+function open_xul_dialog(theUrl, theFeatures, theArguments)
+{  
+	// try to get the window-watcher
+	var ww    = Components.classes["@mozilla.org/embedcomp/window-watcher;1"]
+                                 .getService(Components.interfaces.nsIWindowWatcher);
+	if (!ww) {
+		// no chance, give up
+		return false;
+	}
+
+	// let's try to get a valid parent
+	var theParent   = ww.activeWindow;
+
+	var features = null;
+	if (theFeatures != null) {
+		features = theFeatures;		
+	} else {
+		// you may choose to remove some of the features
+		// you may also want to specify width=xxx and/or height=xxx 
+		features = "centerscreen,chrome,close,titlebar,resizable,modal,dialog=yes";		
+	}
+	
+  	// check if theUrl is ok before ww.openWindow()
+  	var theUri = theIOService.newURI(theUrl, null, null);
+	var theDirAndFilenameXul = "\\" + theUri.scheme + "\\" + theUri.host + "\\"; 
+	var index, indexStart = 1;	
+	var indexEnd = theUri.path.lastIndexOf("/");
+	var msg, subStr;
+	var theDir = utility.getSpecialDirectory("BinDir");
+	
+	if (theDir) {
+		theDir.append(theUri.scheme);
+		theDir.append(theUri.host);
+		for (index = 0; index<=indexEnd; ) {
+			if (index == indexEnd) {
+				if (!theDir.exists()) {
+					msg = "\"" + theDirAndFilenameXul + "\"" + " " + gPicaUtility.getMessage("InValidPath");
+					application.messageBox("Alert",msg, "alert-icon");
+    				return false;
+    		    }  
+    		    subStr = theUri.path.substr(index +1, theUri.path.length-index-1);					
+   		 		theDirAndFilenameXul = theDirAndFilenameXul + subStr;	
+				theDir.append(subStr);
+				index = theUri.path.length;
+			} else {
+				index = theUri.path.indexOf("/", indexStart);
+				subStr = theUri.path.substr(indexStart, index-indexStart);
+				theDirAndFilenameXul = theDirAndFilenameXul + subStr + "\\";
+				theDir.append(subStr);
+				indexStart = index +1;				
+			}	
+		}
+		if (!theDir.exists()) {
+			msg = "\"" + theDirAndFilenameXul + "\"" + " " + gPicaUtility.getMessage("FileCanNotBeFound");
+			application.messageBox("Alert",msg, "alert-icon");
+    		return false;
+   		}
+	}		
+
+	// it doesn't matter, if we don't have a parent
+	// we just use the active window, whether its null or not
+	// Remark1: The following function will crash the application, when theUrl is meant for one non-existing XUL.
+	// Remark2: That is why the checking is done before calling the openWindow function.
+	ww.openWindow(theParent, theUrl, "", features, theArguments);
+	
+	// make sure WinIBW stays in the foreground
+	application.activate();
+} 
+
+function insertLine(treechildren, strCol1, strCol2, strCol3)
+{
+	var treeitem = document.createElement('treeitem');
+	treechildren.appendChild(treeitem);
+		
+	var treerow = document.createElement('treerow');
+	treeitem.appendChild(treerow);
+
+	treerow.appendChild(document.createElement('treecell')).setAttribute('label', strCol1);
+	treerow.appendChild(document.createElement('treecell')).setAttribute('label', strCol2);
+	treerow.appendChild(document.createElement('treecell')).setAttribute('label', strCol3);
+}
+
+function getSpecialDirectory(name)
+{
+	const nsIProperties = Components.interfaces.nsIProperties;
+    var dirService = Components.classes["@mozilla.org/file/directory_service;1"]
+    					.getService(nsIProperties);
+    
+    return dirService.get(name, Components.interfaces.nsIFile);
+}
+
+function GetScore(theTag, fileName)
+{
+	var len = theTag.length;
+	if ((len < 3) || (len > 4)) return 0;
+	
+//	if ((fileName.length < 7) || (fileName.length > 8)) return 0;
+//	var theDot = fileName.indexOf(".");
+//	if (theDot == 0) return 0;
+//	if (fileName.substr(theDot) != ".tab") return 0;
+//	 alert("theName = " + theName);
+//	var theName = fileName.substr(0, theDot).toLowerCase();
+//	if (theName.length != len) return 0;
+
+	theName = fileName.toLowerCase();
+	var score = 0; 
+	for (j = 0; j < len; j++) {
+		if (theTag.charAt(j) == theName.charAt(j)) {
+			score += (2000 / Math.pow(10,j));
+		}
+		else if (theName.charAt(j) == "x") {
+			score += (1000 / Math.pow(10,j));
+		}
+		else
+			return 0;
+	}
+	if (len == 3) score += 1000;
+	return score;
+}
+
+function getBestMatchingTableFile(theTag) 
+{  
+    var tag = theTag;
+	if (theTag.length < 3) return "";
+	
+	var arNames = new Array(); // Array to store the names of the files in
+	var theDirEnum;
+
+	var theDir = getSpecialDirectory("BinDir");
+	theDir.append("tables");
+	if (theDir.exists()) {
+		theDirEnum = theDir.directoryEntries;
+		while (theDirEnum.hasMoreElements()) {
+			var theItem = theDirEnum.getNext();
+			var theFile = theItem.QueryInterface(Components.interfaces.nsIFile);
+			if (theFile.isFile()) arNames.push(theFile.leafName);
+		}
+	}
+	
+	theDir = getSpecialDirectory("ProfD");
+	theDir.append("tables");
+	if (theDir.exists()) {
+		theDirEnum = theDir.directoryEntries;
+		while (theDirEnum.hasMoreElements()) {
+			var theItem = theDirEnum.getNext();
+			var theFile = theItem.QueryInterface(Components.interfaces.nsIFile);
+			if (theFile.isFile()) arNames.push(theFile.leafName);
+		}
+	}
+
+	var absoluteMatchValue = 2222;
+	if (theTag.length == 3) absoluteMatchValue += 1000;
+
+	var bestMatch = "";
+	var bestScoreSoFar = 0;	
+	for (i = 0; i < arNames.length; i++) {
+	    if (arNames[i].indexOf("_") > 0){
+	    	score = GetScore(tag, arNames[i].substr(0, arNames[i].indexOf("_"))); 
+	    	} else {
+	    		score = GetScore(tag, arNames[i].substr(0, arNames[i].indexOf(".tab"))); 
+	    	}
+//		if (score >= absoluteMatchValue) {	
+//			bestMatch = arNames[i];
+//			break;		
+//		} else if (score >= bestScoreSoFar) {		
+//			bestScoreSoFar = score;
+//			bestMatch = arNames[i];	
+//		}
+        if (score >= absoluteMatchValue) {
+			bestMatch = arNames[i];
+			break;
+		}
+		if (score > bestScoreSoFar) {
+			bestScoreSoFar = score;
+			bestMatch = arNames[i];
+		} 					
+	}
+	arNames = null; 
+	//alert("1. bestMatch: " + bestMatch);
+	if ((bestMatch.substr(0, 1) == "x") || (bestMatch.substr(0, 1) == "X")) { 
+	    if (bestMatch.substr(1, 3) != theTag.substr(1, 3)) {
+			bestMatch = "";
+		}
+	}
+	// alert("2. bestMatch: " + bestMatch);
+	//Im Dateinamen kommt nicht immer ein Unterstrich vor! 
+	if (bestMatch.indexOf("_") > 0){
+		return bestMatch.substr(0, bestMatch.indexOf("_"));
+	} else {
+		return bestMatch.substr(0, bestMatch.indexOf(".tab"));
+	}
+	//alert(bestMatch);//.substr(0, bestMatch.indexOf("_")));
+	//return bestMatch.substr(0, bestMatch.indexOf("_"));
+}
+
+function collectTablesForTheTag(theTag)
+{ 
+	if (theTag.length < 3) return "";
+	
+	tablesFortheTag = new Array(); // Array to store the names of the files in
+	var theDirEnum;		
+
+	var theDir = getSpecialDirectory("BinDir");
+	theDir.append("tables");
+	if (theDir.exists()) {
+		theDirEnum = theDir.directoryEntries;	
+		while (theDirEnum.hasMoreElements()) {
+			var theItem = theDirEnum.getNext();
+			var theFile = theItem.QueryInterface(Components.interfaces.nsIFile);
+			if (theFile.isFile()) {
+			    var theName = theFile.leafName; 
+			    if (theName.length > 6) {				        		            
+			        if (theName.substr(0, theTag.length) == theTag) {			    
+						tablesFortheTag.push(theName);													
+					}	
+				}				
+			}	
+		}		
+	}
+	
+	theDir = getSpecialDirectory("ProfD");
+	theDir.append("tables");
+	if (theDir.exists()) {
+		theDirEnum = theDir.directoryEntries;
+		while (theDirEnum.hasMoreElements()) {
+			var theItem = theDirEnum.getNext();
+			var theFile = theItem.QueryInterface(Components.interfaces.nsIFile);
+			if (theFile.isFile()) {
+			    var theName = theFile.leafName; 
+			    if (theName.length > 6) {			        		            
+			        if (theName.substr(0, theTag.length) == theTag) {	
+						tablesFortheTag.push(theName);										
+					}	
+				}				
+			}	
+		}		
+	}
+	
+	tablesFortheTag.sort();	 	
+	return;
+}
+
+function displayNoTableMsg(theTag)
+{
+	var msg = "";
+	switch (application.language) {
+		case "NE":
+			msg = "Er is nog geen tabel voor KMC '#1' gedefinieerd.";
+			break;
+		case "DU":
+			msg = "Es gibt noch keine Tabelle für Kategorie '#1'.";
+			break;
+		default:
+			msg = "There is no table defined for tag '#1' yet.";
+	}
+	application.messageBox("WinIBW 3", msg.replace(/#1/g, theTag), "alert-icon");
+}
+
+function Trim(sInString) {
+	if (sInString == 0) return "";
+	sInString = sInString.replace( /^\s+/g, "" );// strip leading
+	return sInString.replace( /\s+$/g, "" );// strip trailing
+}
+
+function getShortCut(theTag)
+{  
+	var theTitle = application.activeWindow.title;
+	var strShortCut = Trim(theTitle.selection); 
+	var ind; 
+	var isSpecialTag = false; 
+	if (strShortCut == "") {
+	    currentTag = Trim(theTitle.tag); 
+	    theFirstLetterOfTag = currentTag.substr(0,1);
+	     
+	    if ((theFirstLetterOfTag == "M") || (theFirstLetterOfTag == "L") || (theFirstLetterOfTag == "C")) {
+			isSpecialTag = true; 
+	    }
+	    
+		strShortCut = Trim(theTitle.currentField); 
+	    theSelStart = theTitle.selStart; 
+	    theTitle.startOfField(false);
+	    theStartField = theTitle.selStart;  
+	    theTitle.setSelection(theSelStart, theSelStart, false);
+	    strShortCut = strShortCut.substr(0, theSelStart-theStartField); 
+		if ((ind = strShortCut.lastIndexOf("$")) >= 0) {
+		    if (isSpecialTag) { 
+		    // For tags starting with a letter (e.g. M(ain), L(ocal), C(opy)), and then invoking tables, the table for the concerning tag will be present. 
+		    // After double-clicking an element, the texts between the last $-sign with its subfield before the cursor and the cursor 
+		    // will be replaced by the texts at the selected element.
+			// E.g. the texts between $4 and the cursor will be replaced by $edt$ as follows::
+			// M700 $aKramer, Dirk$4red|
+			// M700 $aKramer, Dirk$4edt 
+
+			// Note: In the future it is possible that WinIBW3 and GGC will support the use of MAC-tags alongside with Pica3-tags. 
+			// These MARC-tags will be recognized by the starting letters M, L or C (for main, local or copy level) and by the use of dollar signs to mark the subfields. 
+			// The WinIBW3 (from version 3.7 on) table-function is prepared for use with those tags. This feature is ready in WinIBW3, but not in CBS. 
+			// So it is not yet usable for the time being.
+			// How will this feature work is not yet known. Perhaps, Changes of Meta-datd has impact on WinIBW3 table funtion implementation!!!!!
+
+				strShortCut = strShortCut.substr(ind+2, strShortCut.length-ind-2);	
+		    } else {		
+				strShortCut = strShortCut.substr(ind+1, strShortCut.length-ind-1);
+			}		
+		} else if ((ind = strShortCut.lastIndexOf(" ")) >= 0) {
+			strShortCut = strShortCut.substr(ind+1, strShortCut.length-ind-1);
+		} else {
+		    var len = theTag.length + 1;  
+			if (strShortCut.length > len) { 
+				strShortCut = strShortCut.substr(len); 
+			} else {  
+				strShortCut = "";  
+				var curLine = theTitle.currentField;
+				if (curLine[curLine.length-1] != ' ') {
+					theTitle.startOfField(false);
+					theTitle.endOfField(false);
+					theTitle.insertText(" ");
+				}
+			}
+			theTitle.startOfField(false);
+			theTitle.charRight(len, false);
+			theTitle.endOfField(true);
+		}
+	} 
+	
+	return Trim(strShortCut);
+}
+
+function match(strOne, strTwo)
+{
+	for (i = 0; i < strOne.length && i < strTwo.length; i++) {
+		if (strOne.charAt(i) != strTwo.charAt(i)) break;
+	}
+	return i;
+}
+
+function getTextToInsert(theShortCut, theTable, theTag, doInsert)
+{
+	var theFileInput = Components.classes["@oclcpica.nl/scriptinputfile;1"]
+								 .createInstance(Components.interfaces.IInputTextFile);
+	if (!theFileInput.openSpecial("ProfD", "\\tables\\" + theTable)) {
+		if (!theFileInput.openSpecial("BinDir", "\\tables\\" + theTable)) {
+			alert("File " + theTable + " does not exist.");
+			return "";
+		}
+	}
+
+	var theChildren = document.getElementById("theChildren");
+	var theText = "";
+	var bestMatchSoFar = 0;
+	var selectIndex = 0;
+	var rowNr = 0;
+	var theLine;
+	var colWidth1 = 6;
+	var colWidth2 = 6;
+	var colWidth3 = 6;
+	while (!theFileInput.isEOF()) {
+		theLine = theFileInput.readLine();
+		if (theLine.length > 4) {
+			if (theLine.substr(0, titleMarker.length) == titleMarker) {
+				window.title = theLine.substr(titleMarker.length);
+			}
+		}
+		if (theLine.length > 5) {
+			if (theLine.substr(0, rowMarker.length) == rowMarker) {
+				theLine = theLine.substr(rowMarker.length);
+				arrValues = theLine.split(delimiter);
+				if (arrValues.length > 0) {
+					strCol1 = Trim(arrValues[0]);
+					strCol2 = (arrValues.length > 1) ? Trim(arrValues[1]) : "";
+					strCol3 = (arrValues.length > 2) ? Trim(arrValues[2]) : "";
+					if (strCol1.length > colWidth1) colWidth1 = strCol1.length;
+					if (strCol2.length > colWidth2) colWidth2 = strCol2.length;
+					if (strCol3.length > colWidth3) colWidth3 = strCol3.length;
+					if (doInsert == true) { 
+						insertLine(theChildren, strCol1, strCol2, strCol3);
+					}
+					if (theShortCut == "") {
+						if (strCol1 == theTag) {
+							theText = strCol2;
+							break;
+						}
+					}
+					else {
+						if (strCol1 == theShortCut) {
+							theText = strCol2;
+							break;
+						}
+						nrOfMatchingCharacters = match(theShortCut, strCol1);
+						if (nrOfMatchingCharacters > bestMatchSoFar) {
+							bestMatchSoFar = nrOfMatchingCharacters;
+							selectIndex = rowNr;
+						}
+					}
+				}
+				rowNr++;
+			}
+		}
+	} 
+	document.getElementById("treecol1").setAttribute("flex", colWidth1);
+	document.getElementById("treecol2").setAttribute("flex", colWidth2);
+	document.getElementById("treecol3").setAttribute("flex", colWidth3);
+	document.getElementById("idTree").view.selection.select(selectIndex);
+	document.getElementById("idTree").boxObject.scrollToRow(selectIndex);
+	theFileInput.close();
+	return theText;
+}
+
+function insertTableText(theText)
+{
+	var theTitle = application.activeWindow.title;
+	var selStart = theTitle.selStart;
+	
+	// The replacing text
+	theText = theText.replace(/\\r/g, "\n"); 
+	 
+	var cursorPos = theText.indexOf("++");  
+	
+	if (cursorPos >= 0) 
+		theText = theText.replace(/\+\+/, "");
+
+	var ind;
+	var isSpecialTag = false; 
+    var strShortCut = Trim(theTitle.selection);
+	if (strShortCut == "") {
+	//	strShortCut = Trim(theTitle.currentField); 
+		strShortCut = theTitle.currentField; 	
+	    theSelStart = theTitle.selStart; 
+	    theTitle.startOfField(false);
+	    theStartField = theTitle.selStart;  
+	    theTitle.setSelection(theSelStart, theSelStart, false);
+	    strShortCut = strShortCut.substr(0, theSelStart-theStartField);
+		currentTag = Trim(theTitle.tag); 
+	    theFirstLetterOfTag = currentTag.substr(0,1);
+	     
+	    if ((theFirstLetterOfTag == "M") || (theFirstLetterOfTag == "L") || (theFirstLetterOfTag == "C")) {
+	        //if the tag is Mxxx, Lxxx, Cxxx
+			isSpecialTag = true; 
+	    }
+	    
+		if ((ind = strShortCut.lastIndexOf("$")) >= 0) {
+		    // If no selection, but an existing $, 
+			// the text from the last $ before the current cursor will be highlighted
+			theTitle.selEnd   = selStart; 
+			if (isSpecialTag) {
+				strShortCut = strShortCut.substr(ind+2, strShortCut.length-ind-2); 
+				theTitle.selStart = selStart-strShortCut.length; 
+			} else {
+				strShortCut = strShortCut.substr(ind+1, strShortCut.length-ind-1); 
+				theTitle.selStart = selStart-strShortCut.length-1; 
+		    }		
+		} 
+        // ZDB-Korrektur: Bestehende Werte sollen nicht ersetzt werden
+        /*else if ((ind = strShortCut.lastIndexOf(" ")) >= 0) { 
+		    // If no selection, the text from the last space before the current cursor will be highlighted
+		    theTitle.selEnd   = selStart;  
+		    strShortCut = strShortCut.substr(ind+1, strShortCut.length-ind-1); 
+		    theTitle.selStart = selStart-strShortCut.length; 		    
+		} */
+	}
+			
+	theTitle.insertText(theText);
+	if (cursorPos >= 0) {
+		//GBV: Korrektur: - strShortCut.length
+		//Wenn Anwender "++" verwendet, war Cursor war an der falschen Stelle positioniert
+		theTitle.selStart = selStart + cursorPos - strShortCut.length;
+		theTitle.selEnd = selStart + cursorPos - strShortCut.length;
+	}
+}
+
+function onLoad()
+{    
+    var theTable = "";
+try {
+	var strToInsert;
+    var matchedTables = new Array();          
+    
+	if (application.activeWindow.title == null) { window.close(); return false; }
+
+	var theTag = application.activeWindow.title.tag; 
+	if (theTag == "") { window.close(); return false; }
+	
+    var strShortCut     = getShortCut(theTag);    
+    var theCurrentTable = thePrefs.getCharPref("ibw.tableFunction.theCurrentTable");    
+    if (theCurrentTable == "") {
+        // try to get the exactly matched talbes    
+		collectTablesForTheTag(theTag); 
+		if (tablesFortheTag.length == 0) {
+		    //If there is no exactly matched table, try to get the best matched tables with wildcard "x"
+	        var bestMatchTable = getBestMatchingTableFile(theTag);
+	       // alert("bestMatchTable: " + bestMatchTable);
+	   		if (bestMatchTable.length == 0) {	   	
+	   			displayNoTableMsg(theTag);
+				window.close(); application.activate(); return false;
+			} else {
+			    // try to get all best matched tables with wildcard "x"
+				collectTablesForTheTag(bestMatchTable.substr(0,4)); 
+			}
+		} 
+		
+		//From now on, tablesFortheTag keeps all exactly matched talbes or best matched tables 	
+		var len = tablesFortheTag.length; 
+		var i; 
+		for (i=0; i<len; i++) 		
+		{	
+		    // try to find out if the required shortcut is in tablesFortheTag 			    
+			strToInsert = getTextToInsert(strShortCut, tablesFortheTag[i], theTag, false); 			
+			if (strToInsert != "") { 
+				matchedTables.push(i);
+			}	
+		}		
+		if (matchedTables.length>0) {	
+		    // if the required shortcut is in more than one tables in tablesFortheTag, the first table will be used.
+			theTable = tablesFortheTag[matchedTables[0]];
+		} else {
+			// if the required shortcut isn't in tablesFortheTag, 
+		    if (len==1) {
+				//the contents of the first table will be shown, if there is only one table.
+				theTable = tablesFortheTag[0];
+			} else {
+			    // all the tables in tablesFortheTag will be shown
+				thePrefs.setCharPref("ibw.tableFunction.theCurrentBestMatchTable", tablesFortheTag[0].substr(0,4));
+				open_xul_dialog("chrome://ibw/content/xul/TablesForOneTagDlg.xul", null, null);
+				thePrefs.setCharPref("ibw.tableFunction.theCurrentBestMatchTable", "");
+				window.close(); 
+				return false;
+            }
+		}    
+    } else {	
+		theTable = theCurrentTable + ".tab";  
+    }  
+    thePrefs.setCharPref("ibw.tableFunction.theCurrentTable", "");
+    
+    if (theTable != "") {
+		strToInsert = getTextToInsert(strShortCut, theTable, theTag, true); 
+		if (strToInsert != "") {
+			insertTableText(strToInsert);
+			window.close(); 
+			return false;
+		}
+	}
+	
+ 	document.getElementById("idTree").focus();
+	return true;
+} catch(e) { alert(e); window.close(); application.activate(); return false;}
+}
+
+function onAccept()
+{
+	var theTree = document.getElementById("idTree");
+	var theText = theTree.view.getCellText(theTree.currentIndex, "treecol2");
+	insertTableText(theText);
+
+	var theTitle = application.activeWindow.title;
+	theTitle.selStart = theTitle.selEnd;
+
+	return true;
+}
+	
+function onCancel()
+{
+	var theTitle = application.activeWindow.title;
+	theTitle.selStart = theTitle.selEnd;
+	return true;
+}
+
+]]>
+</script>
+
+	<tree id="idTree" rows="9" flex="1" hidecolumnpicker="true" seltype="single" ondblclick="onAccept();window.close();">
+		<treecols>
+			<treecol id="treecol1" hideheader="true" primary="true" />
+			<treecol id="treecol2" hideheader="true" />
+			<treecol id="treecol3" hideheader="true" />
+		</treecols>
+		<treechildren id="theChildren" />
+	</tree>
+
+</dialog>

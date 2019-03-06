@@ -1,0 +1,231 @@
+﻿<?xml version="1.0"?> <!-- -*- Mode: HTML -*- -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?> 
+<?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
+
+
+<dialog
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+	title="Suche und Ersetze"
+	buttons="cancel"
+	onload="onLoad();"
+	ondialogcancel="return onCancel();"
+	onunload="application.activate(); " 
+>
+<script type="application/x-javascript" src="chrome://ibw/content/xul/gbv_sucheErsetze_dialog.js" />
+<tabbox flex="1">
+	<tabs >
+		<tab label="Suchen und Ersetzen" onclick="focusFeldidSuche();"/>
+		<tab label="Ergänzen von Kategorien" onclick="focusFeldidWennKat();"/>
+		<tab label="nur VZG" id="tabLoeschen" onclick="focusFeldidLoescheKat();" />
+	</tabs>
+	<tabpanels >
+		<tabpanel id="idSeite1">
+			<vbox flex="1">
+				<description style="width: 30em;" flex="1">
+					Mit diesem Formular können in allen Datensätzen eines Sets Texte gesucht und durch neue ersetzt werden.
+				</description>
+				<groupbox>
+					<caption label="Was soll gesucht und ersetzt werden?"/>
+					<grid flex="1">
+						<columns>
+							<column flex="1"/>
+							<column flex="1"/>
+						</columns>
+						<rows>
+							<row>
+								<label value="Suche:" />
+								<textbox id="idSuche"
+									name="textboxTab1"
+									flex="1"
+									minheight="22px"/>
+							</row>
+							<row>
+								<label value="Ersetze:" />
+								<textbox id="idErsetze"
+									name="textboxTab1"
+									flex="1"
+									minheight="22px"/>
+							</row>
+						</rows>
+					</grid>
+                     <checkbox id="idCheckboxSuche" name="checkbox" label="nutze Regulären Ausdruck"/>
+				</groupbox>
+				<groupbox>
+				<caption label="In welcher Kategorie soll Text ersetzt werden?"/>
+					<grid flex="1">
+						<columns>
+							<column flex="1"/>
+							<column flex="1"/>
+							<column flex="1"/>
+						</columns>
+						<rows>
+							<row>
+								<separator/>
+								<label value="von:"/>
+								<label value="bis:"/>
+							</row>
+							<row>
+								<label value="Kategorie/n:"/> 
+								<textbox id="idKategorie1"
+									name="textboxTab1"
+									flex="1"
+									tooltiptext="Beispiel: 7100 bis 7109"
+									minheight="22px"/>
+								<textbox id="idKategorie2"
+									name="textboxTab1"
+									flex="1"
+									tooltiptext="Beispiel: 7100 bis 7109"
+									minheight="22px"/>
+							</row>
+						</rows>
+					</grid>
+				</groupbox>
+				<groupbox id="idGroupboxBedingungen" style="background-color: lightsteelblue" hidden="true">
+					<groupbox id="idGroupboxBedingungen1">
+						<caption label="Weitere Bedingung 1 (optional)"/>
+						<description style="width: 30em;" flex="1">
+							Ersetze nur, wenn in derselben Kategorie auch dieser Text vorkommt.
+						</description>
+						<textbox id="idBedingung1"
+							name="textboxTab1"
+							flex="1"
+							minheight="22px"/>
+                        <checkbox id="idCheckboxBedingungen1" name="checkbox" label="nutze Regulären Ausdruck"/>
+					</groupbox>
+					<groupbox id="idGroupboxBedingungen2">
+						<caption label="Weitere Bedingung 2 (optional)"/>
+						<hbox>
+							<description flex="1">
+								Wenn in demselben Lokal- bzw. Exemplarsatz diese Kategorie: 
+							</description>
+							<textbox id="idBedingung2Kat"
+								name="textboxTab1"
+								flex="1"
+								minheight="22px"
+								/>
+						</hbox>
+						<hbox>
+							<description flex="1">
+								und darin dieser Inhalt vorkommt:
+							</description>
+							<textbox id="idBedingung2Inhalt"
+								name="textboxTab1"
+								flex="1"
+								minheight="22px"/>
+						</hbox>
+                        <checkbox id="idCheckboxBedingungen2" name="checkbox" label="nutze Regulären Ausdruck"/>
+					</groupbox>
+				</groupbox>
+				<groupbox>
+					<caption label="Sucheinstellungen"/>
+					<checkbox id="idCheckboxExemplar" name="checkbox" label="Nur Lokal- und Exemplarebene"/>
+					<checkbox id="idCheckboxWort" name="checkbox" label="als Wort"/>
+					<checkbox id="idCheckboxCase" name="checkbox" label="Groß-/Kleinschreibung beachten"/>
+					<checkbox id="idCheckboxProtokoll" name="checkbox" label="Protokolldatei erstellen" 
+						tooltiptext="Datensätze werden vor der Bearbeitung protokolliert."/>
+				</groupbox>
+				<hbox align="right">
+					<button id = "idButtonWeitere" label="Weitere Bedingungen" accesskey="W" oncommand="weitereBedingungen();" />
+					<button label="Alles zurücksetzen" accesskey="z" oncommand="resetAllErsetzen();" />
+					<button label="Set bearbeiten" accesskey="S" oncommand="bearbeiteSetErsetzen();" />
+				</hbox>
+			</vbox>
+		</tabpanel>
+		
+		<tabpanel id="idSeite2" flex="1">	
+			<vbox flex="1">
+			<groupbox>
+			<caption label="Ergänzen von Kategorien:"/>
+				<grid flex="1">
+					<columns>
+						<column flex="1"/>
+						<column flex="1"/>
+					</columns>
+					<rows>
+						<row>
+							<label value="Wenn in Kategorie ... " />
+							<label value="dieser Text vorkommt ..." />
+						</row>
+						<row>
+							<textbox id="idWennKat"
+								name="textboxTab2"
+								flex="1"
+								minheight="22px"/>
+							<textbox id="idWennText"
+								name="textboxTab2"
+								flex="1"
+								minheight="22px"/>
+						</row>
+						<row>
+							<label value="Dann ergänze Kategorie ..." />
+							<label value="mit diesem Text ..." />
+						</row>
+						<row>
+							<textbox id="idDannKat"
+								name="textboxTab2"
+								flex="1"
+								minheight="22px"/>
+							<textbox id="idDannText"
+								name="textboxTab2"
+								flex="1"
+								minheight="22px"/>
+						</row>
+					</rows>
+				</grid>
+			</groupbox>
+			<hbox align="right">
+				<button label="Alles zurücksetzen" oncommand="resetAllZufuegen();" />
+				<button label="Set bearbeiten" accesskey="b" oncommand="bearbeiteSetZufuegen();" />
+			</hbox>
+			</vbox>	
+		</tabpanel>
+		
+		<tabpanel id="idSeite3" flex="1" hidden="true">
+			<vbox flex="1">
+				<groupbox>
+				<caption label="Löschen von Kategorien:"/>
+					<grid flex="1">
+						<columns>
+							<column flex="1"/>
+							<column flex="1"/>
+						</columns>
+						<rows>
+							<row>
+								<label value="Lösche Kategorie ... " />
+								<label value="wenn dieser Text darin vorkommt ..." />
+							</row>
+							<row>
+								<textbox id="idLoescheKat"
+									name="textboxTab3"
+									flex="1"
+									minheight="22px"/>
+								<textbox id="idLoescheText"
+									name="textboxTab3"
+									flex="1"
+									minheight="22px"/>
+							</row>
+						</rows>
+					</grid>
+				</groupbox>
+				<hbox align="right">
+					<button label="Alles zurücksetzen" oncommand="resetAllLoeschen();" />
+					<button label="Set bearbeiten" accesskey="b" oncommand="bearbeiteSetLoeschen();" />
+				</hbox>
+				<separator/>
+				<label id="idLabelAusnahme" value= "Diese Registerkarte ist ..."/>
+			</vbox>	
+		</tabpanel>
+		</tabpanels>
+	</tabbox>
+		<groupbox id="idGroupboxSchlussmeldung" hidden="true">
+		<caption label="Schlussmeldung: "/>
+			<label id="idSchlussmeldung1" value= " "/>
+			<button id="idButtonDateiFehler"
+				label="Datei öffnen" oncommand="fehlerDateiOeffnen();"
+				hidden="true" />
+			<button id="idButtonDateiProtokoll"
+				label="Datei öffnen" oncommand="protokollDateiOeffnen();"
+				hidden="true" />
+		</groupbox>
+</dialog>
+

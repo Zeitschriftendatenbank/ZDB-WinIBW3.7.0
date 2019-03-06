@@ -1,0 +1,10 @@
+abku	Abkürzung	Tb410 Tf411 Tg451 Ts450 Tu430
+naaf	Name, alte Ansetzungsform aus GKD oder SWD	Tg451
+nafr	Name, früherer	Tb410 Tf411 Tg451 Tn400; Tp400 Tu430  
+nasp	Name, späterer	Tb410; Tf411  Tb410 Tg451 Tn400; Tp400; Tu430;
+nauv	Name, in unveränderter Form	Tb410 Tg451
+navo	Name, vollständiger	Tn400; Tp400
+nawi	Name, wirklicher	Tn400; Tp400
+nazw 	Name, zeitweise	Tg451
+pseu	Pseudonym	Tn400; Tp400
+spio	Spitzenorgan	Tb410 Tg410 Tg451	

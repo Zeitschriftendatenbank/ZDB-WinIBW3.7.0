@@ -1,0 +1,21 @@
+<tbl>
+<tt> Code für Erscheinungsfrequenz
+<dt> 1800.tab
+<tag> 1800
+<row>täglich QQ d
+<row>drei- bis fünfmal wöchentlich QQ t
+<row>zweimal wöchentlich QQ c
+<row>wöchentlich QQ w
+<row>vierzehntäglich QQ e
+<row>halbmonatlich QQ s
+<row>monatlich QQ m
+<row>alle zwei Monate QQ b
+<row>vierteljährlich QQ q
+<row>halbjährlich QQ f
+<row>jährlich QQ a
+<row>dreimal im Monat QQ j
+<row>dreimal im Jahr QQ i
+<row>alle zwei Jahre QQ g
+<row>alle drei Jahre QQ h
+<row>unregelmässig und sonstige Erscheinungsweisen QQ z 
+</tbl>

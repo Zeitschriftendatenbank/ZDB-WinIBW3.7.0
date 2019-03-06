@@ -1,0 +1,6 @@
+x++
+4800 !Bitte IDN in Exemplarmaske eintragen!
+7100 
+7109 
+8031 
+8032 

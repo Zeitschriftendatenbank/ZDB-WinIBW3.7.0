@@ -1,0 +1,170 @@
+﻿<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?> 
+<?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
+
+<!-- GBV Hachmann -->
+<!-- 2013.06 -->
+<!-- Mit diesem Dialogformular kann ein ganzer Stapel von Zeilen in ein Suchkommando umgewandelt werden. 
+	Wenn das Dialogfenster aufgerufen wird,  werden alle Zeilen, die sich im Zwischenspeicher befinden, in das Feld idSuchbox geschrieben 
+	Die Anwender können den Suchschlüssel und den Operator auswählen und die Suche starten. 
+	Sehr nützlich, wenn man eine Liste von PPNs suchen will! -->
+
+<dialog
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+	title="Recherche"
+	onload="onLoad();"
+	buttons="accept,cancel"
+	ondialogaccept="return onAccept();"
+	ondialogcancel="return onCancel();"
+	onunload="application.activate();"
+	style="min-width: 33em"
+>
+
+<script>
+<![CDATA[
+var application = Components.classes["@oclcpica.nl/kitabapplication;1"]
+                        .getService(Components.interfaces.IApplication);
+
+function onLoad()
+{
+	strSuche = application.activeWindow.clipboard;
+	strSuche = strSuche.replace(/\n\n/g,"\n");//Leerzeilen entfernen 1x
+	strSuche = strSuche.replace(/\n\n/g,"\n");//Leerzeilen entfernen nochmal
+	document.getElementById("idSchluessel").value = application.getProfileString("winibw", "GBVsuchboxZeileKey", "PPN");
+	document.getElementById("idOperator").selectedIndex = application.getProfileInt("winibw", "GBVsuchboxZeileOperator", 0);
+	document.getElementById("idTrunkierung").selectedIndex = application.getProfileInt("winibw", "GBVsuchboxTrunkierung", 0);
+	
+	//der Inhalt des Zwischenspeichers wird in das Textfeld geschrieben:
+	document.getElementById("idSuchbox").value = strSuche;
+	
+}
+function onAccept()
+{
+	var searchKey = document.getElementById("idSchluessel").value;
+	var searchString = document.getElementById("idSuchbox").value;
+	//alert("1: " + searchString)
+	var searchOperator = "";
+	var searchTrunkierung = "";
+	var groups = [],
+        x = 0;
+	//var entitaetentyp = "";
+	switch(document.getElementById("idOperator").selectedIndex){
+		case 0:
+			searchOperator = " or ";
+			break;
+		case 1:
+			searchOperator = " and ";	
+	}
+	switch(document.getElementById("idTrunkierung").selectedIndex){
+		case 0:
+			searchTrunkierung = "";
+			break;
+		case 1:
+			searchTrunkierung = "? ";	
+	}
+	var zeilen = new Array();
+	zeilen = searchString.split("\n");  
+	//alert("2: " + zeilen)
+
+	for (var i = 0; i < zeilen.length; i++) {
+		//02.2016: PPNs mit folgenden Blanks werden nicht gefunden. Evtl. wurde die Indexierung geändert?
+		//trim funktioniert hier nicht. Ersetze Blank am Anfang und Ende:
+		zeilen[i] = zeilen[i].replace(/^ *| *$/g,"");
+		if(zeilen[i].length == 0){
+			zeilen.splice(i,1);
+		} else if (zeilen[i].length <= 3){
+			zeilen[i]="\\" + zeilen[i];
+		}
+	}
+    if(i > 500) {
+        // Gruppen erstellen
+        do {
+            groups.push(zeilen.splice(0,500));
+        } while(zeilen.length > 0)
+        
+        var sets = [];
+        // suche jede gruppe
+        for(var y = 0 ; y < groups.length; y += 1) {
+            search(groups[y], searchKey, searchTrunkierung, searchOperator);
+            if (application.activeWindow.status!="NOHITS"){
+                sets.push(application.activeWindow.getVariable("P3GSE"))
+            }
+        }
+        application.activeWindow.command("f s" + sets.join(' or s'), false);
+    } else {
+        search(zeilen, searchKey, searchTrunkierung, searchOperator);
+        if (application.activeWindow.status!="NOHITS"){
+            //weil das Set in der Kurzanzeige mit merkwürdig breiten Spalten angezeigt wird
+            //hole ich das Set nochmals mit "f s<setnr>", danach ist die Anzeige schön.
+            application.activeWindow.command("f s" + application.activeWindow.getVariable("P3GSE"), false); 
+        }
+    }
+
+	//Speichere die Einstellungen:
+	application.writeProfileString("winibw", "GBVsuchboxZeileKey", searchKey);
+	application.writeProfileInt("winibw", "GBVsuchboxZeileOperator", document.getElementById("idOperator").selectedIndex);
+	application.writeProfileInt("winibw", "GBVsuchboxTrunkierung", document.getElementById("idTrunkierung").selectedIndex);
+}
+
+function search(arr, searchKey, searchTrunkierung, searchOperator) {
+	searchString = arr.join(searchTrunkierung + searchOperator);
+	searchString = searchString + searchTrunkierung;//am Ende des Kommandos nochmals die Trunkierungseinstellung
+	//alert("3: "+searchString);
+	application.activeWindow.command("f " + searchKey + " " + searchString, false);
+}
+
+function onCancel()
+{
+	// The Cancel button is pressed..
+	//alert("Sie haben Abbrechen gewählt. Wirklich abbrechen?");
+	return true;
+}
+
+function zeigeEntitaeten()
+{
+	//wenn Normdaten:
+	if (document.getElementById("idSatzTyp").selectedIndex != 0){
+		document.getElementById("idLabelEntitaet").disabled=true; 
+		document.getElementById("idEntitaet").disabled=true; 
+	} else {
+		document.getElementById("idLabelEntitaet").disabled=false; 
+		document.getElementById("idEntitaet").disabled=false; 
+	}
+	
+}
+
+]]>
+</script>
+	<!-- Layout the dialog controls: -->
+	<vbox>
+		<groupbox>
+			<caption label="Suchschlüssel: " />
+			<textbox align="left" size="3" id="idSchluessel" value="" />
+		</groupbox>
+		<groupbox>
+			<caption label="Operator: " tooltiptext="Die Einstellungen werden für zukünftige Recherchen gespeichert."/>
+			<radiogroup name="radio" orient="horizontal" id="idOperator">
+						<radio label="ODER" />
+						<radio label="UND"/>
+			</radiogroup>
+		</groupbox>
+		<groupbox>
+			<caption label="Trunkierte Suche?"/>
+			<radiogroup name="radio" orient="horizontal" id="idTrunkierung">
+						<radio label="nicht trunkiert" />
+						<radio label="trunkiert"/>
+			</radiogroup> 
+		</groupbox>
+        <groupbox>
+			<caption label="Suchbegriffe:"/>
+			<textbox align="left" 
+				size="40" 
+				id="idSuchbox" 
+				value="" 
+				multiline = "true"
+				rows="10"
+			/>
+			<label value="Der Inhalt des Zwischenspeichers wurde im Textfeld eingefügt." />
+		</groupbox>
+	</vbox>
+</dialog>

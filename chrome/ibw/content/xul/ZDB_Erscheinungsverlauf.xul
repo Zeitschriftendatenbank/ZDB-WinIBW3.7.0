@@ -1,0 +1,449 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?> 
+<?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
+<!-- Include your own stylesheet here. -->
+
+<!-- Define the dialog: -->
+<dialog
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+    title="Erscheinungsverlauf"
+    onload="onLoad();"
+    buttons="accept,cancel"
+    ondialogaccept="return onAccept();"
+    ondialogcancel="return onCancel();"
+    onunload="application.activate();"
+    style="min-width: 55em;max-height:55em"
+    id="ZDB_Erscheinungsverlauf"
+>
+    <script>
+        <![CDATA[
+        
+        var application = Components.classes["@oclcpica.nl/kitabapplication;1"]
+        .getService(Components.interfaces.IApplication);
+        var groupcount = 0;
+        var count = 0;
+        var groups = [];
+        var lfd = false;
+        
+        function onLoad()
+        {
+            parse4024();
+            if(0 == groupcount)
+            {
+                add(1);
+            }
+            else
+            {
+                add(groupcount);
+                insert();
+            }
+
+            return true;
+        }
+        
+        function onAccept()
+        {
+            var bb,bj,bh,bm,bt,eb,ej,eh,em,et;
+            var feld4024;
+            var _feld4024 = [];
+            for(var g = 1; g <= count; g++)
+            {
+                feld4024 = "";
+                bb = "";
+                bj = "";
+                bh = "";
+                bm = "";
+                bt = "";
+                eb = "";
+                ej = "";
+                eh = "";
+                em = "";
+                et = "";
+                if("" != (bb = document.getElementById('bb'+g).value))
+                {
+                    feld4024 += "/v"+bb;
+                }
+                
+                if("" != (bh = document.getElementById('bh'+g).value))
+                {
+                    feld4024 += "/a"+bh;
+                }
+                if("" != (bt = document.getElementById('bt'+g).value))
+                {
+                    feld4024 += "/d"+bt;
+                }
+                if("" != (bm = document.getElementById('bm'+g).value))
+                {
+                    feld4024 += "/m"+bm;
+                }
+                if("" != (bj = document.getElementById('bj'+g).value))
+                {
+                    feld4024 += "/b"+bj;
+                }
+                
+                if("" != (eb = document.getElementById('eb'+g).value))
+                {
+                    feld4024 += "/V"+eb;
+                }
+                
+                if("" != (eh = document.getElementById('eh'+g).value))
+                {
+                    feld4024 += "/A"+eh;
+                }
+                if("" != (et = document.getElementById('et'+g).value))
+                {
+                    feld4024 += "/D"+et;
+                }
+                if("" != (em = document.getElementById('em'+g).value))
+                {
+                    feld4024 += "/M"+em;
+                }
+                if("" != (ej = document.getElementById('ej'+g).value))
+                {
+                    feld4024 += "/E"+ej;
+                }
+                
+                if("" != feld4024) _feld4024.push(feld4024);
+            }
+            
+            feld4024 = application.activeWindow.title.findTag('4024',0,true,true,false);
+
+            if("" != feld4024)
+            {
+                application.activeWindow.title.deleteLine(1);
+            }
+            else
+            {
+                application.activeWindow.title.endOfBuffer(false);
+                application.activeWindow.title.insertText("\n");
+            }
+            application.activeWindow.title.insertText("4024 "+_feld4024.join("; "));
+            if(document.getElementById('lfd').checked)
+            {
+                var ende = _feld4024[_feld4024.length-1];
+                if(ende.match(/\/V|\/A|\/D|\/M|\/E/))
+                {
+                    alert("Da ein Wert in der letzten Endgruppe vorhanden ist, wird die Angabe 'laufend' ignoriert.");
+                    application.activeWindow.title.insertText("\n");
+                }
+                else
+                {
+                    application.activeWindow.title.insertText("-\n");
+                }
+            }
+            else
+            {
+                application.activeWindow.title.insertText("\n");
+            }
+            return true;
+        }
+        
+        function onCancel()
+        {
+            return true;
+        }
+        
+        function getChained(chain,splitter,where) {
+            var split;
+            if (splitter.test(chain))
+            {
+                split = chain.split('/');
+                return ('b' === where) ? split[0] : split[split.length - 1];
+            } else {
+                return chain;
+            }
+        
+        }
+        
+        function parse4024()
+        {
+            var feld4024, _4024, split4024,bb,bj,bh,bm,bt,eb,ej,eh,em,et,group,splitter;
+            
+            if("" != (feld4024 = application.activeWindow.title.findTag('4024',0,false,true,false)))
+            {
+                if("-" == feld4024.substr(feld4024.length -1))
+                {
+                    lfd = true;
+                    document.getElementById('lfd').checked = true;
+                }
+                split4024 = feld4024.split(";");
+                splitter = new RegExp("/");
+                for(var s in split4024)
+                {
+                    group = {};
+                    
+                    if(bb = split4024[s].match(/\/v((?:[0-9]|\/(?!(?:[a-vA-V])))+)/)) {
+                        group['bb'] = getChained(bb[1], splitter, 'b');
+                    }
+                    if(bj = split4024[s].match(/\/b((?:[0-9]|\/(?!(?:[a-vA-V])))+)/)) {
+                        group['bj'] = getChained(bj[1], splitter, 'b');
+                    }
+                    if(bh = split4024[s].match(/\/a((?:[0-9]|\/(?!(?:[a-vA-V])))+)/)) {
+                        group['bh'] = getChained(bh[1], splitter, 'b');
+                    }
+                    if(bm = split4024[s].match(/\/m((?:[0-9]|\/(?!(?:[a-vA-V])))+)/)) {
+                        group['bm'] = getChained(bm[1], splitter, 'b');
+                    }
+                    if(bt = split4024[s].match(/\/d((?:[0-9]|\/(?!(?:[a-vA-V])))+)/)) {
+                        group['bt'] = getChained(bt[1], splitter, 'b');
+                    }
+                    if(eb = split4024[s].match(/\/V((?:[0-9]|\/(?!(?:[a-vA-V])))+)/)) {
+                        group['eb'] = getChained(eb[1], splitter, 'e');
+                    }
+                    if(ej = split4024[s].match(/\/E((?:[0-9]|\/(?!(?:[a-vA-V])))+)/)) {
+                        group['ej'] = getChained(ej[1], splitter, 'e');
+                        if (2 === group['ej'].length)
+                        {
+                            group['ej'] = ej[1].substr(0,2) + group['ej']; // 1998/99 -> 1999
+                        }
+                    }
+                    if(eh = split4024[s].match(/\/A((?:[0-9]|\/(?!(?:[a-vA-V])))+)/)) {
+                        group['eh'] = getChained(eh[1], splitter, 'e');
+                    }
+                    if(em = split4024[s].match(/\/M((?:[0-9]|\/(?!(?:[a-vA-V])))+)/)) {
+                        group['em'] = getChained(em[1], splitter, 'e');
+                    }
+                    if(et = split4024[s].match(/\/D((?:[0-9]|\/(?!(?:[a-vA-V])))+)/)) {
+                        group['et'] = getChained(et[1], splitter, 'e');
+                    }
+
+                    groups.push(group);
+                }
+            }
+            
+            groupcount = groups.length;
+            return true;
+        }
+        
+        function insert()
+        {
+            var gint;
+            for(var g in groups)
+            {
+                for(var i in groups[g])
+                {
+                    gint = parseInt(g) + 1;
+                    document.getElementById(i+""+gint).value = groups[g][i];
+                }
+            }
+            
+            return true;
+        }
+        
+        function add(howmany)
+        {
+            var protob = document.getElementById('protob');
+            var protoe = document.getElementById('protoe');
+            var beginClone, endClone;
+            var end = true;
+            for(var x = 1; x <= howmany; x++)
+            {
+                count++;
+                var groupbox = document.createElement('groupbox');
+                groupbox.setAttribute('id', 'g'+count);
+                groupbox.setAttribute('orient','vertical');
+                var caption = document.createElement('caption');
+                caption.setAttribute('label',count +'. Gruppe');
+                groupbox.appendChild(caption);
+                document.getElementById('container').appendChild(groupbox);
+                
+                beginClone = protob.cloneNode(true);
+                beginClone.setAttribute('id', 'b'+count);
+                beginClone.setAttribute('hidden', false);
+
+                document.getElementById('g'+count).appendChild(beginClone);
+                document.getElementsByAttribute('class','bd')[count].setAttribute('id', 'bd'+count);
+                //document.getElementById('bd'+count).value = count+". Gruppe: Beginn";
+                document.getElementById('bd'+count).value = "Beginn";
+                document.getElementsByAttribute('class','bb')[count].setAttribute('id', 'bb'+count);
+                document.getElementsByAttribute('class','bj')[count].setAttribute('id', 'bj'+count);
+                document.getElementsByAttribute('class','bh')[count].setAttribute('id', 'bh'+count);
+                document.getElementsByAttribute('class','bm')[count].setAttribute('id', 'bm'+count);
+                document.getElementsByAttribute('class','bt')[count].setAttribute('id', 'bt'+count);
+                
+                endClone = protoe.cloneNode(true);
+                endClone.setAttribute('id', 'e'+count);
+                endClone.setAttribute('hidden', false);
+                
+                document.getElementById('g'+count).appendChild(endClone);
+                document.getElementsByAttribute('class','ed')[count].setAttribute('id', 'ed'+count);
+                //document.getElementById('ed'+count).value = count+". Gruppe: Ende";
+                document.getElementById('ed'+count).value = "Ende";
+                document.getElementsByAttribute('class','eb')[count].setAttribute('id', 'eb'+count);
+                document.getElementsByAttribute('class','ej')[count].setAttribute('id', 'ej'+count);
+                document.getElementsByAttribute('class','eh')[count].setAttribute('id', 'eh'+count);
+                document.getElementsByAttribute('class','em')[count].setAttribute('id', 'em'+count);
+                document.getElementsByAttribute('class','et')[count].setAttribute('id', 'et'+count);
+            }
+            document.getElementById('bb'+count).focus();
+            return true;
+        }
+        ]]>
+    </script>
+    <!-- Layout the dialog controls: -->
+    <vbox id="protob" hidden="true" >
+        <separator/>
+        <description class="bd" style="font-weight:bold"/>
+        <separator/>
+        <hbox align="left">
+            <hbox>
+                <label value="Bandzählung:"/>
+                <textbox class="bb" value="" size="5"/>
+            </hbox>
+            <hbox>
+                <label value="Jahr:"/>
+                <textbox class="bj" value="" size="10"/>
+            </hbox>
+            <hbox>
+                <label value="Heft:"/>
+                <textbox class="bh" value="" size="5"/>
+            </hbox>
+            <hbox>
+                <label value="Monat:"/>
+                <menulist class="bm">
+                    <menupopup>
+                        <menuitem label="" value="" selected="true"/>
+                        <menuitem label="1" value="1"/>
+                        <menuitem label="2" value="2"/>
+                        <menuitem label="3" value="3"/>
+                        <menuitem label="4" value="4"/>
+                        <menuitem label="5" value="5"/>
+                        <menuitem label="6" value="6"/>
+                        <menuitem label="7" value="7"/>
+                        <menuitem label="8" value="8"/>
+                        <menuitem label="9" value="9"/>
+                        <menuitem label="10" value="10"/>
+                        <menuitem label="11" value="11"/>
+                        <menuitem label="12" value="12"/>
+                    </menupopup>
+                </menulist>
+            </hbox>
+            <hbox>
+                <label value="Tag:"/>
+                <menulist class="bt">
+                    <menupopup>
+                        <menuitem label="" value="" selected="true"/>
+                        <menuitem label="1" value="1"/>
+                        <menuitem label="2" value="2"/>
+                        <menuitem label="3" value="3"/>
+                        <menuitem label="4" value="4"/>
+                        <menuitem label="5" value="5"/>
+                        <menuitem label="6" value="6"/>
+                        <menuitem label="7" value="7"/>
+                        <menuitem label="8" value="8"/>
+                        <menuitem label="9" value="9"/>
+                        <menuitem label="10" value="10"/>
+                        <menuitem label="11" value="11"/>
+                        <menuitem label="12" value="12"/>
+                        <menuitem label="13" value="13"/>
+                        <menuitem label="14" value="14"/>
+                        <menuitem label="15" value="15"/>
+                        <menuitem label="16" value="16"/>
+                        <menuitem label="17" value="17"/>
+                        <menuitem label="18" value="18"/>
+                        <menuitem label="19" value="19"/>
+                        <menuitem label="20" value="20"/>
+                        <menuitem label="21" value="21"/>
+                        <menuitem label="22" value="22"/>
+                        <menuitem label="23" value="23"/>
+                        <menuitem label="24" value="24"/>
+                        <menuitem label="25" value="25"/>
+                        <menuitem label="26" value="26"/>
+                        <menuitem label="27" value="27"/>
+                        <menuitem label="28" value="28"/>
+                        <menuitem label="29" value="29"/>
+                        <menuitem label="30" value="30"/>
+                        <menuitem label="31" value="31"/>
+                    </menupopup>
+                </menulist>
+            </hbox>
+        </hbox>
+    </vbox>
+    <vbox id="protoe" hidden="true" >
+        <separator/>
+        <description  class="ed" style="font-weight:bold"/>
+        <separator/>
+        <hbox align="left">
+            <hbox>
+                <label value="Bandzählung:"/>
+                <textbox class="eb" value="" size="5"/>
+            </hbox>
+            <hbox>
+                <label value="Jahr:"/>
+                <textbox class="ej" value="" size="10"/>
+            </hbox>
+            <hbox>
+                <label value="Heft:"/>
+                <textbox class="eh" value="" size="5"/>
+            </hbox>
+            <hbox>
+                <label value="Monat:"/>
+                <menulist class="em">
+                    <menupopup>
+                        <menuitem label="" value="" selected="true"/>
+                        <menuitem label="1" value="1"/>
+                        <menuitem label="2" value="2"/>
+                        <menuitem label="3" value="3"/>
+                        <menuitem label="4" value="4"/>
+                        <menuitem label="5" value="5"/>
+                        <menuitem label="6" value="6"/>
+                        <menuitem label="7" value="7"/>
+                        <menuitem label="8" value="8"/>
+                        <menuitem label="9" value="9"/>
+                        <menuitem label="10" value="10"/>
+                        <menuitem label="11" value="11"/>
+                        <menuitem label="12" value="12"/>
+                    </menupopup>
+                </menulist>
+            </hbox>
+            <hbox>
+                <label value="Tag:"/>
+                <menulist class="et">
+                    <menupopup>
+                        <menuitem label="" value="" selected="true"/>
+                        <menuitem label="1" value="1"/>
+                        <menuitem label="2" value="2"/>
+                        <menuitem label="3" value="3"/>
+                        <menuitem label="4" value="4"/>
+                        <menuitem label="5" value="5"/>
+                        <menuitem label="6" value="6"/>
+                        <menuitem label="7" value="7"/>
+                        <menuitem label="8" value="8"/>
+                        <menuitem label="9" value="9"/>
+                        <menuitem label="10" value="10"/>
+                        <menuitem label="11" value="11"/>
+                        <menuitem label="12" value="12"/>
+                        <menuitem label="13" value="13"/>
+                        <menuitem label="14" value="14"/>
+                        <menuitem label="15" value="15"/>
+                        <menuitem label="16" value="16"/>
+                        <menuitem label="17" value="17"/>
+                        <menuitem label="18" value="18"/>
+                        <menuitem label="19" value="19"/>
+                        <menuitem label="20" value="20"/>
+                        <menuitem label="21" value="21"/>
+                        <menuitem label="22" value="22"/>
+                        <menuitem label="23" value="23"/>
+                        <menuitem label="24" value="24"/>
+                        <menuitem label="25" value="25"/>
+                        <menuitem label="26" value="26"/>
+                        <menuitem label="27" value="27"/>
+                        <menuitem label="28" value="28"/>
+                        <menuitem label="29" value="29"/>
+                        <menuitem label="30" value="30"/>
+                        <menuitem label="31" value="31"/>
+                    </menupopup>
+                </menulist>
+            </hbox>
+        </hbox>
+    </vbox>
+    <vbox id="container" flex="1" style="overflow:auto"/>
+    <separator class="thin"/>
+    <box align="right">
+        <checkbox label="laufend" id="lfd" checked="false" style="font-weight:bold"/>
+    </box>
+    <box id="button" width="20em">
+        <button label="weitere Gruppe hinzufügen" oncommand="add(1);"/>
+    </box>
+    <separator/>
+</dialog>

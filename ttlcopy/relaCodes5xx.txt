@@ -1,0 +1,123 @@
+adel	Adelstitel	Tp550
+adre	Adressat	Tu500; Tu510
+adue	Administrative Überordnung	Tb511; Tf511; Tb551; Tg551; Tf510; Tb510
+affi	Affiliation	Tp510; Tp511; Tf511; Tp551
+akad	Akademischer Grad	Tp550
+akti	Tätigkeitsbereich	Tb550
+anla	Anlass	Tf530; Tu530; Tf550; Ts550; Tu550
+anno	Annotator	Tu500; Tu510
+arch	Architekt	Tg500 Tg510
+arra	Arrangeur	Tu500; Tu510
+aust	Aussteller	Tf500; Tf510
+aut1	Verfasser, 1.	Tu500; Tu510; Tu511; Tu551
+auta	Verfasser	Tu500; Tu510 Tu511 Tu551
+autf	Verfasser, fiktiver	Tu500 Tu510
+autg	Verfasser, zugeschrieben	Tu500  Tu510
+autw	Verfasser, zweifelhaft	Tu500  Tu510
+autz	Verfasser, zitiert	Tu500  Tu510
+bauh	Bauherr	Tg500 Tg510
+bear	Bearbeiter	Tu500
+befr	Besitzer, früherer	Tg500; Tu500 Tg510; Tu510
+berc	Beruf, charakteristischer	Tp550
+beru	Beruf	Tp550
+besi	Besitzer	Tg500; Tu500  Tg510; Tu510
+bete	beteiligte	Tb510; Tu510 Tb551; Ts551 Tf500; Tb500; Ts500; Tu500
+beza	Bekanntschaft mit	Tp500
+bezb	Beziehung beruflich	Tp500
+bezf	Beziehung familiär	Tp500
+bilh	Bildhauer	Tg500; Tu500 Tg510; Tu510
+bubi	Buchbinder	Tu500
+chre	Choreograf	Tu500 Tu510
+comp	Compiler	Tu500 Tu510
+desi	Designer	Tu500 Tu510
+datb	Zeit, Bestehen	Tb548 Tf548 Tg548 Ts548 Tu548
+datf	Zeit, Fundjahr	Tg548 Tu548
+datj	Zeit, Erscheinung (zeitlich)	Tu548 
+datl	Zeit, Lebensdaten	Tp548
+dats	Zeit, Erstellung (zeitlich), Baujahr, Entstehen	Tg548 Ts548 Tu548 
+datu	Zeit, UDK-Code	Tp548 Tu548
+datv	Zeit, Veranstaltungsdaten	Tf548
+datw	Zeit, Wirkungsdaten	Tp548
+datx	Zeit, Lebensdaten exakt	Tp548
+datz	Zeit, Wirkungsdaten exakt	Tp548
+dich	Textdichter	Tu500 Tu510
+druc	Drucker	Tu500  Tu510
+erfi	Erfinder	Ts500 Ts510
+feie	gefeierte oder dargestellte Person/Körperschaft/Ereignis	Tf500; Tb500; Ts500; Tu500; Tg500 Tf510; Tb510; Ts510; Tu510 Tf550; Tb550; Ts550; Tu550
+foto	Fotograf	Tu500 Tu510
+geoa	Geografikum, allgemein	Tb551; Tf551; Tu551; Ts551; Tg551
+geow	geografischer Wirkungsbereich	Tb551; Tf551 Tu551
+gest	Buchgestalter	Tu500 Tu510
+grav	Graveur	Tu500 Tu510
+grue	Gründer	Tg500; Tb500 Tg510; Tk510 Tf510; Tb510
+hers	Hersteller	Ts500; Tu500   Ts510; Tu510
+hrsg	Herausgeber	Tu500 Tu510
+illu	Illustrator, Illuminator	Tu500 Tu510
+istm	Instrumentalmusiker	Tu500 Tu510
+istr	Instrument	Tp550; Tu550
+kame	Verantwortlicher Kameramann	Tu500 Tu510
+kart	Kartograf	Tu500  Tu510
+kom1	Komponist, erster	Tu500 Tu510
+koma	Komponist	Tu500   Tu510
+komg	Komponist, zugeschrieben	Tu500 Tu510
+komm	Kommentator	Tu500 Tu510
+komw	Komponist, zweifelhaft	Tu500 Tu510
+komz	Komponist, zitierter	Tu500 Tu510
+kopi	Kopist	Tu500 Tu510
+korr	Korrespondenz-Partner	Tb500; Tb510; Tp500 Tp510
+kue1	Künstler, erster	Tg500; Tu500 Tg510; Tu510
+kueg	Künstler, zugeschrieben	Tg500; Tu500  Tg510; Tu510
+kuen	Künstler	Tg500; Tu500 Tg510; Tu510
+kuew	Künstler, zweifelhaft	Tg500; Tu500 Tg510; Tu510
+kuez	Künstler, zitierter	Tg500; Tu500 Tg510; Tu510
+kura	Kurator	Tf500; Tu500 Tf510; Tu510
+leih	Leihgeber	Tu500 Tu510
+libr	Librettist	Tu500 Tu510
+lith	Lithograf	Tu500 Tu510
+malr	Maler	Tu500 Tu510
+mitg	Mitglied	Tb510 Tp500
+musi	Musiker	Tf500; Tb500
+nach	Nachfolger	Tb551; Tg551 Tf511 Tg510; Tb510 Ts550 Tu530
+nawi	Name, wirklicher	Tp500
+nazw	Name, zeitweise	Tb551; Tg551  Tf511  Tg510; Tb510;Tf510
+obal	Oberbegriff allgemein	Tf550; Tg550; Tb550; Tp550; Ts550; Tu550 Ts530
+obge	Oberbegriff, generisch	Ts550
+obin	Oberbegriff, instantiell	Tf550; Tg550; Tb550; Tp550; Ts550; Tu550
+obpa	Oberbegriff, partitiv	Tf511 Tu530  Tf550 Tb550; Ts550; Tu550 Tg551 Tp500 Tb510
+orta	Ort, Sitz	Tb551; Tg551; Ts551
+ortb	Aufbewahrungsort	Tu551
+ortc	Charakteristischer Ort	Tp551
+ortf	Fundort	Tu551
+ortg	Geburtsort	Tp551
+orth	Herstellungsort	Tu551; Ts551
+ortm	weiterer Ort	Tb551; Tf551
+orts	Sterbeort	Tp551
+ortv	Veranstaltungsort	Tf551
+ortw	Wirkungsort	Tp551; Ts551
+ortx	Exil	Tp551
+pseu	Pseudonym	Tp500
+punk	Streckenpunkt Beginn/Ende	Tg551
+radi	Radierer	Tu500 Tu510
+reda	Redakteur	Tu510  Tu500
+regi	Regisseur	Tu500 Tu510
+rela	Relation (allgemein)	Tf510; Tg510; Tb510; Tp510; Ts510; Tu510 Tf500; Tg500; Tb500; Tp500; Ts500; Tu500 Tf550; Tg550; Tb550; Tp550; Ts550; Tu550 Tp511; Tb511; Tf511; Tu511; Ts511; Tg511 Tp530; Tb530; Tf530; Tu530; Tg530; Ts530 Tp551; Tb551; Tf551; Tu551; Ts551; Tg551, Tb548 Tf548 Tg548 Tp548 Ts548 Tu548
+rest	Restaurator	Tg500; Tu500  Tg510; Tu510
+saen	Sänger	Tu500
+saml	Sammler	Tb510; Tu510 Tu500; Tb500
+skri	Skriptorium	Tu510
+spon	Sponsor, Maezen	Tf500; Tg500; Tb500; Tu500  Tf510; Tg510; Tb510; Tu510
+spra	Sprache	Tu550
+spre	Sprecher	Tu500
+stif	Stifter	Tf500; Tg500; Tb500; Tu500  Tf510; Tg510; Tb510; Tu510
+stud	Studienfach	Tp550
+them	Thema	Tf500; Tp500; Tu500 Tf510; Tp510 Tp511; Tf511 Tu511 Tf551 Tp530; Tb550 Tf530; Tu530 Tp551 ; Tu551 Tu550; Tf550; Tp550 Tb500; Tb510; Tb511; Tb530 Ts550
+uebe	Übersetzer	Ts500; Tu500 Ts510; Tu510
+urhe	Urheber	Ts500; Tu500 Ts510; Tu510
+vbal	Verwandter Begriff (allgemein)	Tb500; Tu500; Ts500; Tg500; Tp500; Tf500; Tb510; Tu510; Ts510; Tg510; Tp510; Tf510; Tb511; Tf511;  Tp511; Tf550; Tg550; Tb550; Tp550; Ts550; Tu550 Tp530; Tb530; Tf530; Tu530; Ts530; Tg530 Tp551; Tb551; Tf551; Tu551; Ts551; Tg551 Tu511; Ts511; Tg511 
+vera	Veranstalter	Tf510
+verr	Veranlasser	Tu500; Tu510
+vfrd	Drehbuchautor	Tu510
+vorg	Vorgänger	Tb551; Tg551 Tf511 Tg510; Tb510 Ts550 Tu530
+vorl	Vorlage literarische u.ä.	Tu530
+werk	Werk	Tu530
+widm	Widmungsempfänger 	Tg510; Tu510 Tg500; Tu500

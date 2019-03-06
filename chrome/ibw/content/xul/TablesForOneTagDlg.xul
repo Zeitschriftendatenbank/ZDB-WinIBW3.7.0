@@ -1,0 +1,326 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?> 
+<?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
+
+<!DOCTYPE dialog [
+<!ENTITY % tableFunctionDTD SYSTEM "chrome://ibw/locale/TableFunction.dtd" >
+%tableFunctionDTD;
+]>
+
+<!-- Include your own stylesheet here. -->
+
+<!-- Define the dialog: -->
+<dialog
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+	title="&tablesForOneTagDialog.title;"
+	onload="onLoad();"
+	buttons=" " 
+	ondialogaccept="return onAccept();"
+	ondialogcancel="return onCancel();"
+	onclose="return onCancel();"
+	style="min-width: 80em;"
+	id="TableFunction"
+>
+
+<script>
+<![CDATA[
+
+var application = Components.classes["@oclcpica.nl/kitabapplication;1"].getService(Components.interfaces.IApplication);
+const utility = 
+{
+	newFileInput: function() {
+		return Components.classes["@oclcpica.nl/scriptinputfile;1"]
+								.createInstance(Components.interfaces.IInputTextFile);
+	},
+
+     newFileOutput: function() {
+        return Components.classes["@oclcpica.nl/scriptoutputfile;1"]
+                                 .createInstance(Components.interfaces.IOutputTextFile);
+	},
+
+	newPrompter: function() {
+         return Components.classes["@oclcpica.nl/scriptpromptutility;1"]
+                                   .createInstance(Components.interfaces.IPromptUtilities);
+   },
+   
+	getSpecialDirectory: function(name) {
+		const nsIProperties = Components.interfaces.nsIProperties;
+		var dirService = Components.classes["@mozilla.org/file/directory_service;1"]
+    					.getService(nsIProperties);
+
+		return dirService.get(name, Components.interfaces.nsIFile);
+	}
+};	
+const theIOService = Components.classes["@mozilla.org/network/io-service;1"]
+					.getService(Components.interfaces.nsIIOService);
+const thePrefs = Components.classes["@mozilla.org/preferences-service;1"]
+					.getService(Components.interfaces.nsIPrefBranch);					
+var tablesForOneTag;
+var theCurrentTag;
+const titleMarker = "<tt>";
+const rowMarker = "<row>";
+const delimiter = "QQ";
+
+function open_xul_dialog(theUrl, theFeatures, theArguments)
+{  
+	// try to get the window-watcher
+	var ww    = Components.classes["@mozilla.org/embedcomp/window-watcher;1"]
+                                 .getService(Components.interfaces.nsIWindowWatcher);
+	if (!ww) {
+		// no chance, give up
+		return false;
+	}
+
+	// let's try to get a valid parent
+	var theParent   = ww.activeWindow;
+
+	var features = null;
+	if (theFeatures != null) {
+		features = theFeatures;		
+	} else {
+		// you may choose to remove some of the features
+		// you may also want to specify width=xxx and/or height=xxx 
+		features = "centerscreen,chrome,close,titlebar,resizable,modal,dialog=yes";		
+	}
+	
+  	// check if theUrl is ok before ww.openWindow()
+  	var theUri = theIOService.newURI(theUrl, null, null);
+	var theDirAndFilenameXul = "\\" + theUri.scheme + "\\" + theUri.host + "\\"; 
+	var index, indexStart = 1;	
+	var indexEnd = theUri.path.lastIndexOf("/");
+	var msg, subStr;
+	var theDir = utility.getSpecialDirectory("BinDir");
+	
+	if (theDir) {
+		theDir.append(theUri.scheme);
+		theDir.append(theUri.host);
+		for (index = 0; index<=indexEnd; ) {
+			if (index == indexEnd) {
+				if (!theDir.exists()) {
+					msg = "\"" + theDirAndFilenameXul + "\"" + " " + gPicaUtility.getMessage("InValidPath");
+					application.messageBox("Alert",msg, "alert-icon");
+    				return false;
+    		    }  
+    		    subStr = theUri.path.substr(index +1, theUri.path.length-index-1);					
+   		 		theDirAndFilenameXul = theDirAndFilenameXul + subStr;	
+				theDir.append(subStr);
+				index = theUri.path.length;
+			} else {
+				index = theUri.path.indexOf("/", indexStart);
+				subStr = theUri.path.substr(indexStart, index-indexStart);
+				theDirAndFilenameXul = theDirAndFilenameXul + subStr + "\\";
+				theDir.append(subStr);
+				indexStart = index +1;				
+			}	
+		}
+		if (!theDir.exists()) {
+			msg = "\"" + theDirAndFilenameXul + "\"" + " " + gPicaUtility.getMessage("FileCanNotBeFound");
+			application.messageBox("Alert",msg, "alert-icon");
+    		return false;
+   		}
+	}		
+
+	// it doesn't matter, if we don't have a parent
+	// we just use the active window, whether its null or not
+	// Remark1: The following function will crash the application, when theUrl is meant for one non-existing XUL.
+	// Remark2: That is why the checking is done before calling the openWindow function.
+	ww.openWindow(theParent, theUrl, "", features, theArguments);
+	
+	// make sure WinIBW stays in the foreground
+	application.activate();
+} 
+
+function insertLineWithTable(treechildren, theTag, tableName)
+{    
+	var treeitem = document.createElement('treeitem');
+	treechildren.appendChild(treeitem);
+		
+	var treerow = document.createElement('treerow');
+	treeitem.appendChild(treerow);	 
+	
+	var fName = tableName; 
+	if (tableName.substr(-4) == ".tab") {
+		tableName = tableName.slice(0, -4);
+		if (tableName == theTag) {
+			tableName = "";
+		} else {
+			fName = theTag + "_" + tableName + ".tab";
+			//alert(theTag);
+		}
+	} else {
+		fName = theTag + "_" + tableName;
+	}	
+	//alert("theTag: " + theTag +"\n" + "tableName: " + tableName +"\n" + "fName: " + fName );
+
+	treerow.appendChild(document.createElement('treecell')).setAttribute('label', theTag); 
+	treerow.appendChild(document.createElement('treecell')).setAttribute('label', tableName);
+	treerow.appendChild(document.createElement('treecell')).setAttribute('label', fName);  
+}
+
+function getSpecialDirectory(name)
+{
+	const nsIProperties = Components.interfaces.nsIProperties;
+    var dirService = Components.classes["@mozilla.org/file/directory_service;1"]
+    					.getService(nsIProperties);
+    
+    return dirService.get(name, Components.interfaces.nsIFile);
+}
+
+function Trim(sInString) {
+	if (sInString == 0) return "";
+	sInString = sInString.replace( /^\s+/g, "" );// strip leading
+	return sInString.replace( /\s+$/g, "" );// strip trailing
+}
+
+function getShortCut(theTag)
+{
+	var theTitle = application.activeWindow.title;
+	var strShortCut = Trim(theTitle.selection);
+	if (strShortCut == "") {
+		strShortCut = Trim(theTitle.currentField);
+		var len = theTag.length + 1;
+		if (strShortCut.length > len) {
+			strShortCut = strShortCut.substr(len);
+		} else {
+			strShortCut = "";
+			var curLine = theTitle.currentField;
+			if (curLine[curLine.length-1] != ' ') {
+				theTitle.startOfField(false);
+				theTitle.endOfField(false);
+				theTitle.insertText(" ");
+			}
+		}
+		theTitle.startOfField(false);
+		theTitle.charRight(len, false);
+		theTitle.endOfField(true);
+	}
+	return Trim(strShortCut);
+}
+
+function getTables(theTag)
+{
+    tablesForOneTag = new Array();
+	var theDir = getSpecialDirectory("BinDir");
+	if (theDir) {
+		theDir.append("tables");
+		if (theDir.exists()) {
+			theDirEnum = theDir.directoryEntries;
+			while (theDirEnum.hasMoreElements()) {
+				var theItem = theDirEnum.getNext(); 
+				var theFile = theItem.QueryInterface(Components.interfaces.nsIFile);
+				if (theFile.isFile()) {
+					var theName = theFile.leafName;  
+					var tableDes = theFile.leafName;   
+					if (theName.substr(0, theTag.length) == theTag) {
+						if (theName.substr(-4) == ".tab") {
+							tableDes = theName.slice(0, -4);	// alert("tableDes: " + tableDes);					
+						} 
+					    if (tableDes == theTag) {
+							tablesForOneTag.push(theName); 
+						} else {	
+							tablesForOneTag.push(theName.substr(theTag.length+1)); //alert(theName.substr(theTag.length+1));
+						} 
+					}
+				}
+			}
+		}	
+	}	
+	
+	theDir = getSpecialDirectory("ProfD");	
+	if (theDir) {
+		theDir.append("tables");
+		if (theDir.exists()) {
+			theDirEnum = theDir.directoryEntries;
+			while (theDirEnum.hasMoreElements()) {
+				var theItem = theDirEnum.getNext(); 
+				var theFile = theItem.QueryInterface(Components.interfaces.nsIFile);
+				if (theFile.isFile()) {
+					var theName = theFile.leafName;  
+					var tableDes = theFile.leafName;   
+					if (theName.substr(0, theTag.length) == theTag) {
+						if (theName.substr(-4) == ".tab") {
+							tableDes = theName.slice(0, -4);	// alert("tableDes: " + tableDes);					
+						} 
+					    if (tableDes == theTag) {
+							tablesForOneTag.push(theName); 
+						} else {	
+							tablesForOneTag.push(theName.substr(theTag.length+1)); //alert(theName.substr(theTag.length+1));
+						} 
+					}
+				}
+			}
+		}	
+	}
+	
+	tablesForOneTag.sort();  
+	
+	var theChildren = document.getElementById("theChildren");
+	for (i = 0; i < tablesForOneTag.length; i++) { 
+		insertLineWithTable(theChildren, theTag, tablesForOneTag[i]); 
+	}	
+	
+	document.getElementById("treecol1").setAttribute("flex", 2);
+	document.getElementById("treecol2").setAttribute("flex", 60);
+	document.getElementById("treecol3").setAttribute("flex", 80);
+	document.getElementById("idTree").view.selection.select(0);
+	document.getElementById("idTree").boxObject.scrollToRow(0);
+	document.getElementById("idTree").focus(); 	
+}
+
+function onLoad()
+{
+	try {
+		if (application.activeWindow.title == null) { window.close(); return false; }
+		
+		var theTag;
+		//Fehler im Script von OCLC:
+		//var theCurrentBestMatchTable = thePrefs.getCharPref("ibw.tableFunction.theCurrentBestMatchTable");
+        //GBV KH: 
+        var theCurrentBestMatchTable = thePrefs.getCharPref("ibw.tableFunction.theCurrentTable");
+        if (theCurrentBestMatchTable == "") {
+        	theTag = application.activeWindow.title.tag;
+        	//alert("onLoad, theTag 1: " + theTag);
+        } else {
+            theTag = theCurrentBestMatchTable;
+            //alert("onLoad, theTag 2: " + theTag);
+        }
+        	
+		if (theTag == "") { window.close(); return false; }
+		theCurrentTag = theTag;
+		
+		getTables(theTag);
+	
+ 		document.getElementById("idTree").focus();
+		return true;
+	} catch(e) { alert(e); }
+}
+
+function onAccept()
+{
+	var theTree = document.getElementById("idTree");
+	var theText = theTree.view.getCellText(theTree.currentIndex, "treecol2");
+	var theCurrentTable = theCurrentTag;
+	if (theText != "") {
+		theCurrentTable = theCurrentTag + "_" + theText;
+	}
+	thePrefs.setCharPref("ibw.tableFunction.theCurrentTable", theCurrentTable);	
+	open_xul_dialog("chrome://ibw/content/xul/TableFunctionDlg.xul", null, null);
+	
+	return true;
+}
+	
+function onCancel()
+{  	
+}
+
+]]>
+</script>  
+		<tree id="idTree" rows="10" flex="1" hidecolumnpicker="true" seltype="single" ondblclick="onAccept();window.close();">
+			<treecols>
+			<treecol id="treecol1" label="&tablesForOneTagDialog.tag;" primary="true" />
+			<treecol id="treecol2" label="&tablesForOneTagDialog.tableDescription;"/>
+			<treecol id="treecol3" label="&tablesForOneTagDialog.filename;"/>
+			</treecols>
+			<treechildren id="theChildren" />
+		</tree>
+</dialog>

@@ -1,0 +1,133 @@
+﻿<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?> 
+<?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
+<!-- Include your own stylesheet here. -->
+
+<!-- Define the dialog: -->
+<dialog
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+	title="LokUrl"
+	onload="onLoad();"
+	buttons="cancel"
+	ondialogcancel="return onCancel();"
+	onunload="application.activate();"
+	style="min-width: 33em"
+	id="ZDB_LokUrl"
+>
+
+<!-- XHTML-Namespace für die Darstellung von Hyperlinks -->
+<window
+    id="findfile-window"
+    title="LokUrl"
+    orient="horizontal"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<script>
+<![CDATA[
+var application = Components.classes["@oclcpica.nl/kitabapplication;1"]
+                        .getService(Components.interfaces.IApplication);
+
+function onLoad()
+{
+	// Whatever needs to be done when the SampleDialog opens.
+	
+	// Titeldaten kopieren
+	var aufnahme = application.activeWindow.copyTitle();
+	// Zeichenlänge der Titeldaten ermitteln
+	var len = aufnahme.length;
+	// Speicher für URLs
+	var urls = new Array();
+	// Feld in dem URLs stehen können
+	var feld = "\n7135 ";
+	var pos = 0;
+	
+	// Zähler der sicherstellt, dass die Aufnahme nur einmal geparst wird 
+	var pos_counter = 0;
+	var len_feldinhalt = 0;
+	var i = 0;
+	while (aufnahme.indexOf(feld, pos_counter) > pos_counter) {
+		// Position der URL ermitteln
+		pos_counter = aufnahme.indexOf(feld, pos_counter);
+		pos = pos_counter + feld.length;
+		var ende = aufnahme.indexOf("\n", pos);
+		var feldinhalt = aufnahme.substring(pos, ende);
+		len_feldinhalt = feldinhalt.length;
+		// URL ausschneiden
+		pos = feldinhalt.indexOf("=u ");
+		if (pos == -1) { 
+			pos = feldinhalt.indexOf("=g ", pos); // URN
+		}
+		if (pos > -1) {
+			feldinhalt = feldinhalt.substring(pos + 3, ende);
+			pos = feldinhalt.indexOf("=x ");
+			if (pos == -1) { 
+				pos = feldinhalt.indexOf("=z ");
+			}
+			if (pos > -1) {
+				feldinhalt = feldinhalt.substring(0, pos);
+			}
+		}	
+		urls[i] = feldinhalt;
+		// Zähler für nächsten Durchlauf
+		pos_counter = pos_counter + len_feldinhalt;
+		i++;
+	}
+
+	// Zeiger auf Messagebox
+	var container = document.getElementById("boxi");
+	// Falls keine URLs gefunden -> Fehlermeldung
+	if (urls.length == 0) {
+		var descNode_e = document.createElement("description");
+		var linkNode_e = document.createElementNS("http://www.w3.org/1999/xhtml","a");
+		var txtNode_e = document.createTextNode("Es wurde keine URL gefunden.");
+		descNode_e.appendChild(txtNode_e);
+		container.appendChild(descNode_e);
+	} else {
+		// Ausgabe der URLs in Messagebox
+		var descNode = document.createElement("description");
+		var txtNode = document.createTextNode("Bitte klicken Sie auf die URL, die aufgerufen werden soll:");
+		descNode.appendChild(txtNode);
+		container.appendChild(descNode);
+		for (i = 0; i < urls.length; i++) {
+			var descNode = document.createElement("description");
+			var linkNode = document.createElementNS("http://www.w3.org/1999/xhtml","a");
+			linkNode.setAttribute("href", urls[i]);
+			linkNode.setAttribute("target", "_blank");
+			linkNode.setAttribute("style", "color: rgb(0,0,255); text-decoration:underline");
+			// Zu lange URLs (mehr als 100 Zeichen) für die Anzeige kürzen
+			var token = "";
+			if (urls[i].length > 100) {
+				token = urls[i].substring(0,100);
+				token = token + " (URL gekürzt) ";
+			} else {
+				token = urls[i]
+			}
+			var txtNode = document.createTextNode(token);
+			linkNode.appendChild(txtNode);
+			descNode.appendChild(linkNode);
+			container.appendChild(descNode);
+		}		
+	}
+	return true;
+}
+
+function onCancel()
+{
+	// The Cancel button is pressed..
+	// alert("Sie haben Abbrechen gewählt. Wirklich abbrechen?");
+	return true;
+}
+
+
+]]>
+</script>
+
+<vbox id="boxi" flex="1" style="overflow:auto"  height="450">
+	<description>
+	</description>
+	<separator/>
+</vbox>
+
+</window>
+</dialog>

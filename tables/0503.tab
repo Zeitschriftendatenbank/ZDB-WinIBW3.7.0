@@ -1,0 +1,63 @@
+<tbl>
+<tt> Datentraegertyp
+
+<dt> 0503.tab
+<tag> 0503
+<row>nc QQ Band$bnc QQ Band
+<row>cr QQ Online-Ressource$bcr QQ Online-Ressource
+<row>he QQ Mikrofiche$bhe QQ Mikrofiche
+<row>vf QQ Videokassette$bvf QQ Videokassette
+<row>hj QQ Mikrofilmrolle$bhj QQ Mikrofilmrolle
+<row>sg QQ Audiocartridge$bsg QQ Audiocartridge
+<row>sd QQ Audiodisk$bsd QQ Audiodisk
+<row>ss QQ Audiokassette$bss QQ Audiokassette
+<row>nb QQ Blatt$bnb QQ Blatt
+<row>cb QQ Computerchip-Cartridge$bcb QQ Computerchip-Cartridge
+<row>cd QQ Computerdisk$bcd QQ Computerdisk
+<row>ce QQ Computerdisk-Cartridge$bce QQ Computerdisk-Cartridge
+<row>gs QQ Dia$bgs QQ Dia
+<row>mc QQ Filmdose$bmc QQ Filmdose
+<row>mf QQ Filmkassette$bmf QQ Filmkassette
+<row>mo QQ Filmrolle$bmo QQ Filmrolle
+<row>mr QQ Filmspule$bmr QQ Filmspule
+<row>gf QQ Filmstreifen$bgf QQ Filmstreifen
+<row>gc QQ Filmstreifen-Cartridge$bgc QQ Filmstreifen-Cartridge
+<row>gd QQ Filmstreifen für Einzelbildvorführung$bgd QQ Filmstreifen für Einzelbildvorführung
+<row>nn QQ Flipchart$bnn QQ Flipchart
+<row>nr QQ Gegenstand$bnr QQ Gegenstand
+<row>no QQ Karte$bno QQ Karte
+<row>hg QQ Lichtundurchlässiger Mikrofiche$bha QQ Lichtundurchlässiger Mikrofiche
+<row>ca QQ Magnetbandcartridge$bca QQ Magnetbandcartridge
+<row>cf QQ Magnetbandkassette$bcf QQ Magnetbandkassette
+<row>ch QQ Magnetbandspule$bch QQ Magnetbandspule
+<row>hf QQ Mikrofichekassette$bhf QQ Mikrofichekassette
+<row>hb QQ Mikrofilm-Cartridge$bhb QQ Mikrofilm-Cartridge
+<row>hc QQ Mikrofilmkassette$bhc QQ Mikrofilmkassette
+<row>ha QQ Mikrofilmlochkarte$bhg QQ Mikrofilmlochkarte
+
+<row>hd QQ Mikrofilmspule$bhd QQ Mikrofilmspule
+<row>hh QQ Mikrofilmstreifen$bhh QQ Mikrofilmstreifen
+<row>zu QQ nicht spezifiziert$bzu QQ nicht spezifiziert
+<row>sq QQ Notenrolle$bsq QQ Notenrolle
+<row>pp QQ Objektträger$bpp QQ Objektträger
+<row>gt QQ Overheadfolie$bgt QQ Overheadfolie
+<row>se QQ Phonographenzylinder$bse QQ Phonographenzylinder
+<row>na QQ Rolle$bna QQ Rolle
+<row>nz QQ Sonstige Datenträger, die ohne Hilfsmittel zu benutzen sind$bnz QQ Sonstige Datenträger, die ohne Hilfsmittel zu benutzen sind
+<row>cz QQ Sonstige Computermedien$bcz QQ Sonstige Computermedien
+<row>hz QQ Sonstige Mikroformen$bhz QQ Sonstige Mikroformen
+<row>mz QQ Sonstige projizierbare Bilder$bmz QQ Sonstige projizierbare Bilder
+<row>ez QQ Sonstige stereografische Datenträger$bez QQ Sonstige stereografische Datenträger
+
+<row>sz QQ Sonstige Tonträger$bsz QQ Sonstige Tonträger
+<row>pz QQ Sonstige Mikroskop-Anwendungen$bpz QQ Sonstige Mikroskop-Anwendungen
+<row>vz QQ Sonstige Videodatenträger$bvz QQ Sonstige Videodatenträger
+<row>ck QQ Speicherkarte$bck QQ Speicherkarte
+<row>eh QQ Stereobild$beh QQ Stereobild
+<row>es QQ Stereografische Disk$bes QQ Stereografische Disk
+<row>st QQ Tonbandspule$bst QQ Tonbandspule
+<row>si QQ Tonspurspule$bsi QQ Tonspurspule
+<row>vr QQ Videobandspule$bvr QQ Videobandspule
+<row>vc QQ Videocartridge$bvc QQ Videocartridge
+<row>vd QQ Videodisk$bvd QQ Videodisk
+</tbl>

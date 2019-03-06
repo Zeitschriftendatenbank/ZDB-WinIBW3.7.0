@@ -1,0 +1,107 @@
+//
+// Diese Datei dient zur Definition bestimmter Begriffe,
+// die für eine Ausgabe von Titeln im CSV Format genutzt
+// werden können.
+//
+// Das Ändern von Inhalten sollte nur bei genauer
+// Kenntnis der Algorithmen des Skriptes vorgenommen werden.
+//
+// Zeilen, die mit // beginnen, und Leerzeilen werden nicht gelesen!
+//   mehrere Unterfelder mit Blank reihen: Feld1 ODER Feld2 wird gelesen (je nachdem welches vorkommt)
+//           Beispiel:029A $8 $a
+//   mehrere Unterfelder mit Plus verbinden: Feld1 UND Feld2 wird gelesen 
+//           Beispiel:021A $a+" : $d"
+//           Problem: Wenn Feld1 nicht vorhanden, wird auch Feld2 nicht gelesen
+//           Lösung:  004A $A+" = $0" $0
+//   Deskriptionszeichen einfügen: in Gänsefüßchen setzen
+//           Beispiel: 021A $a+" : $d"
+//   K=behalte auch @ und {
+//   S=lösche Nicht-Sortier-Anteile
+// Default ist: lösche @ und {
+//
+// Probleme in der Konfigurationsdatei
+//- wiederholbare Unterfelder, z.B. in 8200 kann $a mehrfach vorkommen
+//- wenn erstes Unterfeld nicht vorkommt, wird der Rest auch nicht ausgewertet.
+//Erfassungskennung:     001A $0
+//Änderungskennung:      001B $0+" $t"
+//Eigentümerkennung:     001D 
+IDN:                   003@ $0
+Gattung:               002@ $0
+ZDB-Nummer:            006Z $0
+Code-Angaben:          017A $a
+Produktsigel:          017B $a
+Erscheinungsjahre:     011@ $a+"-$b"
+MatCodes1101:          016A $a
+MatCodes1105:          016E $a
+Erschjahre1109:        011B $a+"-$b"
+Veröffentlichungsart:  013H $0
+Sprachen:              010@ "/1$a"
+Erscheinungsland:      019@ "/1$a"
+Erscheinungsfrequenz:  018@ $a
+ISSN:                  005A $0
+AutorisierteISSN:      005I $0
+SonstigesISSN:         005E $f
+ISSNparallelerAusg:    005P "|$S|"+$0
+ISSNfalsch:            005B $0
+ISBN:                  004A $0
+ISBNSekundärausg:      004G $0
+EAN:                   004K $0
+DOI:                   004P $0
+URN:                   K004U $0
+URL:                   K009Q $u
+Swets-Nummer:          006N $0
+Standardnummern:       006Y $0
+Coden:                 007C $0
+überregNummern:        007I "|$S|"+$0
+Körperschaft3100:      029A "!$9!"+$8
+Körperschaft3120:      029F "!$9!"+$8
+Titel:                 021A $a+" [[$n]]" $a
+Titel+Zusatz:          021A $a+" [[$n]]"+" : $d" $a+" : $d"
+TitelOhneArtikel:      S021A $a+" [[$n]]" $a
+TitelOhneArtikel+Zusatz:          S021A $a+" [[$n]]"+" : $d" $a+" : $d"
+TitelÜbersetz:         046N $a
+Ansetzungssachtitel:   025@ $a
+Nebentitel:            046C $a
+ZSkurztitel:           026C $a
+ErschVerlauf4024:      031N "/s$f"+"/v$d"+"/a$e"+"/d$b"+"/m$c"+"/b$j"+"/k$g"+"/V$n"+"/A$o"+"/D$l"+"/M$m"+"/E$k"+"/K$q"+"-$6"
+Ort:                   033A $p
+Verlag:                033A $n
+Ort+Verlag:            033A $p+" : $n"
+Materialbenennung:     034D $a
+SonstigeTechnAngaben:  034M $a
+Begleitmaterial:       034K $a
+DDC:                   045U $e
+SSG-Angaben:           045T $a
+//DNBSachgruppe:         045E $a
+//DNBDDC:                045G $a
+//Basisklassifikation:   045Q $8 $a
+//LokaleNotation:        145Z $8 $a
+//LokalesSchlagwort:     144Z $8 $a
+//
+// LOKALDATEN
+//
+VerknüpfungBibdatei:   247C "!$9!"
+Kommentar:             237A $a+$l
+Bestandsschutz:        220Bx00 $a
+Provenienzvermerke:    220A "@a$a"+"@b$b"+"@e$e"+"@k$k"+"@m$m"+"@p$p"
+LokaleNotation6700:    245Z $a
+Exemplarfeld:          208@ $a+" : $b"
+Standort:              209Ax09 $f
+Signatur+Standort:     K209A $a+" (($c))"+" @ $d"+"!!$f!!"+" ; $g"+" % $l"
+Signatur:              K209Ax00 $a
+Zugriffsrechte:        209K $a+"+$b"+"*$c"
+CodAngaben7134:        209L $a+"#$b"+"+$c"+"*$d"
+URL7135:               209S $u
+URN7136:               204U $0
+DOI7137:               204P $0
+Handle7138:            204R $0
+ExemplarID7800:        203@ $0
+Zugangsnr:             209C $a
+Verbuchungsnr:         209G $a
+Bestandsangaben7120:   231@ "/v$d"+"/b$j"+"/V$n"+"/E$k"+"-$6"
+Bestandsangaben7121:   231B $a
+Text8031:              209Bx31 $a
+Bestand8032:           209Bx32 $a
+Lücken8033:            209Bx33 $a
+Kommentar8034:         209Bx34 $a
+Exemplardatum:         201B $0

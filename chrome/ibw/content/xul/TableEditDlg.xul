@@ -1,0 +1,134 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?> 
+<?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
+
+<!DOCTYPE dialog [
+<!ENTITY % tableFunctionDTD SYSTEM "chrome://ibw/locale/TableFunction.dtd" >
+%tableFunctionDTD;
+]>
+
+<dialog
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+	title="&dialog.title;"
+	onload="onLoad();"
+	buttons="accept,help"
+	ondialogaccept="return onAccept();"
+	ondialogcancel="return onCancel();"
+	onunload="application.activate();"
+	ondialoghelp="wikiWinibw();"
+	style="min-width: 33em"
+	id="TableEditDlg"
+>
+	<!-- Refer to the file with Javascript functions: -->
+	<script type="application/x-javascript" src="chrome://ibw/content/xul/TableEditDlg.js" />
+
+	<!-- Layout the dialog controls: -->
+	<vbox>
+
+		<hbox align="center" flex="1">
+			<groupbox flex="1">
+				<caption label="&gbTable.caption;" />
+				<hbox align="center" flex="1">
+					<label value="&lblAvailableTbls.value;" />
+					<menulist id="mlTables" width="280px" oncommand="onSelectTable();" tooltiptext="&mlTables.tooltip;" >
+						<menupopup id="mpTableList" />
+					</menulist>
+				</hbox>
+				<separator />
+				<hbox>
+					<button id="btnTblNew" width="116px" oncommand="cmdTableNew();"
+						label="&btnTblNew.label;" accesskey="&btnTblNew.accesskey;" tooltiptext="&btnTblNew.tooltip;" />
+					<button id="btnTblSave" width="116px" oncommand="cmdTableSave(true);"
+						label="&btnTblSave.label;" accesskey="&btnTblSave.accesskey;" tooltiptext="&btnTblSave.tooltip;" />
+					<button id="btnTblSaveAs" width="116px" oncommand="cmdTableSaveAs();"
+						label="&btnTblSaveAs.label;" accesskey="&btnTblSaveAs.accesskey;" tooltiptext="&btnTblSaveAs.tooltip;" />
+					<button id="btnTblDelete" width="116px" oncommand="cmdTableDelete();"
+						label="&btnTblDelete.label;" accesskey="&btnTblDelete.accesskey;" tooltiptext="&btnTblDelete.tooltip;" />
+				</hbox>
+			</groupbox>
+		</hbox>
+
+		<groupbox orient="horizontal">
+			<caption label="&gbOverview.caption;" />
+			<vbox>
+				<hbox align="center" flex="1">
+					<vbox align="left">
+						<label value="&lblTagName.value;" />
+						<textbox id="tbTableTagname" height="23px" oninput="adjustTableTag(this.value);" tooltiptext="&tbTableTagName.tooltip;" />
+					</vbox>
+					<vbox align="left">
+						<label value="&lblTagDescr.value;" />
+						<textbox id="tbTableDescription" height="23px" width="400px" oninput="adjustTableDescription(this.value);"  tooltiptext="&tbTableDescription.tooltip;" />
+					</vbox>
+				</hbox>
+				<label value="&lblContents.value;" />
+				<tree id="idTree" width="500px" rows="6" flex="1" hidecolumnpicker="true" seltype="single" 
+					onselect="onSelectElement();" ondblclick="onDblClick();">
+					<treecols>
+						<treecol id="treecol1" hideheader="true" flex="1" primary="true" />
+						<treecol id="treecol2" hideheader="true" flex="1" />
+						<treecol id="treecol3" hideheader="true" flex="1" />
+					</treecols>
+					<treechildren id="theChildren" tooltiptext="&treeContents.tooltip;"/>
+				</tree>
+			</vbox>
+			<vbox pack="end">
+				<button id="btnMoveUp" width="140px" oncommand="moveItem(false);"
+					label="&btnMoveUp.label;" accesskey="&btnMoveUp.accesskey;" tooltiptext="&btnMoveUp.tooltip;" />
+				<button id="btnMoveDn" width="140px" oncommand="moveItem(true);"
+					label="&btnMoveDn.label;" accesskey="&btnMoveDn.accesskey;" tooltiptext="&btnMoveDn.tooltip;" />
+				<separator />
+				<button id="btnSortOnCode" width="140px" oncommand="cmdSort(1);"
+					label="&btnSortOnCode.label;" accesskey="&btnSortOnCode.accesskey;" tooltiptext="&btnSortOnCode.tooltip;" />
+				<button id="btnSortOnContents" width="140px" oncommand="cmdSort(2);"
+					label="&btnSortOnContents.label;" accesskey="&btnSortOnContents.accesskey;" tooltiptext="&btnSortOnContents.tooltip;" />
+			</vbox>
+		</groupbox>
+
+		<groupbox direction="horizontal" >
+			<caption label="&gbElement.caption;" />
+			<hbox>
+				<vbox align="left" flex="1">
+					<hbox align="center" flex="1">
+						<vbox align="left">
+							<label value="&lblElmShortcut.value;" />
+							<textbox id="tbElmShortcut" height="23px" tooltiptext="&tbElmShortcut.tooltip;" />
+						</vbox>
+						<vbox align="left" flex="1">
+							<label value="&lblElmDescription.value;" />
+							<textbox id="tbElmDescription" flex="1" height="23px" width="400px" tooltiptext="&tbElmDescription.tooltip;" />
+						</vbox>
+					</hbox>
+					<vbox>
+						<label value="&lblElmText.value;" />
+						<textbox id="tbElmText" multiline="true" rows="5" cols="98" tooltiptext="&tbElmText.tooltip;" />
+					</vbox>
+				</vbox>
+				<vbox pack="end">
+					<button id="btnElmInsert" width="140px" oncommand="cmdInsertElement();"
+						label="&btnElmInsert.label;" accesskey="&btnElmInsert.accesskey;" tooltiptext="&btnElmInsert.tooltip;" />
+					<button id="btnElmUpdate" width="140px" oncommand="cmdUpdateElement();"
+						label="&btnElmUpdate.label;" accesskey="&btnElmUpdate.accesskey;" tooltiptext="&btnElmUpdate.tooltip;" />
+					<button id="btnElmDelete" width="140px" oncommand="cmdDeleteElement();"
+						label="&btnElmDelete.label;" accesskey="&btnElmDelete.accesskey;" tooltiptext="&btnElmDelete.tooltip;" />
+				</vbox>
+			</hbox>
+		</groupbox>
+		
+	</vbox>
+	<separator/>
+	
+	<data id="dialogTitle" 			label="&dialog.title;" />
+	<data id="promptSaveChanges" 	label="&prompt.SaveChanges;" />
+	<data id="promptDeleteTable" 	label="&prompt.DeleteTable;" />
+    <data id="promptTagName" 		label="&prompt.TagName;" />
+    <data id="promptTagExists" 		label="&prompt.TagExists;" />
+    <data id="promptTagEmpty" 		label="&prompt.TagEmpty;" />
+    <data id="promptOverwrite" 		label="&prompt.Overwrite;" />
+    <data id="tableDescription" 	label="&tablesEditDlg.tableDescription;" />
+    <data id="tableDescriptionMsg" 	label="&tablesEditDlg.tableDescription.msg;" />
+    <data id="shortCutFieldWarning" 	label="&tablesEditDlg.shortCutFieldWarning;" />
+    <data id="textFieldWarning" 	    label="&tablesEditDlg.textFieldWarning;" />
+    <data id="descriptionFieldWarning" 	label="&tablesEditDlg.descriptionFieldWarning;" />
+
+</dialog>

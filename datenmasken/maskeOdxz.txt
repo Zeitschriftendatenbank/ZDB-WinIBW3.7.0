@@ -1,0 +1,17 @@
+0500 Odxz
+0501 Text$btxt
+0502 Computermedien$bc
+0503 Online-Ressource$bcr
+1101 cr
+1100 
+1131 !041799984!
+1500 
+1505 $erda
+1700 
+4000 
+4024 
+4025 
+4030 
+4060 Online-Ressource
+4085 =u
+5080

@@ -1,0 +1,43 @@
+﻿<?xml version="1.0"?> <!-- -*- Mode: HTML -*- -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?> 
+<?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
+
+
+<dialog
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+	title="Stapel-Jobs"
+	onload="onLoad();"
+	buttons="cancel"
+	style="min-width: 33em"
+	ondialogaccept="return onAccept();"
+	ondialogcancel="return onCancel();"
+>
+<script type="application/x-javascript" src="chrome://ibw/content/xul/ZDB_stapelJob_dialog.js" />
+	<groupbox orient="vertical">
+		<label id="idLabelPfad" value="" />
+		<label value="Wählen Sie eine Datei:" />
+		<menulist id="idFileListMenu" oncommand="loadFileByName();">
+			<menupopup id="idFileList" />
+		</menulist>
+		<label id="idLabelDateien" value="" hidden="true" />
+	</groupbox>
+	<groupbox orient="vertical">
+		<caption label="Was befindet sich in Ihrer Datei?" />
+		<radiogroup id="idRadioAktion">
+			<radio id="idRadio0" label="PPNs: Große PPN-Listen werden in Sets von 250 PPNs gesucht." />
+			<radio id="idRadio1" label="EPNs: Große PPN-Listen werden in Sets von 250 EPNs gesucht." />
+			<radio id="idRadio2" label="Kommandos: Alle werden nacheinander ausgeführt." />
+		</radiogroup>
+	</groupbox>
+	<button id="idButtonStart"
+		label="Start" oncommand="startAktion();"
+		hidden="false" 
+	/>
+	<label id="idSchlussmeldung1" value= " "/>
+	<label id="idSchlussmeldung2" value= " "/>
+	<button id="idButtonDatei"
+		label="Datei öffnen" oncommand="fehlerDateiOeffnen();"
+		hidden="true" 
+	/>
+</dialog>
+
