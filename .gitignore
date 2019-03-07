@@ -99,3 +99,6 @@ ttlcopy/zdb_titeldatenkopie_digi_bsb.ttl
 winibw.txt
 startup/ring.jpg
 winibw.txt
+test.txt
+.gitignore
+.vscode/
