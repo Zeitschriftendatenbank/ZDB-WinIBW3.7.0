@@ -516,6 +516,7 @@ function __zdbTitelAnpassen()
     {
         for(var e in _rec['021A'][0]['e'])
         {
+            if(!_rec['021A'][0]['e'].hasOwnProperty(e)) {continue;}
             feld4000 = feld4000.replace(' // '+_rec['021A'][0]['e'][e],'');
         }
 
@@ -1034,9 +1035,11 @@ function zdb_EZB(){
     if(_rec['045U'])
     {
         for(var i in _rec['045U'][0]['e']){
+            if(!_rec['045U'][0]['e'].hasOwnProperty(i)) {continue;}
             // ruft ddc-ezb konkordanz
             _ezb = __EZBNota(_rec['045U'][0]['e'][i]);
             for(var x in _ezb) {
+                if(!_ezb.hasOwnProperty(x)) {continue;}
                 _ezbnota.push(_ezb[x]);
             }
         }
@@ -1057,6 +1060,7 @@ function zdb_EZB(){
     {
         for(var d in _rec['039D'])
         {
+            if(!_rec['039D'].hasOwnProperty(d)) {continue;}
             if(__zdbCheckSF('039D','n',d,'Druck-Ausgabe'))
             {
                 if(__zdbCheckSF('039D','9',d))
@@ -1089,6 +1093,7 @@ function zdb_EZB(){
         if(_rec['005P']) {
             for(var p in _rec['005P'])
             {
+                if(!_rec['039D'].hasOwnProperty(p)) {continue;}
                 if(__zdbCheckSF('005P','S',0,'p'))
                 {
                     pissn = _rec['005P'][p]['0'][0];
@@ -1109,6 +1114,7 @@ function zdb_EZB(){
                      + '&first_issue='    + escape(first_issue);
 
     for(var i in _ezbnota){
+        if(!_ezbnota.hasOwnProperty(i)) {continue;}
         EZB_satz += '&notation[]=' + _ezbnota[i];
     }
     EZB_satz +=	'&charset=utf8';
@@ -1634,6 +1640,7 @@ function __zdbCheckSF(kat,sf,i,c){
     if(!_rec[kat][i][sf]) return false;
     if(c) {
         for(var x in _rec[kat][i][sf]) {
+            if(!_rec[kat][i][sf].hasOwnProperty(x)) {continue;}
             if(_rec[kat][i][sf][x] == c) return true;
         }
         return false;
@@ -1642,7 +1649,6 @@ function __zdbCheckSF(kat,sf,i,c){
 }
 
 function isil_online() {
-    var isil;
     var strScreen = __zdbCheckScreen(['8A','MT','IT','MI'],'ISIL Online');
     if(false == strScreen) return false;
     if('Tw' != application.activeWindow.getVariable('P3VMC')) {
