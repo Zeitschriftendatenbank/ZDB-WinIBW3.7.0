@@ -1,6 +1,6 @@
 // Datei:		zdb_scripte_intern.js
 
-zdb_updateURL = application.getProfileString('ibw.updateservice', 'url', '');
+var zdb_updateURL = application.getProfileString('ibw.updateservice', 'url', '');
 if(-1 != zdb_updateURL.indexOf('zeitschriftendatenbank')) {
     application.writeProfileString('ibw.updateservice', 'url', 'http://winibw-repo.sbb.berlin/winibw/37');
 }
