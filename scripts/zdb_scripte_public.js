@@ -1093,7 +1093,7 @@ function zdb_EZB(){
         if(_rec['005P']) {
             for(var p in _rec['005P'])
             {
-                if(!_rec['039D'].hasOwnProperty(p)) {continue;}
+                if(!_rec['005P'].hasOwnProperty(p)) {continue;}
                 if(__zdbCheckSF('005P','S',0,'p'))
                 {
                     pissn = _rec['005P'][p]['0'][0];
