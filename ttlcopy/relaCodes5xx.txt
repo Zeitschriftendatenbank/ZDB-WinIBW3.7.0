@@ -26,7 +26,7 @@ bubi	Buchbinder	Tu500
 chre	Choreograf	Tu500;Tu510
 comp	Compiler	Tu500;Tu510
 desi	Designer	Tu500;Tu510
-datb	Zeit, Bestehen	Tb548;Tf548;Tg548;Ts548
+datb	Zeit, Bestehen	Tb548;Tf548;Tg548;Ts548;Tu548
 datf	Zeit, Fundjahr	Tg548;Tu548
 datj	Zeit, Erscheinung (zeitlich)	Tu548 
 datl	Zeit, Lebensdaten	Tp548
@@ -89,7 +89,7 @@ punk	Streckenpunkt Beginn/Ende	Tg551; Ts551
 radi	Radierer	Tu500;Tu510
 reda	Redakteur	Tu510;Tu500
 regi	Regisseur	Tu500;Tu510
-rela	Relation (allgemein)	Tf510; Tg510; Tb510; Tp510; Ts510; Tu510;Tf500; Tg500; Tb500; Tp500; Ts500; Tu500;Tf550; Tg550; Tb550; Tp550; Ts550; Tu550;Tp511; Tb511; Tf511; Tu511; Ts511; Tg511;Tp530; Tb530; Tf530; Tu530; Tg530; Ts530;Tp551; Tb551; Tf551; Tu551; Ts551; Tg551; Tb548;Tf548;Tg548;Tp548;Ts548;Tu548
+rela	Relation (allgemein)	Tf510; Tg510; Tb510; Tp510; Ts510; Tf500; Tg500; Tb500; Tp500; Ts500; Tf550; Tg550; Tb550; Tp550; Ts550; Tu550;Tp511; Tb511; Tf511; Tu511; Ts511; Tg511;Tp530; Tb530; Tf530; Tu530; Tg530; Ts530;Tp551; Tb551; Tf551; Tu551; Ts551; Tg551; Tb548;Tf548;Tg548;Tp548;Ts548;Tu548
 rest	Restaurator	Tg500; Tu500;Tg510; Tu510
 saen	Sänger	Tu500
 saml	Sammler	Tb510; Tu510;Tu500; Tb500
