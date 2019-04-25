@@ -5,6 +5,86 @@ if(-1 != zdb_updateURL.indexOf('zeitschriftendatenbank')) {
     application.writeProfileString('ibw.updateservice', 'url', 'http://winibw-repo.sbb.berlin/winibw/37');
 }
 
+if (!Array.prototype.filter) {
+    Array.prototype.filter = function (fun /*, thisArg */) {
+        "use strict";
+
+        if (this === void 0 || this === null)
+            throw new TypeError();
+
+        var t = Object(this);
+        var len = t.length >>> 0;
+        if (typeof fun !== "function")
+            throw new TypeError();
+
+        var res = [];
+        var thisArg = arguments.length >= 2 ? arguments[1] : void 0;
+        for (var i = 0; i < len; i++) {
+            if (i in t) {
+                var val = t[i];
+
+                // NOTE: Technically this should Object.defineProperty at
+                //       the next index, as push can be affected by
+                //       properties on Object.prototype and Array.prototype.
+                //       But that method's new, and collisions should be
+                //       rare, so use the more-compatible alternative.
+                if (fun.call(thisArg, val, i, t))
+                    res.push(val);
+            }
+        }
+
+        return res;
+    };
+}
+
+if (!Array.prototype.indexOf) {
+    Array.prototype.indexOf = function (searchElement, fromIndex) {
+        if (this === undefined || this === null) {
+            throw new TypeError('"this" is null or not defined');
+        }
+
+        var length = this.length >>> 0; // Hack to convert object.length to a UInt32
+
+        fromIndex = +fromIndex || 0;
+
+        if (Math.abs(fromIndex) === Infinity) {
+            fromIndex = 0;
+        }
+
+        if (fromIndex < 0) {
+            fromIndex += length;
+            if (fromIndex < 0) {
+                fromIndex = 0;
+            }
+        }
+
+        for (; fromIndex < length; fromIndex++) {
+            if (this[fromIndex] === searchElement) {
+                return fromIndex;
+            }
+        }
+
+        return -1;
+    };
+}
+
+if(!Array.prototype.unique) {
+    Array.prototype.unique = function() {
+        if (this === void 0 || this === null)
+            throw new TypeError();
+        var r = [];
+        o:for(var i = 0, n = this.length; i < n; i++)
+        {
+            for(var x = 0, y = r.length; x < y; x++)
+            {
+                if(r[x]==this[i]) continue o;
+            }
+            r[r.length] = this[i];
+        }
+        return r;
+    }
+}
+
 /**
  * checks if a user script file is already configured . If not a file is created and path configured
  * this function is called on startup
@@ -993,4 +1073,14 @@ function __zdbPruezibik(bin) {
             + "BIK = " + bik + "\n"
             + "... wurde in die Zwischenablage kopiert."
     );
+}
+
+function isil_online() {
+    var strScreen = __zdbCheckScreen(['8A','MT','IT','MI'],'ISIL Online');
+    if(false == strScreen) return false;
+    if('Tw' != application.activeWindow.getVariable('P3VMC')) {
+        return __zdbError('Die Funktion kann nur in Verbindung mit Tw-Sätzen genutzt werden.');
+    }
+    __zdbJSON(application.activeWindow.getVariable('P3GPP'));
+    application.shellExecute('http://ld.zdb-services.de/resource/organisations/'+_rec['008H'][0]['e'][0],5,'open','');
 }

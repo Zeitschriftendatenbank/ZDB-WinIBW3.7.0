@@ -15,86 +15,6 @@ var messageBoxHeader = 'Header';
 // JSON
 var _rec;
 
-if (!Array.prototype.filter) {
-    Array.prototype.filter = function (fun /*, thisArg */) {
-        "use strict";
-
-        if (this === void 0 || this === null)
-            throw new TypeError();
-
-        var t = Object(this);
-        var len = t.length >>> 0;
-        if (typeof fun !== "function")
-            throw new TypeError();
-
-        var res = [];
-        var thisArg = arguments.length >= 2 ? arguments[1] : void 0;
-        for (var i = 0; i < len; i++) {
-            if (i in t) {
-                var val = t[i];
-
-                // NOTE: Technically this should Object.defineProperty at
-                //       the next index, as push can be affected by
-                //       properties on Object.prototype and Array.prototype.
-                //       But that method's new, and collisions should be
-                //       rare, so use the more-compatible alternative.
-                if (fun.call(thisArg, val, i, t))
-                    res.push(val);
-            }
-        }
-
-        return res;
-    };
-}
-
-if (!Array.prototype.indexOf) {
-    Array.prototype.indexOf = function (searchElement, fromIndex) {
-        if (this === undefined || this === null) {
-            throw new TypeError('"this" is null or not defined');
-        }
-
-        var length = this.length >>> 0; // Hack to convert object.length to a UInt32
-
-        fromIndex = +fromIndex || 0;
-
-        if (Math.abs(fromIndex) === Infinity) {
-            fromIndex = 0;
-        }
-
-        if (fromIndex < 0) {
-            fromIndex += length;
-            if (fromIndex < 0) {
-                fromIndex = 0;
-            }
-        }
-
-        for (; fromIndex < length; fromIndex++) {
-            if (this[fromIndex] === searchElement) {
-                return fromIndex;
-            }
-        }
-
-        return -1;
-    };
-}
-
-
-if(!Array.prototype.unique) {
-    Array.prototype.unique = function() {
-        if (this === void 0 || this === null)
-            throw new TypeError();
-        var r = [];
-        o:for(var i = 0, n = this.length; i < n; i++)
-        {
-            for(var x = 0, y = r.length; x < y; x++)
-            {
-                if(r[x]==this[i]) continue o;
-            }
-            r[r.length] = this[i];
-        }
-        return r;
-    }
-}
 
 function zdb_ILTISseiten(){
     application.shellExecute ('https://wiki.dnb.de/display/ILTIS/ILTIS-Handbuch', 5, 'open', '');
@@ -582,7 +502,7 @@ function __zdbOnlineRessource(copyFile,showComment,add0600,digi){
     application.activeWindow.title.endOfBuffer(false);
 
     __zdbFeld424XSet(_felder424X);
-    //__zdbFeld51XXGet()
+
     return true;
 }
 
@@ -612,34 +532,6 @@ function __zdbTitelAnpassen()
     }
 
     return feld4000;
-}
-
-function __zdbFeld51XXGet(){
-    if(_rec['041A/01']) {
-        var swRegEx = new RegExp('Arbeitstransparent|Audiovisuelles\sMaterial|Bildplatte|CD|CD-ROM|Dia|Diskette|DVD-Audio|DVD-ROM|DVD-Video|Elektronische\sPublikation|Film|Medienkombination|Mikroform|Schallplatte|Tonkassette|Tonträger|Videokassette'),
-            i = 1,
-            num = '01';
-        for(i = 1; i < 100 ; i += 1) {
-            if(i < 10) {
-                num = '0' + i;
-            } else {
-                num = '' + i;
-            }
-            if (_rec['041A/' + num]) {
-
-                __zdbError(num);
-                __zdbError(_rec['041A/' + num][0]);
-                if(__zdbCheckSF('041A/' + num,'8',0)) { // SF $a vhd.
-                    if(!swRegEx.test(_rec['041A/' + num][0]['8'][0])) {
-                        __zdbError(_rec['041A/' + num][0]['8'][0]);
-                    }
-                }
-            }
-        }
-
-
-
-    }
 }
 
 function __zdbFeld424XGet()
@@ -1123,7 +1015,7 @@ function zdb_EZB(){
                 _ezbnota.push(_ezb[x]);
             }
         }
-        _ezbnota = _ezbnota.unique();
+        _ezbnota = __zdbArrayUnique(_ezbnota);
     }
 
 //---Druckausgabe: reziproke Verknüpfung und Druck-ISSN
@@ -1365,8 +1257,6 @@ function __zdbUnescapeHtml(text){
     return text.replace(/&amp;|&lt;|&gt;|&quot;|&#039;|&nbsp;/g, function(m) { return map[m]; });
 }
 
-
-
 function __zdbGetFormat() {
     var format = application.activeWindow.getVariable('P3GPR');
     if('' == format) {
@@ -1375,6 +1265,7 @@ function __zdbGetFormat() {
 
     return ('' != format) ? format.toUpperCase() : false;
 }
+
 /**
 * Liest ZDBID aus Vollanzeige oder Editiermodus
 * @param {string} idn optional
@@ -1439,6 +1330,7 @@ function __zdbGetZDB(idn) {
 
     return zdbid.replace(/(\r\n|\n|\r|\s)/gm,'');
 }
+
 /**
 * opens a new window for temporary works
 */
@@ -1447,6 +1339,7 @@ function __zdbOpenWorkWindow(){
     application.newWindow();
     return myWindowId;
 }
+
 /**
 * closes the window for temporary works and return to the old one
 */
@@ -1728,12 +1621,15 @@ function __zdbCheckSF(kat,sf,i,c){
     return true;
 }
 
-function isil_online() {
-    var strScreen = __zdbCheckScreen(['8A','MT','IT','MI'],'ISIL Online');
-    if(false == strScreen) return false;
-    if('Tw' != application.activeWindow.getVariable('P3VMC')) {
-        return __zdbError('Die Funktion kann nur in Verbindung mit Tw-Sätzen genutzt werden.');
+__zdbArrayUnique = function(arr) {
+    var r = [];
+    o:for(var i = 0, n = arr.length; i < n; i++)
+    {
+        for(var x = 0, y = r.length; x < y; x++)
+        {
+            if(r[x]==arr[i]) continue o;
+        }
+        r[r.length] = arr[i];
     }
-    __zdbJSON(application.activeWindow.getVariable('P3GPP'));
-    application.shellExecute('http://ld.zdb-services.de/resource/organisations/'+_rec['008H'][0]['e'][0],5,'open','');
+    return r;
 }
