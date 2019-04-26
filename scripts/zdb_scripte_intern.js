@@ -5,86 +5,6 @@ if(-1 != zdb_updateURL.indexOf('zeitschriftendatenbank')) {
     application.writeProfileString('ibw.updateservice', 'url', 'http://winibw-repo.sbb.berlin/winibw/37');
 }
 
-if (!Array.prototype.filter) {
-    Array.prototype.filter = function (fun /*, thisArg */) {
-        "use strict";
-
-        if (this === void 0 || this === null)
-            throw new TypeError();
-
-        var t = Object(this);
-        var len = t.length >>> 0;
-        if (typeof fun !== "function")
-            throw new TypeError();
-
-        var res = [];
-        var thisArg = arguments.length >= 2 ? arguments[1] : void 0;
-        for (var i = 0; i < len; i++) {
-            if (i in t) {
-                var val = t[i];
-
-                // NOTE: Technically this should Object.defineProperty at
-                //       the next index, as push can be affected by
-                //       properties on Object.prototype and Array.prototype.
-                //       But that method's new, and collisions should be
-                //       rare, so use the more-compatible alternative.
-                if (fun.call(thisArg, val, i, t))
-                    res.push(val);
-            }
-        }
-
-        return res;
-    };
-}
-
-if (!Array.prototype.indexOf) {
-    Array.prototype.indexOf = function (searchElement, fromIndex) {
-        if (this === undefined || this === null) {
-            throw new TypeError('"this" is null or not defined');
-        }
-
-        var length = this.length >>> 0; // Hack to convert object.length to a UInt32
-
-        fromIndex = +fromIndex || 0;
-
-        if (Math.abs(fromIndex) === Infinity) {
-            fromIndex = 0;
-        }
-
-        if (fromIndex < 0) {
-            fromIndex += length;
-            if (fromIndex < 0) {
-                fromIndex = 0;
-            }
-        }
-
-        for (; fromIndex < length; fromIndex++) {
-            if (this[fromIndex] === searchElement) {
-                return fromIndex;
-            }
-        }
-
-        return -1;
-    };
-}
-
-if(!Array.prototype.unique) {
-    Array.prototype.unique = function() {
-        if (this === void 0 || this === null)
-            throw new TypeError();
-        var r = [];
-        o:for(var i = 0, n = this.length; i < n; i++)
-        {
-            for(var x = 0, y = r.length; x < y; x++)
-            {
-                if(r[x]==this[i]) continue o;
-            }
-            r[r.length] = this[i];
-        }
-        return r;
-    }
-}
-
 /**
  * checks if a user script file is already configured . If not a file is created and path configured
  * this function is called on startup
@@ -119,17 +39,6 @@ function __exemplareAnzahl(){
     //application.messageBox("", alleExe, "message-icon");
     return (!alleExe) ? false : alleExe;
 }
-
-/**
-* iteriert durch Exemplare und ruft für jedes Exemplar eine Funktion auf
-*/
-/*function __iterateExemplare(callback){
-    var exCount = __exemplareAnzahl();
-    for(var i = 1; i <= exCount; i++)
-    {
-        callback(i);
-    }
-}*/
 
 //--------------------------------------------------------------------------------------------------------
 //name:		__zdbGetParallel
@@ -195,81 +104,7 @@ function __zdbGetParallel(){
     return (parallel[0]) ? parallel : false;
 }
 
-//--------------------------------------------------------------------------------------------------------
-//name:		__zeigeEigenschaften
-//replaces:		zeigeEigenschaften
-//description:	listing a objects properties
-//user:	  	developers
-//input: 		the object
-//return:		messageBox with all properties
-//author: 		Carsten Klee
-//date:		2011-06-24
-//version:		1.0.0.1
-//--------------------------------------------------------------------------------------------------------
 
-function __zeigeEigenschaften(object){
-    var Namen = new Array();
-    var namen = "";
-    var type;
-    // make a properties list for the prompter
-    //for(var name in object) namen += name + "\n";
-    for(var name in object) Namen.push(name);
-
-    // get out if objects count zero prperties
-    if (Namen.length == 0)
-    {
-        application.messageBox("Länge des Objekts", "Das Objekt hat " + Namen.length + " Eigenschaften.", false);
-        return;
-    }
-    Namen.sort();
-    namen = Namen.join("\n");
-
-    // initialize the prompter
-    var thePrompter = utility.newPrompter();
-    thePrompter.setDebug(false); // only for debugging
-
-    // get the selection as string
-    var theAnswer = thePrompter.select("Eigenschaften von " + typeof object, "Zeige Eigenschaften von", namen);
-    // return if nothing have been selected
-    if (!theAnswer) {
-        return;
-    } else {
-        // eval the answer as an object
-        /*for(var n in object) {
-            if(n == theAnswer)
-            __zdbError(object[theAnswer]);
-        }*/
-        //var newObject = eval(object[theAnswer]);
-        var newObject = object[theAnswer];
-        type = typeof newObject;
-        application.messageBox("Typ des Objects", type, false);
-        if(type == "object"){
-            __zeigeEigenschaften(newObject);
-        }
-        else {
-            try {
-                if(type == "function")
-                {
-                    application.messageBox("Eigenschaften",newObject.toString() + "\nWeitere Eigenschaften anzeigen?",false);
-                    __zeigeEigenschaften(newObject);
-                    return;
-                }
-                else // strings, integers
-                {
-                    application.messageBox("Eigenschaften", newObject.toString(), false);
-                }
-            }
-            catch(exception)
-            {
-                application.messageBox("Fehler",exception,false);
-            }
-            finally
-            {
-                return;
-            }
-        }
-    }
-}
 
 function zdbFIDcsv(){
     const params = Components.classes["@mozilla.org/embedcomp/dialogparam;1"]
