@@ -29,9 +29,9 @@ Historie:
   if (application.activeWindow.title) {
   application.activeWindow.title.startOfBuffer(false);
   }
-  
+
 feld_inh = __katEinlesen(kat);
-  
+
   //Zuerst Prüfung ob Indikator -> alle mit falschem Indikator aus Array raus
   if (feld_inh.length > 0) {
     if (ind != "") {
@@ -41,39 +41,39 @@ feld_inh = __katEinlesen(kat);
         feld_inh.splice(g,1);
         g--;
         }
-      }  
+      }
     }
-  }  
+  }
 
   if (feld_inh.length > 0) {
-  
+
     //wenn kein Inhalt genannt, soll nur geprüft werden, ob das Feld überhaupt vorhanden ist (irrelevant ob wdhb oder nicht)
     if (inh == "") {
     return "i";
     }
-   
+
     if (wdhb == true) {
-  
+
       for (i = 0; i < feld_inh.length; i++) {
-      
+
         if (feld_inh[i].indexOf(inh) > -1) { // Feld mit gesuchtem Inhalt vorhanden
         return "i";
         }
       }
-	//wdhb. Feld vorhanden, aber ohne gesuchten Inhalt  
-    return "fnw";   
+	//wdhb. Feld vorhanden, aber ohne gesuchten Inhalt
+    return "fnw";
     } else {  //für nicht wdhb. Felder
- 
+
       if (feld_inh[0].indexOf(inh) > -1) {
       //Feld mit Inhalt vorh.
-      
+
 	  return "i";
       } else {
 	  //Feld vorh., aber mit anderem Inhalt
       return "f";
       }
     }
- 
+
   } else {
   //Feld gar nicht vorhanden
   return "fnw";
@@ -87,7 +87,7 @@ __geheZuKat(kat,ind,append)
 
 Die Funktion geht in einem Datensatz an die Stelle, an der eine bestimmte neue Kategorie/Indikator der
 Reihenfolge nach eingefügt werden würde. Übergeben wird als Parameter kat die einzufügende Kategorie
-und als ind der Indikator. 
+und als ind der Indikator.
 
 'kat = übergebene einzufügende Kategorie
 'ind = übergebener Indikator
@@ -95,19 +95,19 @@ und als ind der Indikator.
 '-> append bei noch nicht vorhandenem, einzufügendem Feld immer auf false setzen
 'kat_ind = Wert der Kategorie + Indikator
 'ta_kat = geprüfte Kategorie der TA (Schleife)
-'ta_kat_ind = geprüfte Kategorie der TA + Indikator 
+'ta_kat_ind = geprüfte Kategorie der TA + Indikator
 
 Historie:
 2010-01-09 Stefan Grund		: erstellt
 2010-09-18 Bernd			: Definitionen ergaenzt
 
 --------------------------------------------------------------------------------------------------------*/
- 
+
 var ta_kat_ind;  // Indikator des Feldes der TA, in dem die richtige Position gesucht wird
 var kat_ind;     //
 var ta_kat;      //Feld der TA, in dem die richtige Position gesucht wird (pro durgegangener Zeile)
 //kat -> übergebenes Feld, dessen Postion gesucht werden soll
-//ind -> übergebener Indikator des übergebenen Feldes, dessen Postion gesucht werden soll  
+//ind -> übergebener Indikator des übergebenen Feldes, dessen Postion gesucht werden soll
 
 application.activeWindow.title.startOfBuffer(false);
 
@@ -115,7 +115,7 @@ application.activeWindow.title.startOfBuffer(false);
 
   application.activeWindow.title.lineDown(1, false);
   ta_kat = application.activeWindow.title.tag;
-    //das gesuchte Feld wurde gefunden, Indikator ist vorhanden 
+    //das gesuchte Feld wurde gefunden, Indikator ist vorhanden
     if (ta_kat == kat && ind != "") {
     kat_ind = parseInt(kat) + parseInt(ind.charCodeAt(0));
     ta_kat_ind = parseInt(ta_kat) + parseInt(application.activeWindow.title.currentField.substr(5,1).charCodeAt(0));
@@ -124,11 +124,11 @@ application.activeWindow.title.startOfBuffer(false);
       break;
       }
     }
-  } while (ta_kat <= kat && ta_kat != "");        //solange Kat der Zeile kleiner gleich gesuchter kat ist und man nicht am Ende eines Datensatzes ist (zu erkennen daran, dass keine Feldbezeichnung vorhanden ist) 
-  
+  } while (ta_kat <= kat && ta_kat != "");        //solange Kat der Zeile kleiner gleich gesuchter kat ist und man nicht am Ende eines Datensatzes ist (zu erkennen daran, dass keine Feldbezeichnung vorhanden ist)
+
   application.activeWindow.title.startOfField(false);
-  
-// Cursor ist jetzt entweder im gesuchten Feld, falls vorhanden, oder im nächsthöheren Feld, falls nicht vorhanden 
+
+// Cursor ist jetzt entweder im gesuchten Feld, falls vorhanden, oder im nächsthöheren Feld, falls nicht vorhanden
   if (append == true) {
     //wenn Feld noch nicht vorhanden, ist der Cursor jetzt am Anfang des nächsthöheren Feldes -> muss eins hoch
     if (ta_kat > kat || ta_kat_ind > kat_ind || ta_kat == "") {
@@ -164,7 +164,7 @@ katInh = new Array();
   } else {
   var katLaenge = 3;
   }
-  
+
 //zum Testen var gesKat = "100";
 
   //Wenn nicht im Korrekturmodus
@@ -175,7 +175,7 @@ katInh = new Array();
   satz = satz + "\n\n";
 
   var pos = 1;
-  
+
     do {
     var posx = satz.indexOf("\n",pos);
     inh = "";
@@ -183,31 +183,31 @@ katInh = new Array();
 
       if (kat.indexOf(gesKat) == 0) {
       katInh.push(satz.substring(pos,posx));
-      }    
-    
-    
+      }
+
+
     pos = posx+1;
     } while (posx != -1)
-  
+
   } else {
-  
+
   application.activeWindow.title.endOfBuffer(false);
-  
+
   y = parseInt(application.activeWindow.title.currentLineNumber) + 5;
   application.activeWindow.title.startOfBuffer(false);
   //Vgl. mit zeileAlt notwendig für mehrzeilige Felder
   var zeileAlt = "";
     for (i = 0;i < y;i++) {
     zeile = application.activeWindow.title.currentField;
-        
+
       if ((application.activeWindow.title.tag == gesKat) && (zeile != zeileAlt)) {
       katInh.push(zeile);
       }
     zeileAlt = zeile;
     application.activeWindow.title.lineDown(1,false);
-    }  
+    }
   }
-  
+
 return katInh;
 }
 
@@ -244,9 +244,9 @@ function __getProfVal(boxtit,valname,prompTxt,art) {
 /*--------------------------------------------------------------------------------------------------------
 /*--------------------------------------------------------------------------------------------------------
 
-Die interne Funktion speichert und liest Werte aus dem Benutzerprofil, die in der Datei user_pref.js 
+Die interne Funktion speichert und liest Werte aus dem Benutzerprofil, die in der Datei user_pref.js
 unter der Variablen <userData.xyz> enthalten sind bzw. dort abgespeichert werden.
-Mit dem Parameter valname kann der Name der Variablen angegeben werden. Der Parameter prompText enthält den 
+Mit dem Parameter valname kann der Name der Variablen angegeben werden. Der Parameter prompText enthält den
 Text der Input-Box, falls der Wert noch nicht existiert. Der Wert der Variablen wird zurückgegeben.
 
 sect =         Section der Preferences (seit 01.04. fix: dnbUser)
@@ -265,7 +265,7 @@ var value = application.getProfileString(sect, valname, "");
 
   if (!value || art == "korr") {
   value = __dnbPrompter(boxtit,prompTxt,value);
-  
+
     if (value != null) {
     application.writeProfileString(sect, valname, value);
     }
@@ -276,10 +276,10 @@ return value;
 
 function __dnbPrompter(ttl,txt,dflt) {
 /*--------------------------------------------------------------------------------------------------------
-__dnbPrompter(ttl,txt,dflt) 
+__dnbPrompter(ttl,txt,dflt)
 
 Die interne Funktion oeffnet eine Input-Box und gibt den eingegebenen Wert zurück.
-Mit Parameter ttl kann der Text fuer die Titelzeile der Eingabebox uebergeben werden. 
+Mit Parameter ttl kann der Text fuer die Titelzeile der Eingabebox uebergeben werden.
 Parameter txt enthaelt den Text der Input-Box und mit dflt kann ein Default-Wert definiert werden.
 
 Historie:
@@ -288,14 +288,14 @@ Historie:
 var prompter = utility.newPrompter();
 var msg;
 
-	
+
 msg = prompter.prompt(ttl,txt,dflt,null,null);
 if (msg == 1)	msg = prompter.getEditValue();
 else			msg = null;
 
 return msg;
 
-}	
+}
 
 
 function __prompterPruef(boxtit,strTxt,werte,dflt) {
@@ -325,20 +325,20 @@ wertePrf = werte.toLowerCase();
     } else {
     boxTxt = strTxt;
     }
-  
-    
+
+
   erg = __dnbPrompter(boxtit,boxTxt,dflt);
-  
+
     if (erg == null) {
     break;
     } else {
     erg = erg.toLowerCase();
-    } 
-    
-    if (wertePrf.indexOf(erg) > -1) { 
+    }
+
+    if (wertePrf.indexOf(erg) > -1) {
     antw = true
     } else {
-    antw = false 
+    antw = false
     }
 
   } while(antw != true);
@@ -355,7 +355,7 @@ Historie:
 --------------------------------------------------------------------------------------------------------*/
 
 		application.activeWindow.title.startOfBuffer(false);
-		if ((!application.activeWindow.title.findTag("0500", 0, false, true, false)) && 
+		if ((!application.activeWindow.title.findTag("0500", 0, false, true, false)) &&
 			(!application.activeWindow.title.findTag("005", 0, false, true, false))) {
 				__gndError("Fehler","Feld mit Materialcode nicht vorhanden!");
 		} else {
@@ -365,8 +365,8 @@ Historie:
 			application.activeWindow.title.charRight(1,true);
 			application.activeWindow.title.deleteSelection(false);
 			application.activeWindow.title.insertText(status);
-		}	
-		
+		}
+
 }
 
 
@@ -381,15 +381,15 @@ function CKneu () {
   strSWDIDN = application.activeWindow.getVariable("P3GPP");
   strMat = application.activeWindow.materialCode;
   tag065 = __katEinlesen("065");
-  
+
     if (("Ts Tg").indexOf(strMat) == -1) {
     __gndError(boxtit,"Skript kann nur aus einem Ts- oder Tg-Satz ausgelöst werden!");
     return(false);
-    } 
-    
+    }
+
   DatenmaskeTcx();
-  
-  //übernommenen Ländercode einfügen	
+
+  //übernommenen Ländercode einfügen
 	  if (tag065 != "") {
     var str065 = tag065[0].substr(4);
     application.activeWindow.title.startOfBuffer(false);
@@ -397,14 +397,14 @@ function CKneu () {
 	  application.activeWindow.title.endOfField(false);
 	  application.activeWindow.title.insertText(str065);
 	  }
-	
+
 	//übernommene IDN einfügen
   application.activeWindow.title.startOfBuffer(false);
 	application.activeWindow.title.findTag("190", 0, false, true, false);
 	application.activeWindow.title.endOfField(true);
 	application.activeWindow.title.insertText("!" + strSWDIDN + "!");
-  
-  //zur weiteren Bearbeitung nach 011 gehen 
+
+  //zur weiteren Bearbeitung nach 011 gehen
   application.activeWindow.title.startOfBuffer(false);
 	application.activeWindow.title.findTag("011", 0, false, true, false);
 	application.activeWindow.title.endOfField(true);
@@ -412,99 +412,87 @@ function CKneu () {
 
 
 function zdb_Reziprok() {
-/**************************************************************
- 
-edits Hachmann, Grund, Klee
-letzte Änderung 2012-12-05  Klee
+  /**************************************************************
 
-/**************************************************************/
-  
-  // Skript muss bei reziprokem Verknuepfungsfeld aufgerufen werden und erzeugt an der Gegenaufnahme eine Verknüpfung.
-	if (!application.activeWindow.title) 
-	{
-		application.messageBox("Reziprok", "Die Funktion kann nur aus dem Korrekturmodus aufgerufen werden.",  "alert-icon");
-		return;
-	}
+  2012-03-30  S. Grund, DNB  Anpassungen f?r GND
+  2012-10-24  S. Grund, DNB  Fehlerkorrektur (Probleme bei ZDB-Titeldaten)
+  2012-11-12  S. Grund, DNB  Umbenennung nach zdb_Reziprok (Wiederherstellung Kompatibilit?t mit ZDB-WinIBW)
+  2016-07-05  S. Grund, DNB  Seit RDA-Umstellung wird das Skript nicht mehr f?r Titelverkn?pfungen genutzt (Mailwechsel Jacobi/Klee/Grund Oktober 2015), daher die Titelkategorien aus Quelle und Ziel entfernt
+  2019-04-30  S. Grund, DNB  Feld 500 f?r die GND hinzugef?gt (mit Standard-Relatorcode "bezf")
 
-	// Quell-ID-Nummer
-	var quellID = application.activeWindow.getVariable("P3GPP");
-	var felder = {
-		"510 vorg":"510 !" + quellID + "!$4nach",
-		"510 nach":"510 !" + quellID + "!$4vorg",
-		"511 vorg":"511 !" + quellID + "!$4nach",
-		"511 nach":"511 !" + quellID + "!$4vorg",
-		"551 vorg":"551 !" + quellID + "!$4nach",
-		"551 nach":"551 !" + quellID + "!$4vorg",
-		"4244 f#":"4244 s#!" + quellID + "!",
-		"4244 s#":"4244 f#!" + quellID + "!",
-		"4244 z#":"4244 z#!" + quellID + "!",
-		"4241":"4242 !" + quellID + "!",
-		"4242":"4241 !" + quellID + "!",
-		"4243":"4243 !" + quellID + "!"}
-
-	// Aktuelle Feldnummer ermitteln
-	var tag = application.activeWindow.title.tag;
-	var tagcontent = application.activeWindow.title.currentField;
-	// Prüfen, ob eine von Ausrufezeichen umschlossene IDN vorhanden ist
-	var text = tagcontent.substring(tagcontent.indexOf("!"),tagcontent.lastIndexOf("!")+1); 
-	var regExpPPN = /!(\d{8,9}[\d|x|X])!/;
-	if (!regExpPPN.test(text)) {
-		application.messageBox("Reziprok linken", "Es ist keine ID-Nummer zum Verlinken gefunden worden.", "error-icon");
-		return;
-	}
-	application.activeWindow.title.startOfField(false);
-	var reziFeld = "";
-	//Unterschiede zw. GND- und Titelfeldern
-	if (tag.length < 4)
-	{
-		//Relationscode ermitteln
-		var code = tagcontent.substr(tagcontent.indexOf("$4")+2,4)
-		var feldnr = tag + " " + code;
-		reziFeld = felder[feldnr];
-	} 
-	else
-	{
-		var feldnr = tagcontent.match(/^\d{4,4}(\s[fsz]#)?/g);
-		reziFeld = felder[feldnr[0]];
-	}
+  /**************************************************************/
 
 
-	// Fehlermeldung bei falschem Feld
-	if (reziFeld == "" || reziFeld == null || !reziFeld) {
-		application.messageBox("Reziprok", "Die Funktion kann nicht aus dem Feld '" + tag + "' aufgerufen werden.",  "alert-icon");
-		return;
-	}
+    // Skript muss bei reziprokem Verknuepfungsfeld aufgerufen werden und erzeugt an der Gegenaufnahme eine Verkn?pfung.
+    if (!application.activeWindow.title) {
+    application.messageBox("Reziprok", "Die Funktion kann nur aus dem Korrekturmodus aufgerufen werden.",  "alert-icon");
+    return;
+    }
 
-   // Datensatz speichern, wenn Status != OK Abbruch.
-    application.activeWindow.simulateIBWKey ("FR");
-	if (application.activeWindow.status != "OK"){
-	  application.messageBox("Reziprok linken", "Bitte Fehler korrigieren und Funktion erneut ausführen", "error-icon");
-	  return;
-	}
-	zielID = regExpPPN.exec(text);
-	// Kommando abschicken und Ergebnis in gleichen Fenster anzeigen
-	application.activeWindow.command("f idn " + zielID[1], false); // <=== Kommando in demselben Fenster
+  //quelle = new Array("450 |a|", "450 |c|", "4244 f#", "4244 s#", "4244 z#", "4241 ", "4242 ", "4243 ");
 
-	  
-    //Datensatz in der Vollanzeige prüfen. Wenn PPN noch nicht vorkommt, dann jetzt einfuegen:
-    if (application.activeWindow.copyTitle().indexOf(quellID) == -1 ) 
-	{
-		// F7 (Korrektur" drücken)
-		application.activeWindow.simulateIBWKey ("F7");
-		application.activeWindow.title.endOfBuffer(false);
-		application.activeWindow.title.insertText(reziFeld + "\n");
-		var thePrompter = utility.newPrompter();
-		if (thePrompter.confirmEx("reziprok Linken", "Datensatz jetzt speichern?", "Ja", "Nein", "", "", "") == 0) 
-		{
-			application.activeWindow.simulateIBWKey ("FR");
-			if (application.activeWindow.status == "OK")
-			{ 
-				application.activeWindow.command("f idn " + quellID + " or " + zielID[1] + ";s k", false);    
-			}
-		}
-	}
-	else {
-		application.messageBox("Reziprok", "Der Link zu " + quellID + " ist schon vorhanden!", "alert-icon");
-	}
- 
-}
+  //Vor der RDA-Umstellung (f?r Titel wird das Skript seitdem nicht mehr genutzt
+  //quelle = new Array("510 vorg", "510 nach", "511 vorg", "511 nach", "551 vorg", "551 nach", "4244 f#", "4244 s#", "4244 z#", "4241", "4242", "4243");
+  //ziel = new Array("510 $4nach", "510 $4vorg", "511 $4nach", "511 $4vorg", "551 $4nach", "551 $4vorg", "4244 s#", "4244 f#", "4244 z#", "4242", "4241", "4243");
+
+  quelle = new Array("500 bezf", "510 vorg", "510 nach", "511 vorg", "511 nach", "551 vorg", "551 nach");
+  ziel = new Array("500 $4bezf", "510 $4nach", "510 $4vorg", "511 $4nach", "511 $4vorg", "551 $4nach", "551 $4vorg");
+  // Quell-ID-Nummer
+  var idn = application.activeWindow.getVariable("P3GPP");
+  // Aktuelle Feldnummer ermitteln
+  var tag = application.activeWindow.title.tag;
+  var tagcontent = application.activeWindow.title.currentField;
+  application.activeWindow.title.startOfField(false);
+  //Unterschiede zw. GND- und Titelfeldern
+    if (tag.length < 4) {
+    //Relationscode ermitteln
+    var code = tagcontent.substr(tagcontent.indexOf("$4")+2,4)
+    var feldnr = tag + " " + code;
+    } else {
+    application.activeWindow.title.charRight(7, true);
+    var feldnr = application.activeWindow.title.selection;
+    }
+  var reziFeld = "";
+
+    for (var i = 0; i <= 11; i++) {
+      if (feldnr == (quelle[i]) || (feldnr.indexOf(quelle[i]) > -1)) {
+        if (i<= 5) {
+        //Aktion f?r GND-Felder
+        reziFeld = ziel[i].substr(0,3) + " !" + idn + "!" + ziel[i].substr(4);
+        } else if ((i > 5) && (i <= 8)) {
+        //Aktion f?r ZDB-Felder mit Funktionscode
+        reziFeld = ziel[i] + "!" + idn + "!";
+        } else if (i > 8) {
+        //die letzen drei Felder haben kein Steuerungszeichen, hier gilt nur der Tag
+        reziFeld = ziel[i] + " !" + idn + "!";
+        }
+      }
+    }
+
+    // Fehlermeldung bei falschem Feld
+    if (reziFeld == "") {
+    application.messageBox("Reziprok", "Die Funktion kann nicht aus dem Feld '" + feldnr + "' aufgerufen werden.",  "alert-icon");
+    return;
+    }
+  // Pr?fen, ob eine von Ausrufezeichen umschlossene IDN vorhanden ist
+  var text = tagcontent.substring(tagcontent.indexOf("!"),tagcontent.lastIndexOf("!")+1);
+
+  var regExpPPN = /!(\d{8,9}[\d|x|X])!/;
+    if (regExpPPN.test(text) == true){
+    idn2 = regExpPPN.exec(text);
+    // Kommando abschicken und Ergebnis in neuem Fenster anzeigen
+    application.activeWindow.command("f idn " + idn2[1], true);
+
+      //Datensatz in der Vollanzeige pr?fen. Wenn PPN noch nicht vorkommt, dann jetzt einfuegen:
+      if (application.activeWindow.copyTitle().indexOf(idn) == -1 ) {
+      // F7 (Korrektur" dr?cken)
+      application.activeWindow.simulateIBWKey ("F7");
+      application.activeWindow.title.endOfBuffer(false);
+      application.activeWindow.title.insertText(reziFeld + "\n");
+      } else {
+      application.messageBox("Reziprok", "Der Link zur " + idn + " ist schon vorhanden!", "alert-icon");
+      }
+    } else{
+      application.messageBox("Reziprok", "Es ist keine Verkn?pfungs-ID-Nummer vorhanden.", "alert-icon");
+    }
+  }
