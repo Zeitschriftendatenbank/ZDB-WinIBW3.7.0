@@ -9,10 +9,10 @@
  GBV: zahlreiche Änderungen:
 			writeCSV in Dialogformular übertragen
 			04.2013: Anwender können selbst auswählen, welche Trennzeichen
-							 verwendet werden sollen, wenn ein Feld wiederholbar ist.
-							 Habe "; " durch strTrennzeichen ersetzt
+					verwendet werden sollen, wenn ein Feld wiederholbar ist.
+					Habe "; " durch strTrennzeichen ersetzt
 			11.2013: writeCSV: if-Bedingung entfernt, da ansonsten gerade vorgenommene Änderungen
-							 in der Konfigurationsdatei des Nutzers nicht gelesen werden
+					in der Konfigurationsdatei des Nutzers nicht gelesen werden
  ***************************************************************************
  ZDB: Wiederholte Felder und Unterfelder
  - Funktionen createResult(), convertText überarbeitet
