@@ -27,7 +27,6 @@ var strSystem = "";
 
 //----------------------------------------------------------------------------
 function onLoad() {
-
 	document.getElementById("idButtonStart").focus();
 	document.getElementById("idLabelInfos1a").value = "Schritt 1: Recherchieren Sie nach den Titeln, die in eine csv-Datei geschrieben werden sollen.";
 	document.getElementById("idLabelInfos1b").value = "Schritt 2: Füllen Sie ggf. die Standortangabe im unteren Feld aus.";
@@ -75,19 +74,16 @@ var global = new Object(), bContentsChanged, strSST, strTrennzeichen;
 var delimiter = '\u0192'; // Unterfeldzeichen "ƒ" = \u0192
 var charCode = 402; // Unterfeldzeichen "ƒ" = 402, Unterfeldzeichen "$" = 36
 //----------------------------------------------------------------------------
-
 const utility =
 {
 	newFileInput: function () {
 		return Components.classes["@oclcpica.nl/scriptinputfile;1"]
 			.createInstance(Components.interfaces.IInputTextFile);
 	},
-
 	newFileOutput: function () {
 		return Components.classes["@oclcpica.nl/scriptoutputfile;1"]
 			.createInstance(Components.interfaces.IOutputTextFile);
 	},
-
 	newPrompter: function () {
 		return Components.classes["@oclcpica.nl/scriptpromptutility;1"]
 			.createInstance(Components.interfaces.IPromptUtilities);
@@ -125,7 +121,6 @@ function datumHeute() {
 	if (sekunde < 10) { sekunde = "0" + sekunde; }
 
 	return jahr + "_" + monat + "_" + strTag + "_" + stunde + "_" + minute + "_" + sekunde;
-
 }
 
 // --------------------------------------------------------------------------------
@@ -158,9 +153,11 @@ String.prototype.startsWithDigit = function () {
 function __hebisError(meldetext) {
 	application.messageBox("Fehler", meldetext, "error-icon");
 }
+
 function __hebisMsg(meldetext) {
 	application.messageBox("Hinweis", meldetext, "alert-icon");
 }
+
 function __M(meldungstext) {
 	application.messageBox("Hinweis", meldungstext, "message-icon");
 }
@@ -260,9 +257,7 @@ const specialChars = "KS";	// spezielle Zeichen für die Ausgabe von
 // --------------------------------------------------------------------------------
 
 function readControl(inp, must) {
-
 	var theFileContent = new Array(), line, tmp, cnt = 0, idx;
-
 	while (!inp.isEOF()) {
 		line = inp.readLine();
 		if (line === null) {
@@ -280,7 +275,6 @@ function readControl(inp, must) {
 		tmp = line.replace(/\t/g, " ");
 		tmp = tmp.superTrim();
 		if (tmp === "") { continue; }
-
 		idx = tmp.indexOf(":");
 		if (tmp.indexOf(" ") < idx) {
 			__hebisError("Die Spaltenüberschriften dürfen keine Blanks " +
@@ -320,7 +314,6 @@ function readControl(inp, must) {
 // liefert neues Array zurück
 //
 // --------------------------------------------------------------------------------
-
 function replaceDefinitions(defs, content) {
 	var newcont = new Array();
 	for (var idx = 0; idx < content.length; idx += 2) {
@@ -350,7 +343,6 @@ function replaceDefinitions(defs, content) {
 			newcont.push(defval);
 		}
 	}
-
 	return newcont;
 }
 
@@ -364,17 +356,12 @@ function replaceDefinitions(defs, content) {
 // liefert neuen Text zurück
 //
 // --------------------------------------------------------------------------------
-
 function getDefinition(defs, mask) {
-
 	var idx;
-
 	for (idx = 0; idx < defs.length; idx += 2) {
 		if (defs[idx] == mask) { return defs[idx + 1]; }
 	}
-
 	return null;
-
 }
 
 // --------------------------------------------------------------------------------
@@ -384,7 +371,6 @@ function getDefinition(defs, mask) {
 // liefert true oder false zurück
 //
 // --------------------------------------------------------------------------------
-
 function checkIfTag(text) {
 	var idx = 0, lev2;
 
@@ -409,7 +395,6 @@ function checkIfTag(text) {
 		if ((text.charAt(idx) < "0") || ("9" < text.charAt(idx++))) { return false; }
 		if ((text.charAt(idx) < "0") || ("9" < text.charAt(idx++))) { return false; }
 	}
-
 	return (text.charAt(idx) == " ");
 }
 
@@ -422,7 +407,6 @@ function checkIfTag(text) {
 // Rückgabe Control Array
 //
 // --------------------------------------------------------------------------------
-
 function createCtrlArray(content) {
 	//wertet den Inhalt der Datei csvDefinition.txt aus:
 	var tmpline, ctrl = new Array();
@@ -454,7 +438,6 @@ function createCtrlArray(content) {
 	//alert(__objToString (ctrl));
 
 	return ctrl;
-
 }
 
 // --------------------------------------------------------------------------------
@@ -468,8 +451,6 @@ function createCtrlArray(content) {
 // Rückgabe	modifizierte Zeile
 //
 // --------------------------------------------------------------------------------
-
-
 function getSpecial(ctrl, tmpline) {
 	if (tmpline.startsWithDigit()) {
 		ctrl.spec = " ";
@@ -477,10 +458,8 @@ function getSpecial(ctrl, tmpline) {
 		ctrl.spec = tmpline.charAt(0).toUpperCase();
 		tmpline = tmpline.substr(1);
 	}
-
 	return tmpline;
 }
-
 
 // --------------------------------------------------------------------------------
 //
@@ -493,9 +472,7 @@ function getSpecial(ctrl, tmpline) {
 // Rückgabe	modifizierte Zeile
 //
 // --------------------------------------------------------------------------------
-
 function getTagInfos(ctrl, tmpline) {
-
 	var idx;
 	if (tmpline.charAt(0) == "2") {
 		global.csvLevel2 = true;
@@ -512,9 +489,7 @@ function getTagInfos(ctrl, tmpline) {
 	ctrl.tag = tmpline.substr(0, idx);
 
 	return tmpline.substr(idx + 1);
-
 }
-
 
 // --------------------------------------------------------------------------------
 //
@@ -527,9 +502,7 @@ function getTagInfos(ctrl, tmpline) {
 // Rückgabe	modifizierte Zeile
 //
 // --------------------------------------------------------------------------------
-
 function orPartitions(ctrl, tmpline) {
-
 	var termOr = new Array(),
 		tmpObj = new Object(),
 		idx = 0;
@@ -547,13 +520,11 @@ function orPartitions(ctrl, tmpline) {
 		//__M("or idx:"+(idx-1)+"  and:"+tmpObj.termAnd.length+"   wert:"+termOr[idx-1][0].sbf);
 	}
 
-
 	ctrl.data = termOr;
 	//__M("vor Abschluss or 0:"+termOr[0][0].sbf+"   1:"+termOr[1][0].sbf);
 	//__M("jetzt abschluss or Anzahl:"+ctrl.data[0][0].sbf);
 	//alert("or: " +tmpline);
 	return tmpline;
-
 }
 
 // --------------------------------------------------------------------------------
@@ -567,7 +538,6 @@ function orPartitions(ctrl, tmpline) {
 // Rückgabe	modifizierte Zeile
 //
 // --------------------------------------------------------------------------------
-
 function andPartitions(termOr, tmpline) {
 	var termAnd = new Array(), tmpObj = new Object(), idx = 0;
 
@@ -600,10 +570,7 @@ function andPartitions(termOr, tmpline) {
 // Rückgabe templine
 //
 // --------------------------------------------------------------------------------
-
-
 function sbfPart(obj, tmpline) {
-
 	var idx,
 		jdxe,
 		tmp,
@@ -652,12 +619,9 @@ function sbfPart(obj, tmpline) {
 // Rückgabe Header
 //
 // --------------------------------------------------------------------------------
-
 function createHeader(ctrl) {
-
 	var idx = -1;
 	var header = '"PPN"\t' + '"EPN"\t';
-
 	while (++idx < ctrl.length) {
 		header += '"' + ctrl[idx].col.replace(/\u0022/g, "'") + '"\t';
 	}
@@ -675,9 +639,7 @@ function createHeader(ctrl) {
 // Rückgabe aus Datensatz stammende(n) Zeile(n)
 //
 // --------------------------------------------------------------------------------
-
 function handleRecord(satz, ctrl) {
-
 	var lineblock, tmp_satz, tmp_line, idx, loopcnt, occ;
 	//__M(satz);//der vollständige Titel mit allen Exemplaren
 
@@ -730,7 +692,6 @@ function handleRecord(satz, ctrl) {
 // liefert 0, wenn kein Exemplar vorhanden
 //
 // --------------------------------------------------------------------------------
-
 function getMaxOccurrence(satz) {
 	var idx = satz.lastIndexOf("\n203@/");//Kat. 7800
 	if (idx < 0) { return 0; }
@@ -756,7 +717,6 @@ function getMaxOccurrence(satz) {
 // gefunden (Lücke in Zählung)
 //
 // --------------------------------------------------------------------------------
-
 function filterCopy(satz, occ) {
 	var tmp_satz = "",
 		arr,
@@ -793,7 +753,6 @@ function filterCopy(satz, occ) {
 			if (arr7100[0].indexOf(delimiter + "f" + strSST + delimiter) == -1) {
 				tmp_satz = "";
 			}
-
 		}
 	}
 	//alert("filterCopy: tmp_satz = \n" + tmp_satz);
@@ -810,15 +769,12 @@ function filterCopy(satz, occ) {
 // Rückgabe aus datensatz stammende Zeile(n)
 //
 // --------------------------------------------------------------------------------
-
 function handleRecordPart(satz, ctrl) {
-
 	var line, idx = -1;
 	while (++idx < ctrl.length) {
 		ctrl[idx].val = "";
 		ctrl[idx].adr = 0;
 	}
-
 	//__M("handleRecordPart acc:"+accept+"\n"+satz);
 
 	//GBV: nach createResult soll diese Funktion nicht abgebrochen werden
@@ -860,7 +816,6 @@ function handleRecordPart(satz, ctrl) {
 	return line;
 }
 
-
 // --------------------------------------------------------------------------------
 //
 // Extraktion der interessierenden Daten aus Datensatz
@@ -874,14 +829,11 @@ function handleRecordPart(satz, ctrl) {
 //
 // Rückgabe true, wenn okay
 // --------------------------------------------------------------------------------
-
 function createResult(satz, ctrl) {
 	var tag, suche, regex, group, text, idx = -1, w;
 	while (++idx < ctrl.length) {
-
 		// das tag, dass ausgelesen werden soll
 		tag = ctrl[idx].tag;
-
 		// handelt es sich um ein tag mit subfield?
 		//suche = "("+tag+".+)"+ctrl[idx].xsbf;
 		suche = tag + ".+" + ctrl[idx].xsbf;
@@ -889,7 +841,6 @@ function createResult(satz, ctrl) {
 		group = satz.match(regex);
 		if (group) {
 			var tempArray = new Array();
-
 			// workaround fuer 7120/4024(ZDB)
 			// nur fuer Feld 7120/4012
 			if (ctrl[idx].tag == "031N" || ctrl[idx].tag == "231@") {
@@ -926,7 +877,6 @@ function createResult(satz, ctrl) {
 	//__M("retval:"+retval);
 	return;
 }
-
 // --------------------------------------------------------------------------------
 //
 // Extraktion der interessierenden Daten aus Datensatz
@@ -936,20 +886,15 @@ function createResult(satz, ctrl) {
 // spec	Spezialzeichen
 // data	Referenz für data Part
 // --------------------------------------------------------------------------------
-
 function convertOrText(text, spec, data) {
-
 	var idx = -1, tmp;
-
 	while (++idx < data.length) {
 		//__M("or aufruf idx:"+idx+"  anz:"+data.length);
 		tmp = convertText(text, spec, data[idx]);
 		if (tmp !== "") { return tmp; }
 	}
-
 	return "";
 }
-
 // --------------------------------------------------------------------------------
 //
 // Extraktion der interessierenden Daten aus Datensatz
@@ -964,10 +909,8 @@ function convertOrText(text, spec, data) {
 // andArr	Referrenz auf andArray
 //
 // --------------------------------------------------------------------------------
-
 function convertText(text, spec, andArr) {
 	var tmp = "", idx = -1, idxe, jdxa, jdxe, test = false, tmpArray, tmpSf, jdxl;
-
 	while (++idx < andArr.length) {
 		// erstes vorkommen
 		jdxa = text.indexOf(andArr[idx].sbf);
@@ -1041,7 +984,6 @@ function writeCSV() {
 	//Anzahl der Titel:
 	cnt = parseInt(application.activeWindow.getVariable("P3GSZ"));
 	//GBV: keine Begrenzung der Mengen. Anweisungen zur Begrenzung der Sets entfernt.
-
 	//GBV: Tabelle soll immer neu gelesen werden, denn sonst werden Änderungen
 	//     und Korrekturen in der Auswahl der Felder nicht berücksichtigt.
 	//     deshalb if-Bedingung auskommentiert
@@ -1157,22 +1099,22 @@ function writeCSV() {
 }
 
 //**************************************************************************
-
 function wikiWinibw() {
 	//Hilfe allgemein
 	application.shellExecute("https://wiki.k10plus.de/x/agDUAw", 5, "open", "");
 }
+
 function wikiAnzeigen2() {
 	//Hilfe Konfiguration
 	application.shellExecute("https://wiki.k10plus.de/x/agDUAw#Excel-Tabelleerstellen-KonfigurationdesExcel-Werkzeugs", 5, "open", "");
 }
+
 function wikiAnzeigen3() {
 	//Hilfe Trennzeichen
 	application.shellExecute("https://wiki.k10plus.de/x/agDUAw#Excel-Tabelleerstellen-Trennzeichen", 5, "open", "");
 }
 
 //----------------------------------------------------------------------------
-
 function allesZuruecksetzen() {
 	document.getElementById("idLabelErgebnis1").hidden = true;
 	document.getElementById("idLabelErgebnis2").hidden = true;
@@ -1238,7 +1180,6 @@ function ladeKonfigurationstabelleUser() {
 		var zeile = "", i = 0, defInpFile = utility.newFileInput(), arrayTabelle = new Array();
 
 		if (!defInpFile.openSpecial("ProfD", "\\csvDefinitionUser.txt")) {
-
 			//Es gibt keine Konfigrationseinstellungen des Benutzers
 			return;
 		}
@@ -1337,7 +1278,6 @@ function auswahlLoeschen() {
 		theFile.remove();
 		//Meldung:
 		document.getElementById("idLabelAuswahl").value = "Auswahl gelöscht.";
-
 		//default ist jetzt die Standardtabelle:
 		document.getElementById("idRadioTabelle").selectedIndex = 0;
 		application.writeProfileInt("winibw", "GBVexcelTabelle", 0);
@@ -1374,7 +1314,6 @@ function waehleKonfigurationstabelle() {
 function __objToString(obj) {
 	var str = '{';
 	if (typeof obj == 'object') {
-
 		for (var p in obj) {
 			if (obj.hasOwnProperty(p)) {
 				str += "    " + p + ':' + __objToString(obj[p]) + ",\n";
