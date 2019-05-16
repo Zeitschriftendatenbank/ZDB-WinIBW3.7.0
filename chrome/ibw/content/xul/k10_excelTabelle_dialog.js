@@ -276,10 +276,10 @@ function readControl(inp, must) {
 				"oder Zeichen auﬂerhalb der Unicode-Zeichen-Darstellung.");
 			return null;
 		}
-		if (line.left(2) == "//") { continue;}
+		if (line.left(2) == "//") { continue; }
 		tmp = line.replace(/\t/g, " ");
 		tmp = tmp.superTrim();
-		if (tmp === "") { continue;}
+		if (tmp === "") { continue; }
 
 		idx = tmp.indexOf(":");
 		if (tmp.indexOf(" ") < idx) {
@@ -388,7 +388,7 @@ function getDefinition(defs, mask) {
 function checkIfTag(text) {
 	var idx = 0, lev2;
 
-	if (specialChars.indexOf(text.charAt(0).toUpperCase()) >= 0) { idx = 1;}
+	if (specialChars.indexOf(text.charAt(0).toUpperCase()) >= 0) { idx = 1; }
 	lev2 = (text.charAt(idx) == "2");
 	if ((text.charAt(idx) < "0") || ("2" < text.charAt(idx++))) { return false; }
 	if ((text.charAt(idx) < "0") || ("9" < text.charAt(idx++))) { return false; }
@@ -396,18 +396,18 @@ function checkIfTag(text) {
 	if ((text.charAt(idx) < "@") || ("Z" < text.charAt(idx++))) { return false; }
 
 	if (text.charAt(idx) == "/") {
-		if (lev2) { return false;}
+		if (lev2) { return false; }
 		idx++;
-		if ((text.charAt(idx) < "0") || ("9" < text.charAt(idx++))) { return false;}
-		if ((text.charAt(idx) < "0") || ("9" < text.charAt(idx++))) { return false;}
+		if ((text.charAt(idx) < "0") || ("9" < text.charAt(idx++))) { return false; }
+		if ((text.charAt(idx) < "0") || ("9" < text.charAt(idx++))) { return false; }
 		if (text.charAt(idx) != " ") {
-			if ((text.charAt(idx) < "0") || ("9" < text.charAt(idx++))) { return false;}
+			if ((text.charAt(idx) < "0") || ("9" < text.charAt(idx++))) { return false; }
 		}
 	} else if (text.charAt(idx) == "x") {
-		if (!lev2) { return false;}
+		if (!lev2) { return false; }
 		idx++;
-		if ((text.charAt(idx) < "0") || ("9" < text.charAt(idx++))) { return false;}
-		if ((text.charAt(idx) < "0") || ("9" < text.charAt(idx++))) { return false;}
+		if ((text.charAt(idx) < "0") || ("9" < text.charAt(idx++))) { return false; }
+		if ((text.charAt(idx) < "0") || ("9" < text.charAt(idx++))) { return false; }
 	}
 
 	return (text.charAt(idx) == " ");
@@ -437,15 +437,15 @@ function createCtrlArray(content) {
 		//__M(content[idx]);
 		tmpline = getSpecial(obj, content[idx + 1]);
 		//alert("getSpecial: " + tmpline);//ganze Zeile, Kategorie und Unterfelder
-		if (tmpline === null) { return null;}
+		if (tmpline === null) { return null; }
 
 		tmpline = getTagInfos(obj, tmpline);
 		//alert("getTagInfos: " + tmpline);//nur Unterfelder
-		if (tmpline === null) { return null;}
+		if (tmpline === null) { return null; }
 
 		tmpline = orPartitions(obj, tmpline);
 		//alert("orPartitions: " + tmpline);
-		if (tmpline === null) { return null;}
+		if (tmpline === null) { return null; }
 
 		ctrl[idx / 2] = obj;
 	}
@@ -576,13 +576,13 @@ function andPartitions(termOr, tmpline) {
 	while (tmpline.charAt(0) == "+") {
 		tmpline = sbfPart(tmpObj, tmpline.substr(1));
 		//alert("andPartitions: "+ tmpline);
-		if (tmpline === null) { return null;}
+		if (tmpline === null) { return null; }
 		//__M("nach sbf:"+tmpline+"!  idx:"+idx+"   tmpObj:"+tmpObj.field.sbf);
 		termAnd[idx] = new Object();
 		termAnd[idx++] = tmpObj.field;
 		//__M("modidx:"+(idx-1)+"  wert:"+tmpObj.field.sbf+"  tw:"+termAnd[idx-1].sbf);
 	}
-	if ((tmpline !== "") && (tmpline.charAt(0) != " ")) { return null;}
+	if ((tmpline !== "") && (tmpline.charAt(0) != " ")) { return null; }
 
 	termOr.termAnd = termAnd;
 	//__M("and schluss:"+termOr.termAnd[0].sbf+"  laenge termand:"+termAnd.length);
@@ -618,14 +618,14 @@ function sbfPart(obj, tmpline) {
 	} else if (tmpline.charAt(0) == "\"") {
 		tmpline = tmpline.substr(1);
 		jdxe = tmpline.indexOf("\"");
-		if (jdxe < 2) { return null;}
+		if (jdxe < 2) { return null; }
 
 		tmp = tmpline.substr(0, jdxe);
 		tmpline = tmpline.substr(jdxe + 1);
 
 		idx = tmp.indexOf("$");
-		if (idx < 0) { return null;}
-		if (idx == tmp.length - 1) { return null;}
+		if (idx < 0) { return null; }
+		if (idx == tmp.length - 1) { return null; }
 		if (idx === 0) {
 			field.pre = "";
 		} else {
@@ -733,7 +733,7 @@ function handleRecord(satz, ctrl) {
 
 function getMaxOccurrence(satz) {
 	var idx = satz.lastIndexOf("\n203@/");//Kat. 7800
-	if (idx < 0) { return 0;}
+	if (idx < 0) { return 0; }
 	//K10plus und ZDB verwenden unterschiedliche Occurrences:
 	if (strSystem == "K10plus") {
 		//K10plus: 3stellig
@@ -763,7 +763,7 @@ function filterCopy(satz, occ) {
 		idx,
 		found = false;
 
-	if (occ == "/00") { found = true ;}
+	if (occ == "/00") { found = true; }
 
 	arr = satz.split("\n");
 	for (idx = 0; idx < arr.length; idx++) {
@@ -777,7 +777,7 @@ function filterCopy(satz, occ) {
 		}
 	}
 
-	if (!found) { tmp_satz = "";}
+	if (!found) { tmp_satz = ""; }
 
 	//GBV: Pr¸fung nur wenn Feld "Standort" ausgef¸llt wurde
 	// wenn der SST nicht ¸bereinstimmt, soll das Exemplar nicht
@@ -944,7 +944,7 @@ function convertOrText(text, spec, data) {
 	while (++idx < data.length) {
 		//__M("or aufruf idx:"+idx+"  anz:"+data.length);
 		tmp = convertText(text, spec, data[idx]);
-		if (tmp !== "") { return tmp;}
+		if (tmp !== "") { return tmp; }
 	}
 
 	return "";
@@ -981,7 +981,7 @@ function convertText(text, spec, andArr) {
 				tmpArray = new Array();
 				while (test === false) {
 					jdxe = text.indexOf(String.fromCharCode(charCode), jdxa + 1);
-					if (jdxe < 0) { jdxe = text.length;}
+					if (jdxe < 0) { jdxe = text.length; }
 					tmpSf = andArr[idx].pre + text.substr(jdxa + 2, jdxe - jdxa - 2) + andArr[idx].post;
 					tmpArray.push(tmpSf);
 					if (jdxa == jdxl) test = true;
@@ -991,7 +991,7 @@ function convertText(text, spec, andArr) {
 			}
 			else {
 				jdxe = text.indexOf(String.fromCharCode(charCode), jdxa + 1);
-				if (jdxe < 0) { jdxe = text.length;}
+				if (jdxe < 0) { jdxe = text.length; }
 				tmp += andArr[idx].pre + text.substr(jdxa + 2, jdxe - jdxa - 2) + andArr[idx].post;
 			}
 		}
@@ -1065,13 +1065,13 @@ function writeCSV() {
 	global.csvDefinitions = readControl(defInpFile, true);
 	defInpFile.close();
 	defInpFile = null;
-	if (global.csvDefinitions === null) { return false;}
+	if (global.csvDefinitions === null) { return false; }
 	//__M(global.csvDefinitions.join("!\n!"));
 
 	//Lesen der Definition:
 	content = global.csvDefinitions;
 	content = replaceDefinitions(global.csvDefinitions, content);
-	if (content === null) { return;}
+	if (content === null) { return; }
 	//__M("content: \n" + content.join("!\n!"));
 	ctrl = createCtrlArray(content);
 	//	__M("ctrl:"+ctrl[0].col+"  spec:"+ctrl[0].spec+"  tag;"+ctrl[0].tag
@@ -1116,7 +1116,7 @@ function writeCSV() {
 	for (idx = 1; idx <= cnt; idx++) {
 		//__M("s "+idx);
 		application.activeWindow.command("show " + idx + " p", false);
-		if (application.activeWindow.status != "OK") { continue;}
+		if (application.activeWindow.status != "OK") { continue; }
 		satz = "\n" + __getExpansionFromP3VTX();
 		satz = satz.replace(/\r/g, "\n");
 		satz = satz.replace(/\u001b./g, ""); // replace /n (Zeilenumbruch) entfernt,
