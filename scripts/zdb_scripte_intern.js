@@ -1,5 +1,8 @@
 // Datei:		zdb_scripte_intern.js
 
+// globals
+var alt_ppn;
+
 var zdb_updateURL = application.getProfileString('ibw.updateservice', 'url', '');
 if(-1 != zdb_updateURL.indexOf('zeitschriftendatenbank')) {
     application.writeProfileString('ibw.updateservice', 'url', 'http://winibw-repo.sbb.berlin/winibw/37');
@@ -199,7 +202,7 @@ function zdbFIDset(){
     {
         application.activeWindow.command("del s0",false);
         var parallel = new Array();
-        i = 1;
+        var i = 1;
         do {
 
             application.activeWindow.command("s s" + currentSet + " " + i,false);
@@ -210,7 +213,7 @@ function zdbFIDset(){
                 for(var o in parallel)
                 {
                     application.activeWindow.command("f idn " + parallel[o].idn,false);
-                    var tinumber = application.activeWindow.getVariable("P3GTI");
+                    tinumber = application.activeWindow.getVariable("P3GTI");
                     application.activeWindow.command("sav " + tinumber,false);
                 }
             }
@@ -429,7 +432,7 @@ function csvBatchExemplar() {
 
 function excelTabelle(){
     var xulFeatures = "centerscreen, chrome, close, titlebar,modal=no,dependent=yes, dialog=yes";
-    open_xul_dialog("chrome://ibw/content/xul/gbv_excelTabelle_dialog.xul", xulFeatures);
+    open_xul_dialog("chrome://ibw/content/xul/k10_excelTabelle_dialog.xul", xulFeatures);
 }
 
 function ZDBWinIBWInfo(){
@@ -574,7 +577,7 @@ function tf_vollenden()
         var winId;
 
         // Win-ID des aktiven Fensters (fuer die spaetere Reaktivierung)
-        edit_winId = application.activeWindow.windowID;
+        var edit_winId = application.activeWindow.windowID;
 
         // Array leeren
         search_winIdArray.length = 0;
