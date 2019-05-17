@@ -6,7 +6,7 @@ function SET(logFilename, format, eigeneBibliothek) {
     this.next_ex          = 0;
     this.current_ex       = 0;
     this.eigeneBibliothek = eigeneBibliothek || false;
-    this.logger           = new LOGGER(logFilename);
+    this.logger           = new LOGGER(logFilename) || false;
 }
 
 SET.prototype = {
@@ -112,6 +112,9 @@ SET.prototype = {
         },
     save:
         function (save, message) {
+            if(false === this.logger) {
+                throw("Es wurde kein LOG-File angegeben.");
+            }
             message = message || false;
             save = save || true;
             if (save == false) {
@@ -123,7 +126,7 @@ SET.prototype = {
 
             var status = application.activeWindow.status,
                 cbsMessage = this.getMessages();
-            
+
             if(status == 'OK') {
                 if(message) {
                     message = status + "\t" + cbsMessage + "\t" + message;
@@ -134,7 +137,7 @@ SET.prototype = {
                 application.activeWindow.simulateIBWKey("FE");
                 message = status + "\t" + cbsMessage;
             }
-            
+
             if(message) {
                 this.logger.log(message);
             }
