@@ -112,7 +112,6 @@ CSV.prototype =
             if(this.eigene_bibliothek == false){
                 this.__csvLOG(this.isil + "\tDer Bibliothekssatz für das Produktsigel konnte nicht gefunden werden.");
                 throw "Das Skript wird abgebrochen. Der Bibliothekssatz für das Produktsigel konnte nicht gefunden werden.";
-                return false;
             } else {
                 this.eigene_bibliothek = "!" + this.eigene_bibliothek + "!";
                 return true;
@@ -135,8 +134,6 @@ CSV.prototype =
 
             if(!csv.openSpecial("ProfD", "\csv\\" + this.csvFilename)){
                 throw "Datei " + this.csvFilename + " wurde nicht gefunden.";
-                throw "Das Skript wird abgebrochen. Datei " + this.csvFilename + " wurde nicht gefunden.";
-                return false;
             }
 
             // read the start line
@@ -342,7 +339,6 @@ CSV.prototype =
                 {
                     //this.__csvError("Die LOG-Datei " + this.logFilename + " konnte nicht erstellt werden");
                     throw "Die LOG-Datei " + this.logFilename + " konnte nicht erstellt werden";
-                    return;
                 }
             }
             else
@@ -379,16 +375,14 @@ CSV.prototype =
                 if(application.activeWindow.getVariable("scr") != "8A")
                 {
                     //	return undone but write error to a log file
-                    this.__csvLOG("Datensatz kann nicht gespeichert werden;" + application.activeWindow.status
-                    + ";" + message
+                    this.__csvLOG("Datensatz kann nicht gespeichert werden;" + application.activeWindow.status + ";" + message
                     );
                     application.activeWindow.simulateIBWKey("FE");
                     return false;
                 }
                 else
                 {
-                    this.__csvLOG("Datensatz wurde gespeichert;" + application.activeWindow.status
-                    + ";" + message
+                    this.__csvLOG("Datensatz wurde gespeichert;" + application.activeWindow.status + ";" + message
                     );
                     return true;
                 }
@@ -396,8 +390,7 @@ CSV.prototype =
             else if (save == false)
             {
                 //	return undone but write error to a log file
-                this.__csvLOG("Datensatz wurde verlassen und nicht gespeichert;" + application.activeWindow.status
-                + ";" + message
+                this.__csvLOG("Datensatz wurde verlassen und nicht gespeichert;" + application.activeWindow.status + ";" + message
                 );
                 application.activeWindow.simulateIBWKey("FE");
                 return false;
@@ -405,8 +398,7 @@ CSV.prototype =
             else
             {
                 //	return undone but write error to a log file
-                this.__csvLOG("Datensatz kann nicht gespeichert werden;" + application.activeWindow.status
-                + ";" + message
+                this.__csvLOG("Datensatz kann nicht gespeichert werden;" + application.activeWindow.status + ";" + message
                 );
                 application.activeWindow.simulateIBWKey("FE");
                 return false;
@@ -437,7 +429,9 @@ CSV.prototype =
         function(strData)
         {
             // in case last character of line is not the delimiter
-            if(strData.substring(strData.length) != this.delimiter) strData + this.delimiter;
+            if(strData.substring(strData.length) != this.delimiter) {
+                strData = strData + this.delimiter;
+            }
 
             // Create a regular expression to parse the CSV values.
             var objPattern = new RegExp(
@@ -462,6 +456,8 @@ CSV.prototype =
             // Create an array to hold our individual pattern
             // matching groups.
             var arrMatches = null;
+
+            var strMatchedValue;
 
             // Keep looping over the regular expression matches
             // until we can no longer find a match.
@@ -492,13 +488,13 @@ CSV.prototype =
                 if (arrMatches[ 2 ]){
                     // We found a quoted value. When we capture
                     // this value, unescape any double quotes.
-                    var strMatchedValue = arrMatches[ 2 ].replace(
+                    strMatchedValue = arrMatches[ 2 ].replace(
                         new RegExp( "\"\"", "g" ),
                         "\""
                         );
                 } else {
                     // We found a non-quoted value.
-                    var strMatchedValue = arrMatches[ 3 ];
+                    strMatchedValue = arrMatches[ 3 ];
                 }
                 // Now that we have our value string, let's add
                 // it to the data array.
@@ -519,7 +515,7 @@ CSV.prototype =
         function (term,lastline)
         {
             var lines = new Array();
-            regex = new RegExp(term,"gm");
+            var regex = new RegExp(term,"gm");
             var count = 1;
             var currentField = "";
             var currentLine = application.activeWindow.title.currentLineNumber;
