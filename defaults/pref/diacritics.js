@@ -1,6 +1,6 @@
 
 /* -*- Mode: Java; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
-/* 
+/*
  *	Diacritics.js
  */
 
@@ -97,4 +97,7 @@ pref("winibw.diacritics.value.86", "0xFE23");
 pref("winibw.diacritics.value.87", "0xFE22");
 pref("winibw.diacritics.value.88", "0x0315");
 pref("winibw.diacritics.value.89", "0x034F,0x0308");
-
+pref("winibw.diacritics.value.90", "0x00A9");
+pref("winibw.diacritics.value.91", "0x2117");
+pref("winibw.diacritics.value.92", "0x016E");
+pref("winibw.diacritics.value.93", "0x016F");

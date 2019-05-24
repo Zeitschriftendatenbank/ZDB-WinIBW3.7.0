@@ -96,3 +96,7 @@ pref("winibw.diacritics.description.86", "Doppeltilde 2. Teil/rechts");
 pref("winibw.diacritics.description.87", "Doppeltilde 1. Teil/links");
 pref("winibw.diacritics.description.88", "Komma rechts mittelhoch");
 pref("winibw.diacritics.description.89", "Trema");
+pref("winibw.diacritics.description.90", "Copyright");
+pref("winibw.diacritics.description.91", "Phonografische Rechte");
+pref("winibw.diacritics.description.92", "Tschechisches U mit Ringel übergesetzt");
+pref("winibw.diacritics.description.93", "Tschechisches u mit Ringel übergesetzt");
