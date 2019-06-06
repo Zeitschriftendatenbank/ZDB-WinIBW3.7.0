@@ -41,7 +41,7 @@ function __feld7120(displayError,write,direct) {
     }
     else // nehme direkten input
     {
-        feld8032 = direct;
+        feld8032 = direct.replace(/^\s+|\s+$/g, ''); // left and right trim
         feldnummer = feld8032.substring(0, 4);
         if(feldnummer != '8032' && feldnummer != '4025') {
             feldnummer = '8032';
