@@ -1474,6 +1474,7 @@ function __zdbParseField(field){
     return _field;
 }
 
+
 /**
 * Sets the gloval variable _rec as an object of the (current|desired) title
 * @param {string} idn optional the idn of the desired title
@@ -1496,7 +1497,6 @@ function __zdbJSON(idn){
 
     if( 'P' != __zdbGetFormat() ) application.activeWindow.command('s p',false);
 
-    var line, tmp, key;
     var rec = __zdbGetExpansionFromP3VTX();
 
     // get array of lines
@@ -1525,19 +1525,18 @@ function __zdbJSON(idn){
         }
     }
 
-    _rec['toString'] = function (kat) {
+    _rec.katToString = function (kat) {
         var string = '',
             i;
         for (i = 0; i < this[kat].length; i++) {
-            string += "\n" + kat + '';
-            var sub;
-            for (sub in this[kat][i]) {
-                var x;
-                for(x = 0; i < this[kat][i][sub].length; x++) {
-                    string += '$' + sub + this[kat][i][sub][x];
+            string += "\n" + kat + ' ';
+            for (var sub in this[kat][i]) {
+                for(var x = 0; x < this[kat][i][sub].length; x++) {
+                    string += delimiter + sub + this[kat][i][sub][x];
                 }
             }
         }
+        return string;
     };
 
     if(idn) // close work window and return to old
