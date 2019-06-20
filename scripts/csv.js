@@ -11,7 +11,7 @@ function CSV(){
     this.callback = function() {};
     this.keys = ["","ZDB-ID","URL","Band Beginn","Jahr Beginn","Heft Beginn","Band Ende","Jahr Ende","Heft Ende","Moving Wall","Suchstring"];
     this.id_key = "ZDB-ID";
-    this.searchindex = "zdb";
+    this.searchindex = false;
     this.withbib = true;
     this.logFilename = "ZDB_LOG.txt";
     this.eigene_bibliothek = "";
@@ -227,7 +227,11 @@ CSV.prototype =
                     // for better acces write a simple array
                     for(var y = 0;y < this.keys.length; y++)
                         this.line[this.keys[y]] = this.lineArray[y];
-
+                    if(!this.searchindex) {
+                        this.callback();
+                        i++;
+                        continue;
+                    }
                     application.activeWindow.setVariable("P3GPP","");
 
                     // search for zdb-id
