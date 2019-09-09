@@ -1632,3 +1632,53 @@ __zdbArrayUnique = function(arr) {
     }
     return r;
 }
+
+function zdb_alleinbesitz() {
+    var eigene_bibliothek =  application.getProfileString('zdb.userdata', 'eigeneBibliothek', '');
+    if('' == eigene_bibliothek) {
+        if(__zdbYesNo('Ihre Bibliothek ist noch nicht definiert. Wollen Sie ihre Bibliothek jetzt defnieren?')) {
+            zdb_BibliothekDefinieren();
+            eigene_bibliothek =  application.getProfileString('zdb.userdata', 'eigeneBibliothek', '');
+            if('' == eigene_bibliothek) {
+                return false;
+            }
+        }
+
+    }
+
+    var id = eigene_bibliothek.substring(1,eigene_bibliothek.length -1),
+        lenId = id.length,
+        contingent = {
+            0: '[123456789X]',
+            1: '[023456789X]',
+            2: '[013456789X]',
+            3: '[012456789X]',
+            4: '[012356789X]',
+            5: '[012346789X]',
+            6: '[012345789X]',
+            7: '[012345689X]',
+            8: '[012345679X]',
+            9: '[012345678X]',
+            X: '[0123456789]'
+        },
+    mutations = [],
+    expression,
+    command;
+    for(var num = 0; num < lenId; num += 1) {
+        expression = '';
+        for(var pos = 0; pos < lenId; pos += 1) {
+            if(pos == num) {
+                expression += contingent[id[num]];
+            } else if(0 == pos) {
+                expression += '[0123456789X]';
+            } else {
+                expression += '!'
+            }
+        }
+        mutations.push(expression + '?'); 
+    }
+
+    command = mutations.join(' not bie ');
+
+    application.activeWindow.command('f bie ' + id + ' not bie ' + command, false);
+}
