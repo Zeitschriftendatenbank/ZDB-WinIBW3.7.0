@@ -12,7 +12,18 @@ function testGlobals()
 function __screenID(){
 	return application.activeWindow.getVariable("scr");
 }
-
+function __formatD(){
+	//Präsentationsformat prüfen und auf "D" umstellen
+	if (application.activeWindow.getVariable("P3GPR") != "D") {
+		application.activeWindow.command ("\\too d", false);
+	}
+}
+function __formatP(){
+	//Präsentationsformat prüfen und auf "D" umstellen
+	if (application.activeWindow.getVariable("P3GPR") != "P") {
+		application.activeWindow.command ("\\too p", false);
+	}
+}
 function __matCode(){
 	return application.activeWindow.materialCode;
 }
@@ -63,47 +74,31 @@ function __Materialbenennung()
 	return Materialart;
 }
 
-function __formatD()
-{
-	//Präsentationsformat prüfen und auf "D" umstellen
-	if (application.activeWindow.getVariable("P3GPR") != "D") {
-		application.activeWindow.command ("\\too d", false);
-	}
-}
-function __formatP()
-{
-	//Präsentationsformat prüfen und auf "D" umstellen
-	if (application.activeWindow.getVariable("P3GPR") != "P") {
-		application.activeWindow.command ("\\too p", false);
-	}
-}
+
 
 //----------------------------------------------------------
 //Beide Funktionen gehören zusammen!
-function __loescheBisKategorieEnde()
-{
-	//Im WinIBW3-Menü 'Bearbeiten', Menübefehl 'Lösche bis Ende der Kategorie', Strg+E
+function __loescheBisFeldEnde(){
+	//Im WinIBW3-Menü 'Bearbeiten', Menübefehl 'Lösche bis Ende des Feldes', Strg+E
 	if (!application.activeWindow.title) {
 	return false;
 	}
 }
-function loescheBisKategorieEnde()
-{
-	//steht nur zur Verfügung, wenn __loescheBisKategorieEnde() nicht false
+function loescheBisFeldEnde(){
+	//steht nur zur Verfügung, wenn __loescheBisFeldEnde() nicht false
 	application.activeWindow.title.deleteToEndOfLine();
 }
 //----------------------------------------------------------
 //Beide Funktionen gehören zusammen!
-function __loescheKategorie()
-{
-	//Im WinIBW3-Menü 'Bearbeiten', Menübefehl 'Lösche Kategorie', Stry+Y
+function __loescheFeld(){
+	//Im WinIBW3-Menü 'Bearbeiten', Menübefehl 'Lösche Feld', Stry+Y
 	if (!application.activeWindow.title) {
 	return false;
 	}
 }
-function loescheKategorie()
-{
-	//steht nur zur Verfügung, wenn __loescheKategorie() nicht false
+function loescheFeld(){
+	//Anwenderscript, Menü Bearbeiten
+	//steht nur zur Verfügung, wenn __loescheFeld() nicht false
 	application.activeWindow.title.deleteLine(1);
 }
 //----------------------------------------------------------
