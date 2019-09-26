@@ -1664,13 +1664,15 @@ function zdb_alleinbesitz() {
     mutations = [],
     expression,
     command;
+
     for(var num = 0; num < lenId; num += 1) {
         expression = '';
         for(var pos = 0; pos < lenId; pos += 1) {
             if(pos == num) {
                 expression += contingent[id[num]];
+                break;
             } else if(0 == pos) {
-                expression += '[0123456789X]';
+                expression += '[0123456789]';
             } else {
                 expression += '!'
             }
