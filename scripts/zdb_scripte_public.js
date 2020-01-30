@@ -417,7 +417,7 @@ function __zdbOnlineRessource(copyFile,showComment,add0600,digi){
             application.activeWindow.title.insertText(digi[x].kat + digi[x].cont + "\n");
         }
     } else if(digi !== false) {
-        application.activeWindow.title.insertText("\n1100 "+application.getProfileString('zdb.userdata.digiconfig', '1100', ''));
+        application.activeWindow.title.insertText("\n1109 "+application.getProfileString('zdb.userdata.digiconfig', '1109', ''));
         application.activeWindow.title.insertText("\n1101 "+application.getProfileString('zdb.userdata.digiconfig', '1101', ''));
         application.activeWindow.title.insertText("\n1700 "+application.getProfileString('zdb.userdata.digiconfig', '1700', ''));
         application.activeWindow.title.insertText("\n2050 "+application.getProfileString('zdb.userdata.digiconfig', '2050', ''));
@@ -481,9 +481,10 @@ function __zdbOnlineRessource(copyFile,showComment,add0600,digi){
 
     if(digi === true)
     {
-        application.activeWindow.title.insertText("\n4030 "+application.getProfileString('zdb.userdata.digiconfig', '4030', ''));
+        application.activeWindow.title.insertText("\n4048 "+application.getProfileString('zdb.userdata.digiconfig', '4048', ''));
         application.activeWindow.title.insertText("\n4085 "+application.getProfileString('zdb.userdata.digiconfig', '4085', ''));
-        application.activeWindow.title.insertText("\n4190 "+application.getProfileString('zdb.userdata.digiconfig', '4190', ''));
+        application.activeWindow.title.insertText("\n4119 "+application.getProfileString('zdb.userdata.digiconfig', '4119', ''));
+        application.activeWindow.title.insertText("\n4237 "+application.getProfileString('zdb.userdata.digiconfig', '4237', ''));
     }
     // Kategorie 4212 mit neuem Vortext
     if(_rec['046C'])
