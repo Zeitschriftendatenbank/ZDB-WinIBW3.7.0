@@ -79,7 +79,7 @@ function onAccept()
     if(i > 500) {
         // Gruppen erstellen
         do {
-            groups.push(zeilen.splice(0,500));
+            groups.push(zeilen.splice(0,100));
         } while(zeilen.length > 0)
         
         var sets = [];
@@ -107,9 +107,10 @@ function onAccept()
 }
 
 function search(arr, searchKey, searchTrunkierung, searchOperator) {
-	searchString = arr.join(searchTrunkierung + searchOperator);
-	searchString = searchString + searchTrunkierung;//am Ende des Kommandos nochmals die Trunkierungseinstellung
+	searchString = '("' + arr.join(searchTrunkierung + '"' + searchOperator + '"') + searchTrunkierung +'")';
+	//searchString = searchString + searchTrunkierung;//am Ende des Kommandos nochmals die Trunkierungseinstellung
 	//alert("3: "+searchString);
+	application.activeWindow.clipboard = "f " + searchKey + " " + searchString;
 	application.activeWindow.command("f " + searchKey + " " + searchString, false);
 }
 
