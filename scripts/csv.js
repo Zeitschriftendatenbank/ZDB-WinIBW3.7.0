@@ -167,7 +167,7 @@ CSV.prototype =
 
                     if("" == idn || cbsMessage)
                     {
-                        this.__csvLOG(this.line[this.id_key] + cbsMessage);
+                        this.__csvLOG("f " + this.searchindex + " " + this.line[this.id_key] + cbsMessage + ';' + application.activeWindow.status);
                     }
                     else
                     {
@@ -242,7 +242,7 @@ CSV.prototype =
 
                     if("" == idn || cbsMessage)
                     {
-                        this.__csvLOG(this.line[this.id_key] + " " +cbsMessage);
+                        this.__csvLOG("f " + this.searchindex + " " + this.line[this.id_key] + " " +cbsMessage + ';' + application.activeWindow.status);
                     }
                     else
                     {
