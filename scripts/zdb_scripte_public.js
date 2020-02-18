@@ -7,9 +7,9 @@
 // auto Suchbox
 var anfangsfenster;
 // delimiter
-var delimiter = '\u0192'; // Unterfeldzeichen '?' = \u0192
+var delimiter = '\u0192'; // Unterfeldzeichen 'ƒ' = \u0192
 var delimiterReg = '\u0192'; // regualr expression version Unterfeldzeichen '$' = \$
-var charCode = 402; // Unterfeldzeichen '?' = 402, Unterfeldzeichen '$' = 36
+var charCode = 402; // Unterfeldzeichen 'ƒ' = 402, Unterfeldzeichen '$' = 36
 // message box
 var messageBoxHeader = 'Header';
 // JSON
@@ -884,9 +884,11 @@ function __checkEZBAccount(){
 function zdb_EZB(){
     //	Dokumenttyp  8A: Vollanzeige, 7A: Kurzliste
     if(false == __zdbCheckScreen(['7A','8A'],'EZB')) return false;
+    if('O' != application.activeWindow.getVariable('P3VMC').substring(0)) {
+        return __zdbError('Das Skript darf nur bei O-Aufnahmen aufgerufen werden.');
+    }
 
-    var arr      = [],
-        _ezbnota = [],
+    var _ezbnota = [],
         _ezb     = [],
         title, publisher, eissn, url, urls,
         ld = false,
