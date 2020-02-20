@@ -884,7 +884,7 @@ function __checkEZBAccount(){
 function zdb_EZB(){
     //	Dokumenttyp  8A: Vollanzeige, 7A: Kurzliste
     if(false == __zdbCheckScreen(['7A','8A'],'EZB')) return false;
-    if('O' != application.activeWindow.getVariable('P3VMC').substring(0)) {
+    if('O' != application.activeWindow.getVariable('P3VMC').substr(0, 1)) {
         return __zdbError('Das Skript darf nur bei O-Aufnahmen aufgerufen werden.');
     }
 
