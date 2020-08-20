@@ -891,10 +891,9 @@ function zdb_EZB(){
     var _ezbnota = [],
         _ezb     = [],
         title, publisher, eissn, url, urls,
-        ld = false,
         dppn = false,
         pissn = false,
-        first_volume,first_date,first_issue,idx, jdx, winsnap, EZB_satz,
+        first_volume,first_date,first_issue,idx, winsnap, EZB_satz,
         bibid = __checkEZBAccount();
     if(!bibid)
     {
@@ -957,7 +956,21 @@ function zdb_EZB(){
     eissn = '';
     if(_rec['005A'])
     {
-        eissn = _rec['005A'][0]['0'][0];
+        if(_rec['005A'][0]['l']) { // Linking-ISSN vorhanden
+            if(_rec['005A'][0]['0']) { // E-ISSN vorhanden
+                if(_rec['005A'][0]['0'][0] != _rec['005A'][0]['l'][0]) {
+                    eissn = _rec['005A'][0]['0'][0];
+                    pissn = _rec['005A'][0]['l'][0]
+                } else {
+                    eissn = _rec['005A'][0]['0'][0];
+                }
+            } else { // nur Linking-ISSN vorhanden
+                pissn = _rec['005A'][0]['l'][0];
+            }
+        } else {
+            eissn = _rec['005A'][0]['0'][0];
+        }
+
         eissn = eissn.replace('*','');
     }
 
@@ -1054,7 +1067,7 @@ function zdb_EZB(){
     if(dppn)
     {
         winsnap = application.windows.getWindowSnapshot();
-        pissn   = __zdbDruckausgabe(dppn,ld);
+        pissn   = __zdbDruckausgabe(dppn);
         application.windows.restoreWindowSnapshot(winsnap);
     } else {
         if (!__zdbYesNo('Eine reziproke Verknüpfung ist nicht möglich. Möchten Sie trotzdem fortfahren?')) {
@@ -1073,7 +1086,7 @@ function zdb_EZB(){
                 {
                     pissn = _rec['005P'][p]['0'][0];
                     pissn.replace('*','');
-                    continue;
+                    break;
                 }
             }
         }
@@ -1502,6 +1515,7 @@ function __zdbJSON(idn){
 
     var rec = __zdbGetExpansionFromP3VTX();
 
+
     // get array of lines
     var arrLines = rec.match(/(.+)/gm);
 
@@ -1549,6 +1563,10 @@ function __zdbJSON(idn){
     }
     // back to source format
     if('P' != format) application.activeWindow.command('s '+format,false);
+
+    //if(application.activeWindow.windowID != myWindowId) {
+	//	__zdbCloseWorkWindow(myWindowId);
+	//}
 }
 
 /**
@@ -1571,7 +1589,8 @@ function __zdbCheckScreen(options,header,message){
         'GN' : 'Setansicht',
         'SC' : 'Indexansicht',
         'FI' : 'Datenbankinfo',
-        'FS' : 'Bestandsauswahl'
+        'FS' : 'Bestandsauswahl',
+        'MI' : 'Norm-Korrekturmodus'
     };
     var strScreen = application.activeWindow.getVariable('scr');
     var opt = options.join('#');
@@ -1680,7 +1699,7 @@ function zdb_alleinbesitz() {
                 expression += '!'
             }
         }
-        mutations.push(expression + '?'); 
+        mutations.push(expression + '?');
     }
 
     command = mutations.join(' not bie ');
