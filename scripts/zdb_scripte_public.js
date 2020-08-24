@@ -1067,7 +1067,8 @@ function zdb_EZB(){
     if(dppn)
     {
         winsnap = application.windows.getWindowSnapshot();
-        pissn   = __zdbDruckausgabe(dppn);
+        //pissn   = __zdbDruckausgabe(dppn);
+        __zdbDruckausgabe(dppn); // Return wird jetzt ignoriert
         application.windows.restoreWindowSnapshot(winsnap);
     } else {
         if (!__zdbYesNo('Eine reziproke Verknüpfung ist nicht möglich. Möchten Sie trotzdem fortfahren?')) {
