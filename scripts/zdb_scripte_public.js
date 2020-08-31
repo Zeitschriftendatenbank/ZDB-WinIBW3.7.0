@@ -1565,9 +1565,9 @@ function __zdbJSON(idn){
     // back to source format
     if('P' != format) application.activeWindow.command('s '+format,false);
 
-    //if(application.activeWindow.windowID != myWindowId) {
-	//	__zdbCloseWorkWindow(myWindowId);
-	//}
+    if(application.activeWindow.windowID != myWindowId) {
+		__zdbCloseWorkWindow(myWindowId);
+	}
 }
 
 /**
