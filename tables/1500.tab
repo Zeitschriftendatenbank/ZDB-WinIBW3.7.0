@@ -6,16 +6,17 @@
 <row>Aceh-Sprache QQ /1ace
 <row>Acholi-Sprache QQ /1ach
 <row>Adangme-Sprache QQ /1ada
+<row>Adygisch QQ /1ady
 <row>Afrihili QQ /1afh
 <row>Afrikaans QQ /1afr
 <row>Ägyptisch QQ /1egy
+<row>Ainu-Sprache QQ /1ain
 <row>Akan-Sprache QQ /1aka
 <row>Akkadisch QQ /1akk
 <row>Albanisch QQ /1alb
 <row>Aleutisch QQ /1ale
 <row>Algonkin-Sprachen QQ /1alg
 <row>Altaische Sprachen QQ /1tut
-<row>Altäthiopisch QQ /1gez
 <row>Altenglisch QQ /1ang
 <row>Altfranzösisch QQ /1fro
 <row>Althochdeutsch QQ /1goh
@@ -26,13 +27,16 @@
 <row>Amharisch QQ /1amh
 <row>Apachen-Sprache QQ /1apa
 <row>Arabisch QQ /1ara
+<row>Aragonesisch QQ /1arg
 <row>Aramäisch QQ /1arc
 <row>Arapaho-Sprache QQ /1arp
 <row>Arauka-Sprachen QQ /1arn
 <row>Arawak-Sprachen QQ /1arw
 <row>Armenisch QQ /1arm
+<row>Aromunisch QQ /1rup
 <row>Aserbaidschanisch QQ /1aze
 <row>Assamesisch QQ /1asm
+<row>Asturisch QQ /1ast
 <row>Athapaskische Sprachen QQ /1ath
 <row>Australische Sprachen QQ /1aus
 <row>Austronesische Sprachen (Andere) QQ /1map
@@ -53,6 +57,7 @@
 <row>Batak-Sprache QQ /1btk
 <row>Beach-la-mar QQ /1bis
 <row>Bedauye QQ /1bej
+<row>Bekannte Sprache, für die es keinen Code gibt QQ /1mis
 <row>Belutschisch QQ /1bal
 <row>Bemba-Sprache QQ /1bem
 <row>Bengali QQ /1ben
@@ -60,7 +65,7 @@
 <row>Bhojpurī QQ /1bho
 <row>Bihari QQ /1bih
 <row>Bikol-Sprache QQ /1bik
-<row>Bini-Sprache QQ /1bin
+<row>Bilin-Sprache QQ /1by
 <row>Birmanisch QQ /1bur
 <row>Blackfoot-Sprache QQ /1bla
 <row>Bokmål QQ /1nob
@@ -96,11 +101,13 @@
 <row>Duala-Sprachen QQ /1dua
 <row>Dyula-Sprache QQ /1dyu
 <row>Dzongkha QQ /1dzo
+<row>Edo-Sprache QQ /1bin
 <row>Efik QQ /1efi
 <row>Ekajuk QQ /1eka
 <row>Elamisch QQ /1elx
 <row>Elliceanisch QQ /1tvl
 <row>Englisch QQ /1eng
+<row>Erza-Mordwinisch QQ /1myv
 <row>Esperanto QQ /1epo
 <row>Estnisch QQ /1est
 <row>Ewe-Sprache QQ /1ewe
@@ -122,6 +129,7 @@
 <row>Ganda-Sprache QQ /1lug
 <row>Gayo-Sprache QQ /1gay
 <row>Gbaya-Sprache QQ /1gba
+<row>Geez QQ /1gez
 <row>Georgisch QQ /1geo
 <row>Germanische Sprachen (Andere) QQ /1gem
 <row>Gilbertesisch QQ /1gil
@@ -134,6 +142,7 @@
 <row>Guaraní-Sprache QQ /1grn
 <row>Gujarātī-Sprache QQ /1guj
 <row>Haida-Sprache QQ /1hai
+<row>Haïtien QQ /1hat
 <row>Hamitosemitische Sprachen (Andere) QQ /1afa
 <row>Haussa-Sprache QQ /1hau
 <row>Hawaiisch QQ /1haw
@@ -149,11 +158,13 @@
 <row>Ibo-Sprache QQ /1ibo
 <row>Ijo-Sprache QQ /1ijo
 <row>Ilokano-Sprache QQ /1ilo
+<row>Inarisaamisch QQ /1smn
 <row>Indianersprachen, Nordamerika (Andere) QQ /1nai
 <row>Indianersprachen, Südamerika (Andere) QQ /1sai
 <row>Indianersprachen, Zentralamerika (Andere) QQ /1cai
 <row>Indoarische Sprachen (Andere) QQ /1inc
 <row>Indogermanische Sprachen (Andere) QQ /1ine
+<row>Inguschisch QQ /1inh
 <row>Interlingua QQ /1ina
 <row>Interlingue QQ /1ile
 <row>Inuktitut QQ /1iku
@@ -170,28 +181,34 @@
 <row>Judenspanisch QQ /1lad
 <row>Jüdisch-Arabisch QQ /1jrb
 <row>Jüdisch-Persisch QQ /1jpr
+<row>Kabardinisch QQ /1kbd
 <row>Kabylisch QQ /1kab
 <row>Kachin-Sprache QQ /1kac
+<row>Kalmückisch QQ /1xal
 <row>Kamba-Sprache QQ /1kam
 <row>Kambodschanisch QQ /1khm
 <row>Kannada QQ /1kan
 <row>Kanuri-Sprache QQ /1kau
 <row>Karakalpakisch QQ /1kaa
+<row>Karatschaiisch-Balkarisch QQ /1krc
+<row>Karelisch QQ /1krl
 <row>Karenisch QQ /1kar
 <row>Karibische Sprachen QQ /1car
 <row>Kasachisch QQ /1kaz
 <row>Kaschmiri QQ /1kas
+<row>Kaschubisch QQ /1csb
 <row>Katalanisch QQ /1cat
 <row>Kaukasische Sprachen (Andere) QQ /1cau
 <row>Kawi QQ /1kaw
+<row>Kein linguistischer Inhalt QQ /1zxx
 <row>Keltische Sprachen (Andere) QQ /1cel
 <row>Khasi-Sprache QQ /1kha
 <row>Khoisan-Sprachen (Andere) QQ /1khi
-<row>Khotta QQ /1mag
 <row>Kikuyu-Sprache QQ /1kik
 <row>Kimbundu-Sprache QQ /1kmb
 <row>Kirchenslawisch QQ /1chu
 <row>Kirgisisch QQ /1kir
+<row>Klingonisch QQ /1tlh
 <row>Komi-Sprache QQ /1kom
 <row>Kongo-Sprache QQ /1kon
 <row>Konkani QQ /1kok
@@ -205,8 +222,10 @@
 <row>Kreolisch-Englisch QQ /1cpe
 <row>Kreolisch-Französisch (Andere) QQ /1cpf
 <row>Kreolisch-Portugiesisch (Andere) QQ /1cpp
+<row>Krimtatarisch QQ /1crh
 <row>Kroatisch QQ /1hrv
 <row>Kru-Sprachen QQ /1kro
+<row>Kunstsprachen (Andere) QQ /1art
 <row>Kumükisch QQ /1kum
 <row>Kurdisch QQ /1kur
 <row>Kuschitische Sprachen (Andere) QQ /1cus
@@ -215,21 +234,26 @@
 <row>Kwanyama-Sprache QQ /1kua
 <row>Kymrisch QQ /1wel
 <row>Lahndā QQ /1lah
+<row>Lalo-Sprache QQ /1iii
 <row>Lamba-Sprache <Bantusprache> QQ /1lam
 <row>Laotisch QQ l/1lao
 <row>Latein QQ /1lat
 <row>Lesgisch QQ /1lez
 <row>Lettisch QQ /1lav
 <row>Lingala QQ /1lin
+<row>Limburgisch QQ /1lim
 <row>Litauisch QQ /1lit
+<row>Lojban QQ /1jbo
 <row>Luba-Katanga-Sprache QQ /1lub
+<row>Luba-Lulua-Sprache QQ /1lua
 <row>Luiseño-Sprache QQ /1lui
-<row>Lulua-Sprache QQ /1lua
+<row>Lulesaamisch QQ /1smj
 <row>Lunda-Sprache QQ /1lun
 <row>Luo-Sprache QQ /1luo
 <row>Lushai-Sprache QQ /1lus
 <row>Luxemburgisch QQ /1ltz
 <row>Maduresisch QQ /1mad
+<row>Magahī QQ /1mag
 <row>Maithili QQ /1mai
 <row>Makassarisch QQ /1mak
 <row>Makedonisch QQ /1mac
@@ -257,6 +281,7 @@
 <row>Miao-Sprachen QQ /1hmn
 <row>Micmac-Sprache QQ /1mic
 <row>Minangkabau-Sprache QQ /1min
+<row>Mirandesisch QQ /1mwl
 <row>Mittelenglisch QQ /1enm
 <row>Mittelfranzösisch QQ /1frm
 <row>Mittelhochdeutsch QQ /1gmh
@@ -267,6 +292,7 @@
 <row>Mongolisch QQ /1mon
 <row>Mongo-Sprache QQ /1lol
 <row>Mon-Khmer-Sprachen (Andere) QQ /1mkh
+<row>Montenegrinisch QQ /1cnr
 <row>Mossi-Sprache QQ /1mos
 <row>Mundasprachen QQ /1mun
 <row>Muskogisch QQ /1mus
@@ -276,32 +302,43 @@
 <row>Ndebele-Sprache <Simbabwe> QQ /1nde
 <row>Ndebele-Sprache <Transvaal> QQ /1nbl
 <row>Ndonga QQ /1ndo
+<row>Neapolitanisch QQ /1nap
 <row>Nepali QQ /1nep
 <row>Neugriechisch QQ /1gre
 <row>Neumelanesisch QQ /1tpi
+<row>Neuostaramäisch QQ /1syr
 <row>Newārī QQ /1new
 <row>Nias-Sprache QQ /1nia
+<row>Nicht bekannt QQ /1und
 <row>Niederdeutsch QQ /1nds
 <row>Niederländisch QQ /1dut
+<row>Niedersorbisch QQ /1dsb
 <row>Nigerkordofanische Sprachen (Andere) QQ /1nic
 <row>Nilosaharanische Sprachen (Andere) QQ /1ssa
 <row>Niue-Sprache QQ /1niu
+<row>N'Ko QQ /1nqo
 <row>Nkole-Sprache QQ /1nyn
+<row>Nogaisch QQ /1nog
+<row>Nordfriesisch QQ /1frr
 <row>Nordsaamisch QQ /1sme
 <row>Norwegisch QQ /1nor
 <row>Nubische Sprachen QQ /1nub
 <row>Nyamwezi-Sprache QQ /1nym
 <row>Nyanja-Sprache QQ /1nya
+<row>Nynorsk QQ /1nno
 <row>Nyoro-Sprache QQ /1nyo
 <row>Nzima-Sprache QQ /1nzi
+<row>Obersorbisch QQ /1hsb
 <row>Ojibwa-Sprache QQ /1oji
 <row>Okzitanisch (Andere) QQ /1oci
 <row>Oraon-Sprache QQ /1kru
 <row>Oriya-Sprache QQ /1ori
+<row>Ormo-Sprache QQ /1orm
 <row>Osage-Sprache QQ /1osa
 <row>Osmanisch QQ /1ota
 <row>Ossetisch QQ /1oss
 <row>Osterinsel-Sprache QQ /1rap
+<row>Ostfriesisch <Friesisch> QQ /1frs
 <row>Otomangue-Sprachen QQ /1oto
 <row>Palau-Sprache QQ /1pau
 <row>Pāli QQ /1pli
@@ -316,6 +353,7 @@
 <row>Persisch QQ /1per
 <row>Philippinen-Austronesisch (Andere) QQ /1phi
 <row>Phönikisch QQ /1phn
+<row>Pilipino QQ /1fil
 <row>Polnisch QQ /1pol
 <row>Ponapeanisch QQ /1pon
 <row>Portugiesisch QQ /1por
@@ -332,6 +370,7 @@
 <row>Rusinisch QQ /1sla
 <row>Russisch QQ /1rus
 <row>Rwanda-Sprache QQ /1kin
+<row>Saamisch QQ /1smi
 <row>Sakisch QQ /1kho
 <row>Salish-Sprache QQ /1sal
 <row>Samaritanisch QQ /1sam
@@ -347,6 +386,7 @@
 <row>Schona-Sprache QQ /1sna
 <row>Schottisch QQ /1sco
 <row>Schwedisch QQ /1swe
+<row>Schweizerdeutsch QQ /1gsw
 <row>Selkupisch QQ /1sel
 <row>Semitische Sprachen (Andere) QQ /1sem
 <row>Serbisch QQ /1srp
@@ -356,6 +396,8 @@
 <row>Singhalesisch QQ /1sin
 <row>Sinotibetische Sprachen (Andere) QQ /1sit
 <row>Sioux-Sprachen QQ /1sio
+<row>Sizilianisch QQ /1scn
+<row>Skoltsaamisch QQ /1sms
 <row>Slave-Sprache QQ /1den
 <row>Slawische Sprachen (Andere) QQ /1sla
 <row>Slowakisch QQ /1slo
@@ -366,6 +408,8 @@
 <row>Soninke-Sprache QQ /1snk
 <row>Sorbisch QQ /1wen
 <row>Spanisch QQ /1spa
+<row>Sranantongo QQ /1srn
+<row>Südsaamisch QQ /1sma
 <row>Süd-Sotho-Sprache QQ /1sot
 <row>Sukuma-Sprache QQ /1suk
 <row>Sumerisch QQ /1sux
@@ -373,11 +417,11 @@
 <row>Susu QQ /1sus
 <row>Swahili QQ /1swa
 <row>Swasi-Sprache QQ /1ssw
-<row>Syrisch QQ /1syr
+<row>Syrisch QQ /1syc
 <row>Tadschikisch QQ /1tgk
 <row>Tagalog QQ /1tgl
 <row>Tahitisch QQ /1tah
-<row>Tamašeq QQ /1tmh
+<row>Tamaschek QQ /1tmh
 <row>Tamil QQ /1tam
 <row>Tatarisch QQ /1tat
 <row>Telugu-Sprache QQ /1tel
@@ -404,15 +448,16 @@
 <row>Tsonga-Sprache QQ /1tso
 <row>Tswana-Sprache QQ /1tsn
 <row>Tumbuka-Sprache QQ /1tum
+<row>Tupi-Sprache QQ /1tup
 <row>Türkisch QQ /1tur
 <row>Turkmenisch QQ /1tuk
 <row>Tuwinisch QQ /1tyv
 <row>Twi-Sprache QQ /1twi
+<row>Udmurtisch QQ /1udm
 <row>Ugaritisch QQ /1uga
 <row>Uigurisch QQ /1uig
 <row>Ukrainisch QQ /1ukr
 <row>Ungarisch QQ /1hun
-<row>Unitario QQ /1art
 <row>Urdu QQ /1urd
 <row>Usbekisch QQ /1uzb
 <row>Vai-Sprache QQ /1vai
@@ -421,6 +466,7 @@
 <row>Volapük QQ /1vol
 <row>Wakash-Sprachen QQ /1wak
 <row>Walamo-Sprache QQ /1wal
+<row>Wallonisch QQ /1wln
 <row>Waray QQ /1war
 <row>Washo-Sprache QQ /1was
 <row>Weißrussisch QQ /1bel
@@ -433,6 +479,8 @@
 <row>Yupik-Sprache QQ /1ypk
 <row>Zande-Sprachen QQ /1znd
 <row>Zapotekisch QQ /1zap
+<row>Zazaki QQ /1zza
+<row>Zeichensprachen QQ /1sgn
 <row>Zenaga QQ /1zen
 <row>Zhuang QQ /1zha
 <row>Zulu-Sprache QQ /1zul
