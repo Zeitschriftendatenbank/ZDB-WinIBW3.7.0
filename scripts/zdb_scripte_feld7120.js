@@ -41,7 +41,7 @@ function __feld7120(displayError,write,direct) {
     }
     else // nehme direkten input
     {
-        feld8032 = direct;
+        feld8032 = direct.replace(/^\s+|\s+$/g, ''); // left and right trim
         feldnummer = feld8032.substring(0, 4);
         if(feldnummer != '8032' && feldnummer != '4025') {
             feldnummer = '8032';
@@ -67,6 +67,9 @@ function __feld7120(displayError,write,direct) {
     }
 }
 
+function __trim(string) {
+    return string.replace(/^\s+|\s+$/g, '');
+}
 
 function __Feldauf7120(inhalt8032){
 
@@ -76,6 +79,7 @@ function __Feldauf7120(inhalt8032){
     // '   Punkt7120 --> Punkt71204024
     // '==================================================
     var inhalt7120 = [],
+        block,
         teil;
 
     // Nummernzeichen und Inhalt weglassen
@@ -94,51 +98,50 @@ function __Feldauf7120(inhalt8032){
     // für jeden Block
     for (var b = 0; b < blocks.length; b += 1) {
         teil = '';
-        // Klammern entfernen
-        blocks[b] = __Klammern7120(blocks[b]);
+        block = blocks[b];
 
         // Start- und Endgruppe erstellen
-        blocks[b] = __Bindestrich7120(blocks[b]);
+        block =  __Bindestrich_Gleich_Klammern(block);
 
         // Startgruppe
-        blocks[b].start = __Vor7120(blocks[b].start);
-        if('' == blocks[b].start) {
-           delete blocks[b];
+        block.start = __Vor7120(block.start);
+        if('' == block.start) {
+           delete block;
            continue;
         }
-        blocks[b].start = __Punkt71204024(blocks[b].start, 'start');
-        if(blocks[b].start.band != '') {
-            blocks[b].start.band = '/v' + blocks[b].start.band;
+        block.start = __Punkt71204024(block.start, 'start');
+        if(block.start.band != '') {
+            block.start.band = '$d' + block.start.band;
         }
-        if(blocks[b].start.jahr != '') {
-            blocks[b].start.jahr = '/b' + blocks[b].start.jahr;
+        if(block.start.jahr != '') {
+            block.start.jahr = '$j' + block.start.jahr;
         }
-        teil = blocks[b].start.band + blocks[b].start.jahr;
+        teil = block.start.band + block.start.jahr;
 
         // Endgruppe
-        if(blocks[b].end) {
-            if(blocks[b].end == '-') {
-                teil += blocks[b].end;
+        if(block.end) {
+            if(block.end == '-') {
+                teil += '$6' + block.end;
             } else {
-                blocks[b].end = __Vor7120(blocks[b].end);
-                blocks[b].end = __Punkt71204024(blocks[b].end, 'end');
-                if(blocks[b].end != '-') {
-                    if(blocks[b].end.band != '') {
-                        blocks[b].end.band = '/V' + blocks[b].end.band;
+                block.end = __Vor7120(block.end);
+                block.end = __Punkt71204024(block.end, 'end');
+                if(block.end != '-') {
+                    if(block.end.band != '') {
+                        block.end.band = '$n' + block.end.band;
                     }
-                    if(blocks[b].end.jahr != '') {
-                        blocks[b].end.jahr = '/E' + blocks[b].end.jahr;
+                    if(block.end.jahr != '') {
+                        block.end.jahr = '$k' + block.end.jahr;
                     }
-                    blocks[b].end = blocks[b].end.band + blocks[b].end.jahr;
+                    block.end = block.end.band + block.end.jahr;
                 }
-                teil += blocks[b].end;
+                teil += block.end;
             }
         }
         inhalt7120.push(teil.replace(/\s/g, ""));
 
     }
 
-    return inhalt7120.join('; ');
+    return inhalt7120.join('$0;');
 }
 
 
@@ -180,22 +183,22 @@ function __Vor7120(feld) {
 }
 
 
-function __Bindestrich7120(feld) {
-
-    // Bindestrich mit Leerzeichen durch ~ ersetzen
-
-    var hilfsfeld = feld;
+function __Bindestrich_Gleich_Klammern(feld) {
+    feld = __trim(feld);
     var kommada = false;
     var bindestrich7120 = "";
-    var len = hilfsfeld.length;
+    var len = feld.length;
     // "ff." am Ende durch "-" ersetzen, sofern Inhalt länger als 3 Zeichen lang
-    if (len > 3 && hilfsfeld.substring(len - 3, len) == "ff.") {
-        hilfsfeld = hilfsfeld.substring(0, len - 3) + "-";
-        len = hilfsfeld.length;
+    if (len > 3 && feld.substring(len - 3, len) == "ff.") {
+        feld = feld.substring(0, len - 3) + "-";
+        len = feld.length;
     }
+
     // Bindestrich ohne Komma davor durch "~" ersetzen
+    // Komma leitet Heftzählung ein
+    /*
     for (var i = 0; i <= len; i++) {
-        var zeichen = hilfsfeld.substring(i, i + 1);
+        var zeichen = feld.substring(i, i + 1);
         if (zeichen == ";") {
             kommada = false;
         }
@@ -208,21 +211,30 @@ function __Bindestrich7120(feld) {
             bindestrich7120 = bindestrich7120 + zeichen;
         }
     }
+    */
     // Bindestrich mit Leerzeichen durch "~" ersetzen
-    bindestrich7120 = bindestrich7120.replace(/\s-\s?|-\s/g, "~");
+    bindestrich7120 = feld;
+    bindestrich7120 = bindestrich7120.replace(/\s-\s?|\s?-\s/g, "~");
     bindestrich7120 = bindestrich7120.replace(/~$/, "~-");
 
     var start_end_split = bindestrich7120.split("~", 2);
+
     var start_end = {};
     start_end.start = '';
     start_end.end = '';
     if(1 < start_end_split.length) {
-        start_end.end = start_end_split[1].replace(/^\s+|\s+$/g,'');
+        start_end.end = __Gleich7210(start_end_split[1]);
+        start_end.end = __Klammern7120(start_end.end);
     }
-    start_end.start = start_end_split[0].replace(/^\s+|\s+$/g,'');
+    start_end.start = __Gleich7210(start_end_split[0]);
+    start_end.start = __Klammern7120(start_end.start);
 
     return start_end;
+}
 
+function __Gleich7210(feld) {
+    feld = feld.split('=');
+    return __trim(feld[0]);
 }
 
 function __Punkt71204024(feld, startEnd) {
@@ -275,16 +287,10 @@ function __Punkt71204024(feld, startEnd) {
             band_jahr.jahr = feld.substring(posi + 1, len);
         }
         if (band_jahr.band != "") {
-            band_jahr.band = __Gleich7120(band_jahr.band);
-        }
-        if (band_jahr.band != "") {
             band_jahr.band = __Komma71204024(band_jahr.band);
         }
         if (band_jahr.band != "") {
             band_jahr.band = __Ziffer7120(band_jahr.band);
-        }
-        if (band_jahr.jahr != "") {
-            band_jahr.jahr = __Gleich7120(band_jahr.jahr);
         }
         if (band_jahr.jahr != "") {
             band_jahr.jahr = __Komma71204024(band_jahr.jahr);
@@ -303,19 +309,6 @@ function __Punkt71204024(feld, startEnd) {
     }
 
     return band_jahr;
-}
-
-
-function __Gleich7120(feld) {
-    // Unterfunktion zu Feld7120 -> Feldauf7120 -> Punkt7120
-    // Aufgaben: Alles hinter Gleichheitszeichen bis Zeilenende entfernen
-
-    var posi = feld.indexOf("=");
-    if (posi > -1 ) {
-        feld = feld.substring(0, posi);
-    }
-    return feld.replace(/^\s+|\s+$/g, '');
-
 }
 
 
@@ -371,7 +364,7 @@ function __Ziffer7120(feld) {
 
 
 function __Musterjahr7120(feld, startEnd) {
-
+    feld = __trim(feld);
     if(/\//.test(feld)) {
         var jahre = /^(\d{4})\/(\d{4}|\d{2})$/.exec(feld);
         if(null == jahre) {

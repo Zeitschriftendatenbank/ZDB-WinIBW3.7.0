@@ -1,0 +1,68 @@
+﻿<?xml version="1.0"?> <!-- -*- Mode: HTML -*- -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?> 
+<?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
+
+
+<dialog
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+	title="Hilfe"
+	buttons="accept,cancel"
+	onload="onLoad();"
+	ondialogaccept="return onAccept();"
+	ondialogcancel="return onCancel();"
+	onunload="application.activate();"
+>
+<script type="application/x-javascript" src="chrome://ibw/content/xul/gbv_hilfe_dialog.js" />
+<hbox>
+	<groupbox orient="vertical">
+		<caption label="Zu welchem Thema suchen Sie Hilfe?"/>
+		<label value="Bitte geben Sie einen Begriff oder eine Kategorie ein!"/>
+		<textbox id="idSuche"
+			width="50%"
+			rows="1"
+			cols="100"
+			multiline="false"
+			onchange="bContentsChanged=true;"
+		/>
+		<grid flex="1">
+			<columns>
+				<column flex="1"/>
+				<column flex="2"/>
+			</columns>
+			<rows>
+				<row>
+					<label value="Beispiele:"/>
+					<label value="Suchbegriff:"/>
+				</row>
+				<row>
+					<label value="CBS-Kommando: "/>
+					<label value="benutzer"/>
+				</row>
+				<row>
+					<label value="CBS-Suchschlüssel: "/>
+					<label value="kor"/>
+				</row>
+				<row>
+					<label value="WinIBW3: "/>
+					<label value="drucken"/>
+				</row>
+				<row>
+					<label value="Kategorie: "/>
+					<label value="3120"/>
+				</row>
+			</rows>
+		</grid>
+	</groupbox>
+	<groupbox orient="vertical">
+		<caption label="Wo soll die Suche ausgeführt werden?"/>
+		<radiogroup id="idRadioQuelle" flex="2">
+			<radio label="Hilfe zu CBS-Kommandos (Alt+k)" accesskey="K"/>
+			<radio label="Hilfe zu CBS-Suchschlüsseln (Alt+s)" accesskey="S" tooltiptext="Geben Sie einen Suchschlüssel ein."/>
+			<radio label="WinIBW3-Handbuch (Alt+w)" accesskey="W"/>
+			<radio label="Kategorie GVK (Alt+g)" accesskey="G"/>
+			<radio label="Kategorie ZDBFormat (Alt+z)" accesskey="Z"/>
+		</radiogroup>
+	</groupbox>
+</hbox>
+</dialog>
+

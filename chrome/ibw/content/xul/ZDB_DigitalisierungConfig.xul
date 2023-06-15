@@ -21,7 +21,7 @@
 
 var application = Components.classes["@oclcpica.nl/kitabapplication;1"]
                         .getService(Components.interfaces.IApplication);
-var fields = ["1101","1100","1700","2050","2051","4030","4085","4190","4233"];
+var fields = ["1101","1109","2050","2051","4048","4085","4119","4233", "4237"];
 
 function onLoad()
 {
@@ -67,12 +67,8 @@ function onCancel()
                 <textbox id="1101" value="" size="70"/>
             </vbox>
             <vbox>
-                <label value="1100:"/>
-                <textbox id="1100" value="" size="70"/>
-            </vbox>
-            <vbox>
-                <label value="1700:"/>
-                <textbox id="1700" value="" size="70"/>
+                <label value="1109:"/>
+                <textbox id="1109" value="" size="70"/>
             </vbox>
             <vbox>
                 <label value="2050:"/>
@@ -83,20 +79,24 @@ function onCancel()
                 <textbox id="2051" value="" size="70"/>
             </vbox>
             <vbox>
-                <label value="4030:"/>
-                <textbox id="4030" value="" size="70"/>
+                <label value="4048:"/>
+                <textbox id="4048" value="" size="70"/>
             </vbox>
             <vbox>
                 <label value="4085:"/>
                 <textbox id="4085" value="" size="70"/>
             </vbox>
             <vbox>
-                <label value="4190:"/>
-                <textbox id="4190" value="" size="70"/>
+                <label value="4119:"/>
+                <textbox id="4119" value="" size="70"/>
             </vbox>
             <vbox>
                 <label value="4233:"/>
                 <textbox id="4233" value="" size="70"/>
+            </vbox>
+            <vbox>
+                <label value="4237:"/>
+                <textbox id="4237" value="" size="70"/>
             </vbox>
         </vbox>
     </vbox>

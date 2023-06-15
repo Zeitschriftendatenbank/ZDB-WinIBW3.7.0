@@ -1,0 +1,51 @@
+﻿<?xml version="1.0"?> <!-- -*- Mode: HTML -*- -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?> 
+<?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
+
+
+<dialog
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+	title="Kategorienbeschreibung"
+	onload="onLoad();"
+	buttons="accept"
+	ondialogaccept="return onAccept();"
+	ondialogcancel="return onCancel();"
+	onunload="application.activate();"
+>
+<script type="application/x-javascript" src="chrome://ibw/content/xul/gbv_kategorie_dialog.js" />
+<vbox>
+<tabcontrol align="vertical">
+	<tabbox orient="vertical">
+		<tabs orient="horizontal">
+			<tab label="Kategorie" />
+			<tab label="Richtlinie" />
+		</tabs>
+		<tabpanels>
+			<tabpanel orient="vertical">
+				<label value="Bitte geben Sie eine Kategorie ein."/>
+				<hbox>
+					<textbox id="idKategorie"
+						width="50%"
+						rows="1"
+						cols="4"
+						multiline="false"
+						onchange="bContentsChanged=true;"
+					/>
+
+				</hbox>
+			</tabpanel>
+			<tabpanel orient="vertical">
+				<groupbox>
+					<caption label="Welche Richtlinie soll verwendet werden?"/>
+					<radiogroup id="idRadioRichtlinie">
+						<radio label="Katalogisierungsrichtlinie des GBV" id="idGBV" oncommand="richtlinieGBV();"/>
+						<radio label="ZDBFormat" id="idZDB" oncommand="richtlinieZDB();"/>
+					</radiogroup>
+				</groupbox>
+			</tabpanel>
+		</tabpanels>
+	</tabbox>
+</tabcontrol> 
+</vbox><label id="idAuswahlRichtlinie" value="" />
+</dialog>
+

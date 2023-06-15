@@ -7,9 +7,9 @@
 // auto Suchbox
 var anfangsfenster;
 // delimiter
-var delimiter = '\u0192'; // Unterfeldzeichen "?" = \u0192
-var delimiterReg = '\u0192'; // regualr expression version Unterfeldzeichen "$" = \$
-var charCode = 402; // Unterfeldzeichen "?" = 402, Unterfeldzeichen "$" = 36
+var delimiter = '\u0192'; // Unterfeldzeichen 'ƒ' = \u0192
+var delimiterReg = '\u0192'; // regualr expression version Unterfeldzeichen '$' = \$
+var charCode = 402; // Unterfeldzeichen 'ƒ' = 402, Unterfeldzeichen '$' = 36
 // message box
 var messageBoxHeader = 'Header';
 // JSON
@@ -52,7 +52,7 @@ function zdb_KennungWechseln(){
     if (wert.indexOf('ZDB-Hauptbestand') >= 0 || wert.indexOf('ZDB-Uebungsbestand') >= 0) {
         open_xul_dialog('chrome://ibw/content/xul/ZDB_KennungWechseln.xul', null);
     } else {
-        application.messageBox('KennungWechseln', "Die Funktion \"KennungWechseln\" kann nur im ZDB-Hauptbestand oder ZDB-Übungsbestand aufgerufen werden", 'alert-icon');
+        application.messageBox('KennungWechseln', 'Die Funktion "KennungWechseln" kann nur im ZDB-Hauptbestand oder ZDB-Übungsbestand aufgerufen werden', 'alert-icon');
         return;
     }
 }
@@ -61,7 +61,7 @@ function zdb_ExemplarErfassen(){
     if(false == __zdbCheckScreen(['8A','7A','MT'],'ExemplarErfassen')) return false;
     var eigene_bibliothek =  application.getProfileString('zdb.userdata', 'eigeneBibliothek', '');
     var exNum = __zdbExemplarNummer();
-    var content = "4800 " + eigene_bibliothek + "\n7100 \n7109 \n8031 \n8032 \n";
+    var content = '4800 ' + eigene_bibliothek + "\n7100 \n7109 \n8031 \n8032 \n";
     var goToLine = function(){
         // Definiert, wo Cursor im Titelbildschirm plaziert wird
         var zeile = 1;
@@ -76,9 +76,13 @@ function zdb_ExemplarErfassen(){
 
 }
 
+/**
+ * Gibt die nächste freie Exemplarnummer zurück
+ * @returns int Nummer des nächsten Exemplars
+ */
 function __zdbExemplarNummer(){
     application.activeWindow.command('show d', false);
-    var record = application.activeWindow.getVariable("P3CLIP");
+    var record = application.activeWindow.getVariable('P3CLIP');
     //Schleife von 1 bis 99, da max. 99 Exemplare pro Bibliothek erfasst werden können
     for (var i = 1; i <= 99; i++) {
         var vergleich = 7000 + i;
@@ -89,7 +93,26 @@ function __zdbExemplarNummer(){
 }
 
 /**
- * Kategorie "70XX x" wird automatisch befüllt
+ * Gibt ein Array von genutzten Exemplarnummern zurück
+ * @returns array Genutzte Exemplarnummern
+ */
+function __zdbExemplarNummern(){
+    application.activeWindow.command('show d', false);
+    const record = application.activeWindow.getVariable('P3CLIP');
+    const found = record.match(/\n(70\d\d)/g);
+    found.sort();
+    for(var i = 0; i < found.length; i += 1) {
+        if('0' == found[i][3]) {
+            found[i] = found[i].substring(4);
+        } else {
+            found[i] = found[i].substring(3);
+        }
+    }
+    return found;
+}
+
+/**
+ * Kategorie '70XX x' wird automatisch befüllt
  * @param {*} exNum
  * @param string content
  * @param function|undefined callback
@@ -117,9 +140,9 @@ function zdb_MailboxsatzAnlegen(){
     }
     application.activeWindow.title.insertText (
             "0500 am\n"
-            + "8900 !" + ppn + "!\n"
+            + '8900 !' + ppn + "!\n"
             + "8901 \n"
-            + "8902 ");
+            + '8902 ');
     application.activeWindow.title.startOfBuffer(false);
     application.activeWindow.title.lineDown(2, false);
     application.activeWindow.title.charRight(5, false);
@@ -133,9 +156,9 @@ function zdb_AutomatischeSuchBox(){
 }
 
 function zdb_HoleIDN(){
-    // Wurde vorab eine Suche mit dem Skript "Automatische Suchbox" ausgeführt?
+    // Wurde vorab eine Suche mit dem Skript 'Automatische Suchbox' ausgeführt?
     if (typeof anfangsfenster == 'undefined') {
-        application.messageBox('HoleIDN', "Vor Aufruf des Skriptes \"HoleIDN\" muss zunächst eine automatische Suche mit Hilfe des Skriptes \"AutomatischeSuchBox\" gestartet werden.", 'alert-icon');
+        application.messageBox('HoleIDN', 'Vor Aufruf des Skriptes "HoleIDN" muss zunächst eine automatische Suche mit Hilfe des Skriptes "AutomatischeSuchBox" gestartet werden.', 'alert-icon');
     } else {
         // Ist das aktive Fenster eine Trefferliste?
         if(false == __zdbCheckScreen(['7A','8A'],'HoleIDN')) return false;
@@ -143,7 +166,7 @@ function zdb_HoleIDN(){
         var idn = application.activeWindow.getVariable('P3GPP');
         // ID des aktiven Fensters ermitteln
         var fenster = application.activeWindow.windowID;
-        // Falls das Bearbeitungsfenster ( = anfangsfenster) geschlossen wurde, gibt das System einen "uncaught exception"-Fehler aus. Um diesen abzufangen, wird mit TRY CATCH gearbeitet.
+        // Falls das Bearbeitungsfenster ( = anfangsfenster) geschlossen wurde, gibt das System einen 'uncaught exception'-Fehler aus. Um diesen abzufangen, wird mit TRY CATCH gearbeitet.
         try {
             // Zurück zum Anfangsfenster gehen
             application.activateWindow(anfangsfenster);
@@ -240,9 +263,9 @@ function __zdbTiteldatenKopie(){
     application.activeWindow.title.endOfBuffer(false);
     application.activeWindow.title.insertText("\n");
     //__zdbFeld424XSet(_felder424X);
-    //application.activeWindow.title.findTag("0500", 0, false, true, true);
+    //application.activeWindow.title.findTag('0500', 0, false, true, true);
     //application.activeWindow.title.endOfField(true);
-    //application.activeWindow.title.insertText("xz");
+    //application.activeWindow.title.insertText('xz');
 }
 
 /**
@@ -309,10 +332,10 @@ function zdb_Datensatzkopie() {
 
 function zdb_Digitalisierung() {
     if(false == __zdbCheckScreen(['8A'],'Digitalisierung')) return false;
-    // Prüfen, ob Titeldatensatz mit bibliographischer Gattung "A" aufgerufen, bei "T" oder "O" Fehlermeldung ausgeben
+    // Prüfen, ob Titeldatensatz mit bibliographischer Gattung 'A' aufgerufen, bei 'T' oder 'O' Fehlermeldung ausgeben
     var matCode = application.activeWindow.materialCode.charAt(0);
     if(matCode == 'T' || matCode == 'O') {
-        application.messageBox('Digitalisierung', "Die Funktion kann nur für Titelsätze des Satztyps \"A\" verwendet werden.", 'alert-icon');
+        application.messageBox('Digitalisierung', 'Die Funktion kann nur für Titelsätze des Satztyps "A" verwendet werden.', 'alert-icon');
         return false;
     }
     // Titelkopie auf zdb_titeldatenkopie_digi.ttl setzen
@@ -333,20 +356,20 @@ function zdb_Digitalisierung() {
 
 function zdb_Parallelausgabe(){
     if(false == __zdbCheckScreen(['8A'],'Parallelausgabe')) return false;
-    // Prüfen, ob Titeldatensatz mit bibliographischer Gattung "A" aufgerufen, bei "T" oder "O" Fehlermeldung ausgeben
+    // Prüfen, ob Titeldatensatz mit bibliographischer Gattung 'A' aufgerufen, bei 'T' oder 'O' Fehlermeldung ausgeben
     var matCode = application.activeWindow.materialCode.charAt(0);
     if(matCode == 'T' || matCode == 'O') {
-        application.messageBox('Digitalisierung', "Die Funktion kann nur für Titelsätze des Satztyps \"A\" verwendet werden.", "alert-icon");
+        application.messageBox('Digitalisierung', 'Die Funktion kann nur für Titelsätze des Satztyps "A" verwendet werden.', 'alert-icon');
         return false;
     }
 
     // Titelkopie auf zdb_titeldatenkopie_digi.ttl setzen
     var titlecopyfileStandard = application.getProfileString('winibw.filelocation', 'titlecopy', '');
     var idn = application.activeWindow.getVariable('P3GPP');
-    var showComment = " *** Titeldatenkopie Parallelausgabe *** \n"
+    var showComment = " *** Titeldatenkopie Parallelausgabe *** \n";
     if(!__zdbOnlineRessource('resource:/ttlcopy/zdb_titeldatenkopie_parallel.ttl',showComment,[],false)) return false;
 
-    // Kategorie 4234: anlegen und mit Text "4243 Erscheint auch als$nDruckausgabe![...IDN...]!" befüllen
+    // Kategorie 4234: anlegen und mit Text '4243 Erscheint auch als$nDruckausgabe![...IDN...]!' befüllen
     application.activeWindow.title.endOfBuffer(false);
     application.activeWindow.title.insertText("\n4243 Erscheint auch als$nDruck-Ausgabe!" + idn + "!\n");
 
@@ -383,8 +406,8 @@ function __zdbOnlineRessource(copyFile,showComment,add0600,digi){
 
     if(!_rec['002C']) application.activeWindow.title.insertText("\n0501 $btxt");
     // wird schon in zdb_titeldatenkopie_digi gemacht
-    //if(!_rec["002D"]) application.activeWindow.title.insertText("\n0502 $bc");
-    //if(!_rec["002E"]) application.activeWindow.title.insertText("\n0503 $bcr");
+    //if(!_rec['002D']) application.activeWindow.title.insertText("\n0502 $bc");
+    //if(!_rec['002E']) application.activeWindow.title.insertText("\n0503 $bcr");
 
     // Feld 0600
     // Feld 600 must be deleted in ttlcopy
@@ -417,17 +440,16 @@ function __zdbOnlineRessource(copyFile,showComment,add0600,digi){
             application.activeWindow.title.insertText(digi[x].kat + digi[x].cont + "\n");
         }
     } else if(digi !== false) {
-        application.activeWindow.title.insertText("\n1100 "+application.getProfileString('zdb.userdata.digiconfig', '1100', ''));
+        application.activeWindow.title.insertText("\n1109 "+application.getProfileString('zdb.userdata.digiconfig', '1109', ''));
         application.activeWindow.title.insertText("\n1101 "+application.getProfileString('zdb.userdata.digiconfig', '1101', ''));
         application.activeWindow.title.insertText("\n1700 "+application.getProfileString('zdb.userdata.digiconfig', '1700', ''));
         application.activeWindow.title.insertText("\n2050 "+application.getProfileString('zdb.userdata.digiconfig', '2050', ''));
         application.activeWindow.title.insertText("\n2051 "+application.getProfileString('zdb.userdata.digiconfig', '2051', ''));
     }
 
-    // Kategorie 2010,4215,4225 ändern
+    // Kategorie 4215,4225 ändern
     var content,y;
     var fieldmap = {
-        '2010': '2013 |p|',
         '4215': '4201 ',
         '4225': '4201 '
     };
@@ -481,9 +503,10 @@ function __zdbOnlineRessource(copyFile,showComment,add0600,digi){
 
     if(digi === true)
     {
-        application.activeWindow.title.insertText("\n4030 "+application.getProfileString('zdb.userdata.digiconfig', '4030', ''));
+        application.activeWindow.title.insertText("\n4048 "+application.getProfileString('zdb.userdata.digiconfig', '4048', ''));
         application.activeWindow.title.insertText("\n4085 "+application.getProfileString('zdb.userdata.digiconfig', '4085', ''));
-        application.activeWindow.title.insertText("\n4190 "+application.getProfileString('zdb.userdata.digiconfig', '4190', ''));
+        application.activeWindow.title.insertText("\n4119 "+application.getProfileString('zdb.userdata.digiconfig', '4119', ''));
+        application.activeWindow.title.insertText("\n4237 "+application.getProfileString('zdb.userdata.digiconfig', '4237', ''));
     }
     // Kategorie 4212 mit neuem Vortext
     if(_rec['046C'])
@@ -502,7 +525,7 @@ function __zdbOnlineRessource(copyFile,showComment,add0600,digi){
     application.activeWindow.title.endOfBuffer(false);
 
     __zdbFeld424XSet(_felder424X);
-    //__zdbFeld51XXGet()
+
     return true;
 }
 
@@ -516,6 +539,7 @@ function __zdbTitelAnpassen()
     {
         for(var e in _rec['021A'][0]['e'])
         {
+            if(!_rec['021A'][0]['e'].hasOwnProperty(e)) {continue;}
             feld4000 = feld4000.replace(' // '+_rec['021A'][0]['e'][e],'');
         }
 
@@ -531,34 +555,6 @@ function __zdbTitelAnpassen()
     }
 
     return feld4000;
-}
-
-function __zdbFeld51XXGet(){
-    if(_rec['041A/01']) {
-        var swRegEx = new RegExp("Arbeitstransparent|Audiovisuelles\sMaterial|Bildplatte|CD|CD-ROM|Dia|Diskette|DVD-Audio|DVD-ROM|DVD-Video|Elektronische\sPublikation|Film|Medienkombination|Mikroform|Schallplatte|Tonkassette|Tonträger|Videokassette"),
-            i = 1,
-            num = '01';
-        for(i = 1; i < 100 ; i += 1) {
-            if(i < 10) {
-                num = '0' + i;
-            } else {
-                num = '' + i;
-            }
-            if (_rec['041A/' + num]) {
-
-                __zdbError(num);
-                __zdbError(_rec['041A/' + num][0]);
-                if(__zdbCheckSF('041A/' + num,'8',0)) { // SF $a vhd.
-                    if(!swRegEx.test(_rec['041A/' + num][0]['8'][0])) {
-                        __zdbError(_rec['041A/' + num][0]['8'][0]);
-                    }
-                }
-            }
-        }
-
-
-
-    }
 }
 
 function __zdbFeld424XGet()
@@ -713,7 +709,7 @@ function __zdbFeld424XSet(_felder424X)
 // =======================================================================
 function __zdbDruckausgabe(dppn){
 
-    var arr = new Array();
+    var arr = [];
     var eppn = application.activeWindow.getVariable('P3GPP');
     var regexp;
     var satz;
@@ -726,7 +722,7 @@ function __zdbDruckausgabe(dppn){
 
 //	DocType = 1. Zeichen im Feld 0500
     if (application.activeWindow.materialCode.charAt(0) != 'A') {
-        __zdbMsg("Record der 'Druckausgabe' hat Materialcode "
+        __zdbMsg('Record der "Druckausgabe" hat Materialcode '
                     + application.activeWindow.materialCode);
         return false;
     }
@@ -760,14 +756,6 @@ function __zdbDruckausgabe(dppn){
     } else {
         application.messageBox('Test','Die Verknüpfung zur Internetausgabe im Feld 4243 ist schon vorhanden.', 'alert-icon');
     }
-
-//---Feld '2010' , zurückgeben
-    arr = satz.match(/^2010 .*/gm);
-    if (arr == null)			return false;
-
-    arr[0] = arr[0].replace(/^2010 (.*)/,'$1');
-    return arr[0].replace(/\*/,'');
-
 }
 
 
@@ -784,7 +772,7 @@ function __EZBNota(maske){
         '070'  :['AP'],
         '080'  :[''],
         '090'  :[''],
-        '100'  :['CA-CI'],
+        '100'  :['CA-CK'],
         '130'  :['A'],
         '150'  :['CL-CZ'],
         '200'  :['B'],
@@ -795,10 +783,10 @@ function __EZBNota(maske){
         '310'  :['Q'],
         '320'  :['MA-MM'],
         '330'  :['Q'],
-        '333.7':['ZP'],
+        '333.7':['AR'],
         '340'  :['P'],
         '350'  :['P'],
-        '355'  :['MA-MM'],
+        '355'  :['MX-MZ'],
         '360'  :['MN-MS','Q','A'],
         '370'  :['AK-AL','D'],
         '380'  :['Q','ZG'],
@@ -825,14 +813,18 @@ function __EZBNota(maske){
         '580'  :['W'],
         '590'  :['W'],
         '600'  :['ZG'],
-        '610'  :['V','WW-YZ'],
+        '610'  :['WW-YZ', 'MT'],
+        '615'  :['V'],
         '620'  :['ZL','ZN','ZP'],
+        '621.042':['ZP'],
         '621.3':['ZN'],
         '624'  :['ZG','ZP'],
         '630'  :['ZA-ZE','WW-YZ'],
         '640'  :['ZA-ZE'],
         '650'  :['Q'],
         '660'  :['V','ZL'],
+        '660.6'  :['W'],
+        '664'  :['V'],
         '670'  :['ZL'],
         '690'  :['ZH-ZI'],
         '700'  :['LH-LO'],
@@ -907,175 +899,158 @@ function __checkEZBAccount(){
 // ZDB-Funktionen > EZB
 //
 //=============
-function zdb_EZB(){
+function zdb_EZB() {
     //	Dokumenttyp  8A: Vollanzeige, 7A: Kurzliste
-    if(false == __zdbCheckScreen(['7A','8A'],'EZB')) return false;
+    if (false == __zdbCheckScreen(['7A', '8A'], 'EZB')) return false;
+    if ('O' != application.activeWindow.getVariable('P3VMC').substr(0, 1)) {
+        return __zdbError('Das Skript darf nur bei O-Aufnahmen aufgerufen werden.');
+    }
 
-    var arr      = [],
-        _ezbnota = [],
-        _ezb     = [],
-        title, publisher, eissn, url, urls,
-        ld = false,
+    var _ezbnota = [],
+        _ezb = [],
+        title, publisher, eissn, url, urls, sprachen = [], indxISSN,
         dppn = false,
-        pissn = false,
-        first_volume,first_date,first_issue,idx, jdx, winsnap, EZB_satz,
+        pissn = '',
+        first_volume, first_date, first_issue, idx, winsnap, EZB_satz,
         bibid = __checkEZBAccount();
-    if(!bibid)
-    {
+    L = new LANG();
+    if (!bibid) {
         return __zdbError('Sie müssen ein gültige EZB-bibid angeben.');
     }
 
-//	url zur EZB
+    //	url zur EZB
     var dbformUrl = 'http://ezb.uni-regensburg.de/admin/newtitle.php?';
     var frontDoor = 'http://www.bibliothek.uni-regensburg.de/ezeit/?';
 
     // set global variable _rec
     __zdbJSON();
 
-//---Feld '4000' , Inhalt nach title
+    //---Feld '4000' , Inhalt nach title
     title = _rec['021A'][0]['a'][0];
-    idx                   = title.indexOf(' @');
-    if (idx == 0)	title = title.substr(2);
+    idx = title.indexOf(' @');
+    if (idx == 0) title = title.substr(2);
     else if (idx > 0) {
-        title = title.substr(idx+2) + ', ' + title.substr(0,idx);
+        title = title.substr(idx + 2) + ', ' + title.substr(0, idx);
     }
 
+    //---Sprachen aus 1500
+    for (var s = 0; s < _rec['010@'][0]['a'].length; s += 1) {
+        sprachen.push(L.getCode(_rec['010@'][0]['a'][s]));
+    }
 
     //---Feld '4005' , Inhalt an title anhängen
-    if(_rec['021C'])
-    {
+    if (_rec['021C']) {
         var unterreihe_bez = '',
             unterreihe_tit = '';
-        for(var p in _rec['021C']) {
-            if(!_rec['021C'].hasOwnProperty(p)) {continue;}
-            if(__zdbCheckSF('021C','r', p))
-            {
-                unterreihe_bez += ' / '+_rec['021C'][0]['r'][0];
+        for (var p in _rec['021C']) {
+            if (!_rec['021C'].hasOwnProperty(p)) { continue; }
+            if (__zdbCheckSF('021C', 'r', p)) {
+                unterreihe_bez += ' / ' + _rec['021C'][0]['r'][0];
             }
-            else
-            {
-                if(__zdbCheckSF('021C','l', p))
-                {
+            else {
+                if (__zdbCheckSF('021C', 'l', p)) {
                     unterreihe_bez += ' / ' + _rec['021C'][p]['l'][0];
                 } else {
-                    if(__zdbCheckSF('021C','a', p))
-                    {
+                    if (__zdbCheckSF('021C', 'a', p)) {
                         unterreihe_bez += ' / ' + _rec['021C'][p]['a'][0]; // wenn l nicht vh nimm a
                     }
                 }
-                if(__zdbCheckSF('021C','a', p))
-                {
-                    unterreihe_tit = ': '+_rec['021C'][p]['a'][0]
+                if (__zdbCheckSF('021C', 'a', p)) {
+                    unterreihe_tit = ': ' + _rec['021C'][p]['a'][0]
                 }
             }
         }
         title += unterreihe_bez + unterreihe_tit;
     }
 
-    if(__zdbCheckSF('021A','e')) title += ' / ' + _rec['021A'][0]['e'][0];
+    if (__zdbCheckSF('021A', 'e')) title += ' / ' + _rec['021A'][0]['e'][0];
 
-//---Feld '4030' , Inhalt nach publisher
-    publisher = (__zdbCheckSF('033A','n')) ? _rec['033A'][0]['n'][0] : '';
+    //---Feld '4030' , Inhalt nach publisher
+    publisher = (__zdbCheckSF('033A', 'n')) ? _rec['033A'][0]['n'][0] : '';
 
-//---Feld '2010' , Inhalt nach eissn
+    //---Feld '2010' , Inhalt nach eissn
     eissn = '';
-    if(_rec['005A'])
-    {
-        eissn = _rec['005A'][0]['0'][0];
-        eissn = eissn.replace('*','');
+    if (_rec['005A']) {
+            if (_rec['005A'][0]['0']) { // E-ISSN vorhanden
+                eissn = _rec['005A'][0]['0'][0];
+            }
     }
-
-    idx = eissn.indexOf(' ');
-    if (idx >= 0)
-    {
-        eissn = eissn.substr(idx);
-        eissn = eissn.replace('*','');
-    }
-//---URL-Feld '4085' , Inhalt nach url, mehrere aneinander
+    //---URL-Feld '4085' , Inhalt nach url, mehrere aneinander
     url = '';
 
-    if(_rec['009Q'])
-    {
+    if (_rec['009Q']) {
         urls = [];
-        for(var u = 0; u < _rec['009Q'].length; u+=1) {
+        for (var u = 0; u < _rec['009Q'].length; u += 1) {
             urls.push(_rec['009Q'][u]['u'][0]);
         }
         url = urls.join("\n");
     }
-    else
-    {
+    else {
         return __zdbError('Die URL (4085) fehlt.');
     }
 
-//---Feld '4024' , Inhalt nach first_volume, first_issue, first_date
+    //---Feld '4024' , Inhalt nach first_volume, first_issue, first_date
     first_volume = '';
     first_date = '';
     first_issue = '';
-    if(_rec['031N'])
-    {
-        if(__zdbCheckSF('031N','d')) {
+    if (_rec['031N']) {
+        if (__zdbCheckSF('031N', 'd')) {
             first_volume = _rec['031N'][0]['d'][0];
         }
-        if(__zdbCheckSF('031N','e')) {
+        if (__zdbCheckSF('031N', 'e')) {
             first_issue = _rec['031N'][0]['e'][0];
         }
-        if(__zdbCheckSF('031N','j')) {
-            first_date   = _rec['031N'][0]['j'][0];
+        if (__zdbCheckSF('031N', 'j')) {
+            first_date = _rec['031N'][0]['j'][0];
         }
     }
-    else if(_rec['031@'])
-    {
-        if(__zdbCheckSF('031@','a')) {
+    else if (_rec['031@']) {
+        if (__zdbCheckSF('031@', 'a')) {
             first_volume = _rec['031@'][0]['a'][0];
         }
     }
 
-//---Feld '5080' , Inhalt nach notation
-    if(_rec['045U'])
-    {
-        for(var i in _rec['045U'][0]['e']){
+    //---Feld '5080' , Inhalt nach notation
+    if (_rec['045U']) {
+        for (var i in _rec['045U'][0]['e']) {
+            if (!_rec['045U'][0]['e'].hasOwnProperty(i)) { continue; }
             // ruft ddc-ezb konkordanz
             _ezb = __EZBNota(_rec['045U'][0]['e'][i]);
-            for(var x in _ezb) {
+            for (var x in _ezb) {
+                if (!_ezb.hasOwnProperty(x)) { continue; }
                 _ezbnota.push(_ezb[x]);
             }
         }
-        _ezbnota = _ezbnota.unique();
+        _ezbnota = __zdbArrayUnique(_ezbnota);
     }
 
-//---Druckausgabe: reziproke Verknüpfung und Druck-ISSN
-    /*var f0600 = application.activeWindow.findTagContent('0600',0,false);
-    // workaround since findTagContent has errors
-    f0600 = f0600.replace(/^\s+|\s?\n$/g,'');
-    if('' != f0600)
-    {
-        ld  = (f0600.match(/ld/g) != null) ? true : false; // code fuer layoutgetreue Digitalisierung?
-    }*/
-
     // pissn über Verknüpfung ermitteln
-    if(_rec['039D'])
-    {
-        for(var d in _rec['039D'])
-        {
-            if(__zdbCheckSF('039D','n',d,'Druck-Ausgabe'))
-            {
-                if(__zdbCheckSF('039D','9',d))
-                {
-                    dppn = _rec['039D'][d][9][0];
-                    continue;
+    if (_rec['039D']) {
+        for (var d in _rec['039D']) {
+            if (!_rec['039D'].hasOwnProperty(d)) { continue; }
+            if (__zdbCheckSF('039D', 'n', d, 'Druck-Ausgabe')) {
+                if(__zdbCheckSF('039D', '9', d)) {
+                    dppn =  _rec['039D'][d]['9'][0];
                 }
-            }
-            else if(__zdbCheckSF('039D','a',d,'Druckausg.'))
-            {
-                dppn = _rec['039D'][d][9][0];
-                continue;
+                if (__zdbCheckSF('039D', 'X', d)) {
+                    pissn = _rec['039D'][d]['X'][0];
+                    break;
+                } else if (__zdbCheckSF('039D', '8', d)) {
+                    indxISSN = _rec['039D'][d][8][0].indexOf('ISSN: ');
+                    pissn = _rec['039D'][d][8][0].substring(indxISSN + 6, indxISSN + 15);
+                    break;
+
+                }
             }
         }
     }
-    if(dppn)
-    {
+    if (dppn) {
         winsnap = application.windows.getWindowSnapshot();
-        pissn   = __zdbDruckausgabe(dppn,ld);
+        if(!__zdbDruckausgabe(dppn)) {
+            if (!__zdbYesNo('Eine reziproke Verknüpfung ist nicht möglich. Möchten Sie trotzdem fortfahren?')) {
+                return false;
+            }
+        }
         application.windows.restoreWindowSnapshot(winsnap);
     } else {
         if (!__zdbYesNo('Eine reziproke Verknüpfung ist nicht möglich. Möchten Sie trotzdem fortfahren?')) {
@@ -1083,71 +1058,58 @@ function zdb_EZB(){
         }
     }
 
-    // pissn aus Kategorie 2013
-    if (false == pissn) {
-        pissn = '';
-        if(_rec['005P']) {
-            for(var p in _rec['005P'])
-            {
-                if(__zdbCheckSF('005P','S',0,'p'))
-                {
-                    pissn = _rec['005P'][p]['0'][0];
-                    pissn.replace('*','');
-                    continue;
-                }
-            }
-        }
-    }
-
 
     EZB_satz =
-        'title='     + escape(title)  + '&publisher='  + escape(publisher)
-                     + '&eissn='      + eissn   + '&pissn='      + pissn
-                     + '&zdb_id='     + _rec['006Z'][0][0][0]  + '&url='        + escape(url)
-                     + '&first_volume='    + escape(first_volume)
-                     + '&first_date='    + escape(first_date)
-                     + '&first_issue='    + escape(first_issue);
+        'title=' + escape(title) + '&publisher=' + escape(publisher)
+        + '&eissn=' + eissn + '&pissn=' + pissn
+        + '&zdb_id=' + _rec['006Z'][0][0][0] + '&url=' + escape(url)
+        + '&first_volume=' + escape(first_volume)
+        + '&first_date=' + escape(first_date)
+        + '&first_issue=' + escape(first_issue);
 
-    for(var i in _ezbnota){
+    EZB_satz += '&languages[]=' + sprachen.join('&languages[]=');
+
+    for (var i in _ezbnota) {
+        if (!_ezbnota.hasOwnProperty(i)) { continue; }
         EZB_satz += '&notation[]=' + _ezbnota[i];
     }
-    EZB_satz +=	'&charset=utf8';
-    EZB_satz +=	'&bibid='+bibid;
-    EZB_satz = EZB_satz.replace(/ /g,'%20');
-    application.shellExecute(dbformUrl+EZB_satz,5,'open','');
-//	4 bedeutet ja und nein; 6=ja 7=nein
-    if (__zdbYesNo (
-                "Falls nicht automatisch Ihr Browser mit der EZB-Darstellung\n"
-            + "in den Vordergrund kommt, wechseln Sie bitte in den Browser\n"
-            + "und kontrollieren die Übereinstimmung Ihrer Aufnahme mit dem\n"
-            + "im Browser gezeigten Titel.\n\n"
-            + "Ist die EZB-Aufnahme korrekt und soll die Frontdoor-url\n"
-            + "eingetragen werden?") ) {
-    //	Press the "Korrigieren" button
+    EZB_satz += '&charset=utf8';
+    EZB_satz += '&bibid=' + bibid;
+    EZB_satz = EZB_satz.replace(/ /g, '%20');
+    application.shellExecute(dbformUrl + EZB_satz, 5, 'open', '');
+    //	4 bedeutet ja und nein; 6=ja 7=nein
+    if (__zdbYesNo(
+        "Falls nicht automatisch Ihr Browser mit der EZB-Darstellung\n"
+        + "in den Vordergrund kommt, wechseln Sie bitte in den Browser\n"
+        + "und kontrollieren die Übereinstimmung Ihrer Aufnahme mit dem\n"
+        + "im Browser gezeigten Titel.\n\n"
+        + "Ist die EZB-Aufnahme korrekt und soll die Frontdoor-url\n"
+        + 'eingetragen werden?')) {
+        //	Press the 'Korrigieren' button
         application.activeWindow.command('k d', false);
         if (application.activeWindow.status != 'OK') {
             __zdbMsg('Sie sind nicht berechtigt, den Datensatz zu ändern.');
             return false;
         }
-    //	Go to end of buffer without expanding the selection
+        //	Go to end of buffer without expanding the selection
         application.activeWindow.title.endOfBuffer(false);
-    //	EZB-Frontdoor einfügen
+        //	EZB-Frontdoor einfügen
         application.activeWindow.title.insertText('4085 =u ' + frontDoor);
-        application.activeWindow.title.insertText(_rec['006Z'][0][0][0].substr(0,_rec['006Z'][0][0][0].length-2));
+        application.activeWindow.title.insertText(_rec['006Z'][0][0][0].substr(0, _rec['006Z'][0][0][0].length - 2));
         application.activeWindow.title.insertText('=x F');
-    //	Press the <ENTER> key
+        //	Press the <ENTER> key
         application.activeWindow.simulateIBWKey('FR');
 
-    //	Dokumenttyp  8A: korrekt, MT: Fehler
+        //	Dokumenttyp  8A: korrekt, MT: Fehler
         if (application.activeWindow.getVariable('scr') != '8A') {
             __zdbMsg('Die Korrektur des Titel ist fehlgeschlagen. Bitte holen'
-                    + 'Sie dies direkt über die WInIBW nach.');
+                + 'Sie dies direkt über die WInIBW nach.');
             return false;
         }
-
     }
-
 }
+
+
 // =======================================================================
 // ENDE ***** EZB *****
 // =======================================================================
@@ -1169,9 +1131,9 @@ function __zdbGetRecord(format,extmode){
     var satz = null;
 
     if ( (format != 'P') && (format != 'D') ) {
-        return __zdbError("Funktion getRecord mit falschem Format \"" + format
+        return __zdbError('Funktion getRecord mit falschem Format "' + format
                     + "\"aufgerufen.\n"
-                    + "Bitte wenden Sie sich an Ihre Systembetreuer.");
+                    + 'Bitte wenden Sie sich an Ihre Systembetreuer.');
     }
     if (scr == '7A') {
         if (!__zdbCheckKurztitelAuswahl())	return false;
@@ -1241,7 +1203,7 @@ function __zdbCheckKurztitelAuswahl() {
     application.activeWindow.simulateIBWKey('FR');
     if (__zdbYesNo("Sie haben das Skript aus der Kurztitelliste aufgerufen.\n"
                 + "Zur Sicherheit:\n\n"
-                + "Ist dies der gewünschte Datensatz?"))		return true;
+                + 'Ist dies der gewünschte Datensatz?'))		return true;
     //application.activeWindow.simulateIBWKey('FE');
     return false;
 }
@@ -1249,16 +1211,16 @@ function __zdbCheckKurztitelAuswahl() {
 
 function __zdbGetExpansionFromP3VTX(){
     satz = application.activeWindow.getVariable('P3VTX');
-    satz = satz.replace("<ISBD><TABLE>","");
-    satz = satz.replace("<\/TABLE>","");
+    satz = satz.replace('<ISBD><TABLE>','');
+    satz = satz.replace('<\/TABLE>','');
     satz = satz.replace(/<BR>/g,"\n");
-    satz = satz.replace(/^$/gm,"");
-    satz = satz.replace(/^Eingabe:.*$/gm,"");
-    satz = satz.replace(/^Mailbox:.*$/gm,"");
-    satz = satz.replace(/<a[^<]*>/g,"");
-    satz = satz.replace(/<\/a>/g,"");
+    satz = satz.replace(/^$/gm,'');
+    satz = satz.replace(/^Eingabe:.*$/gm,'');
+    satz = satz.replace(/^Mailbox:.*$/gm,'');
+    satz = satz.replace(/<a[^<]*>/g,'');
+    satz = satz.replace(/<\/a>/g,'');
     satz = satz.replace(/\r/g, "\n");
-    satz = satz.replace(/\u001b./g,""); // replace /n (Zeilenumbruch) entfernt,
+    satz = satz.replace(/\u001b./g,''); // replace /n (Zeilenumbruch) entfernt,
     // weil hier die $8 Expansion durch Zeilenbruch abgetrennt wurde
     return __zdbUnescapeHtml(satz);
 }
@@ -1279,8 +1241,6 @@ function __zdbUnescapeHtml(text){
     return text.replace(/&amp;|&lt;|&gt;|&quot;|&#039;|&nbsp;/g, function(m) { return map[m]; });
 }
 
-
-
 function __zdbGetFormat() {
     var format = application.activeWindow.getVariable('P3GPR');
     if('' == format) {
@@ -1289,6 +1249,7 @@ function __zdbGetFormat() {
 
     return ('' != format) ? format.toUpperCase() : false;
 }
+
 /**
 * Liest ZDBID aus Vollanzeige oder Editiermodus
 * @param {string} idn optional
@@ -1353,6 +1314,7 @@ function __zdbGetZDB(idn) {
 
     return zdbid.replace(/(\r\n|\n|\r|\s)/gm,'');
 }
+
 /**
 * opens a new window for temporary works
 */
@@ -1361,6 +1323,7 @@ function __zdbOpenWorkWindow(){
     application.newWindow();
     return myWindowId;
 }
+
 /**
 * closes the window for temporary works and return to the old one
 */
@@ -1495,6 +1458,7 @@ function __zdbParseField(field){
     return _field;
 }
 
+
 /**
 * Sets the gloval variable _rec as an object of the (current|desired) title
 * @param {string} idn optional the idn of the desired title
@@ -1517,8 +1481,8 @@ function __zdbJSON(idn){
 
     if( 'P' != __zdbGetFormat() ) application.activeWindow.command('s p',false);
 
-    var line, tmp, key;
     var rec = __zdbGetExpansionFromP3VTX();
+
 
     // get array of lines
     var arrLines = rec.match(/(.+)/gm);
@@ -1546,19 +1510,18 @@ function __zdbJSON(idn){
         }
     }
 
-    _rec['toString'] = function (kat) {
+    _rec.katToString = function (kat) {
         var string = '',
             i;
         for (i = 0; i < this[kat].length; i++) {
-            string += "\n" + kat + '';
-            var sub;
-            for (sub in this[kat][i]) {
-                var x;
-                for(x = 0; i < this[kat][i][sub].length; x++) {
-                    string += '$' + sub + this[kat][i][sub][x];
+            string += "\n" + kat + ' ';
+            for (var sub in this[kat][i]) {
+                for(var x = 0; x < this[kat][i][sub].length; x++) {
+                    string += delimiter + sub + this[kat][i][sub][x];
                 }
             }
         }
+        return string;
     };
 
     if(idn) // close work window and return to old
@@ -1568,6 +1531,10 @@ function __zdbJSON(idn){
     }
     // back to source format
     if('P' != format) application.activeWindow.command('s '+format,false);
+
+    if(application.activeWindow.windowID != myWindowId) {
+		__zdbCloseWorkWindow(myWindowId);
+	}
 }
 
 /**
@@ -1590,7 +1557,8 @@ function __zdbCheckScreen(options,header,message){
         'GN' : 'Setansicht',
         'SC' : 'Indexansicht',
         'FI' : 'Datenbankinfo',
-        'FS' : 'Bestandsauswahl'
+        'FS' : 'Bestandsauswahl',
+        'MI' : 'Norm-Korrekturmodus'
     };
     var strScreen = application.activeWindow.getVariable('scr');
     var opt = options.join('#');
@@ -1634,6 +1602,7 @@ function __zdbCheckSF(kat,sf,i,c){
     if(!_rec[kat][i][sf]) return false;
     if(c) {
         for(var x in _rec[kat][i][sf]) {
+            if(!_rec[kat][i][sf].hasOwnProperty(x)) {continue;}
             if(_rec[kat][i][sf][x] == c) return true;
         }
         return false;
@@ -1641,13 +1610,125 @@ function __zdbCheckSF(kat,sf,i,c){
     return true;
 }
 
-function isil_online() {
-    var isil;
-    var strScreen = __zdbCheckScreen(['8A','MT','IT','MI'],'ISIL Online');
-    if(false == strScreen) return false;
-    if('Tw' != application.activeWindow.getVariable('P3VMC')) {
-        return __zdbError('Die Funktion kann nur in Verbindung mit Tw-Sätzen genutzt werden.');
+__zdbArrayUnique = function(arr) {
+    var r = [];
+    o:for(var i = 0, n = arr.length; i < n; i++)
+    {
+        for(var x = 0, y = r.length; x < y; x++)
+        {
+            if(r[x]==arr[i]) continue o;
+        }
+        r[r.length] = arr[i];
     }
-    __zdbJSON(application.activeWindow.getVariable('P3GPP'));
-    application.shellExecute('http://ld.zdb-services.de/resource/organisations/'+_rec['008H'][0]['e'][0],5,'open','');
+    return r;
 }
+
+function zdb_alleinbesitz() {
+    var eigene_bibliothek =  application.getProfileString('zdb.userdata', 'eigeneBibliothek', '');
+    if('' == eigene_bibliothek) {
+        if(__zdbYesNo('Ihre Bibliothek ist noch nicht definiert. Wollen Sie ihre Bibliothek jetzt defnieren?')) {
+            zdb_BibliothekDefinieren();
+            eigene_bibliothek =  application.getProfileString('zdb.userdata', 'eigeneBibliothek', '');
+            if('' == eigene_bibliothek) {
+                return false;
+            }
+        }
+
+    }
+
+    var id = eigene_bibliothek.substring(1,eigene_bibliothek.length -1),
+        lenId = id.length,
+        contingent = {
+            0: '[123456789X]',
+            1: '[023456789X]',
+            2: '[013456789X]',
+            3: '[012456789X]',
+            4: '[012356789X]',
+            5: '[012346789X]',
+            6: '[012345789X]',
+            7: '[012345689X]',
+            8: '[012345679X]',
+            9: '[012345678X]',
+            X: '[0123456789]'
+        },
+    mutations = [],
+    expression,
+    command;
+
+    for(var num = 0; num < lenId; num += 1) {
+        expression = '';
+        for(var pos = 0; pos < lenId; pos += 1) {
+            if(pos == num) {
+                expression += contingent[id[num]];
+                break;
+            } else if(0 == pos) {
+                expression += '[0123456789]';
+            } else {
+                expression += '!'
+            }
+        }
+        mutations.push(expression + '?');
+    }
+
+    command = mutations.join(' not bie ');
+
+    application.activeWindow.command('f bie ' + id + ' not bie ' + command, false);
+}
+
+function zdb_idListe() {
+    var set = new SET(),
+        t,
+        allezdb = [];
+        while (t = set.nextTit()) {
+            allezdb[t] = __zdbGetZDB();
+        }
+        application.activeWindow.clipboard = allezdb.join("\r\n");
+        application.messageBox ("ZDB-ID-Liste", "Alle ZDB-IDs wurden eingesammelt und in den " +
+            "Zwischenspeicher geschrieben. \nSie können die ZDB-IDs jetzt mit dem Shortcut Strg+v " +
+            "in eine Datei einfügen.", "message-icon");
+}
+
+function LANG() {
+    this.codes = {
+        'aar': 'aa', 'abk': 'ab', 'ave': 'ae', 'afr': 'af', 'aka': 'ak', 'amh': 'am', 'arg': 'an', 'ara': 'ar', 'asm': 'as', 'ava': 'av', 'aym': 'ay',
+        'aze': 'az', 'bak': 'ba', 'bel': 'be', 'bul': 'bg', 'bih': 'bh', 'bis': 'bi', 'bam': 'bm', 'ben': 'bn', 'tib': 'bo', 'tib': 'bo', 'bre': 'br',
+        'bos': 'bs', 'cat': 'ca', 'che': 'ce', 'cha': 'ch', 'cos': 'co', 'cre': 'cr', 'cze': 'cs', 'cze': 'cs', 'chu': 'cu', 'chv': 'cv', 'wel': 'cy',
+        'wel': 'cy', 'dan': 'da', 'ger': 'de', 'ger': 'de', 'div': 'dv', 'dzo': 'dz', 'ewe': 'ee', 'gre': 'el', 'gre': 'el', 'eng': 'en', 'epo': 'eo',
+        'spa': 'es', 'est': 'et', 'baq': 'eu', 'baq': 'eu', 'per': 'fa', 'per': 'fa', 'ful': 'ff', 'fin': 'fi', 'fij': 'fj', 'fao': 'fo', 'fre': 'fr',
+        'fre': 'fr', 'fry': 'fy', 'gle': 'ga', 'gla': 'gd', 'glg': 'gl', 'grn': 'gn', 'guj': 'gu', 'glv': 'gv', 'hau': 'ha', 'heb': 'he', 'hin': 'hi',
+        'hmo': 'ho', 'hrv': 'hr', 'hat': 'ht', 'hun': 'hu', 'arm': 'hy', 'arm': 'hy', 'her': 'hz', 'ina': 'ia', 'ind': 'id', 'ile': 'ie', 'ibo': 'ig',
+        'iii': 'ii', 'ipk': 'ik', 'ido': 'io', 'ice': 'is', 'ice': 'is', 'ita': 'it', 'iku': 'iu', 'jpn': 'ja', 'jav': 'jv', 'geo': 'ka', 'geo': 'ka',
+        'kon': 'kg', 'kik': 'ki', 'kua': 'kj', 'kaz': 'kk', 'kal': 'kl', 'khm': 'km', 'kan': 'kn', 'kor': 'ko', 'kau': 'kr', 'kas': 'ks', 'kur': 'ku',
+        'kom': 'kv', 'cor': 'kw', 'kir': 'ky', 'lat': 'la', 'ltz': 'lb', 'lug': 'lg', 'lim': 'li', 'lin': 'ln', 'lao': 'lo', 'lit': 'lt', 'lub': 'lu',
+        'lav': 'lv', 'mlg': 'mg', 'mah': 'mh', 'mao': 'mi', 'mao': 'mi', 'mac': 'mk', 'mac': 'mk', 'mal': 'ml', 'mon': 'mn', 'mar': 'mr', 'may': 'ms',
+        'may': 'ms', 'mlt': 'mt', 'bur': 'my', 'bur': 'my', 'nau': 'na', 'nob': 'nb', 'nde': 'nd', 'nep': 'ne', 'ndo': 'ng', 'dut': 'nl', 'dut': 'nl',
+        'nno': 'nn', 'nor': 'no', 'nbl': 'nr', 'nav': 'nv', 'nya': 'ny', 'oci': 'oc', 'oji': 'oj', 'orm': 'om', 'ori': 'or', 'oss': 'os', 'pan': 'pa',
+        'pli': 'pi', 'pol': 'pl', 'pus': 'ps', 'por': 'pt', 'que': 'qu', 'roh': 'rm', 'run': 'rn', 'rum': 'ro', 'rum': 'ro', 'rus': 'ru', 'kin': 'rw',
+        'san': 'sa', 'srd': 'sc', 'snd': 'sd', 'sme': 'se', 'sag': 'sg', 'sin': 'si', 'slo': 'sk', 'slo': 'sk', 'slv': 'sl', 'smo': 'sm', 'sna': 'sn',
+        'som': 'so', 'alb': 'sq', 'alb': 'sq', 'srp': 'sr', 'ssw': 'ss', 'sot': 'st', 'sun': 'su', 'swe': 'sv', 'swa': 'sw', 'tam': 'ta', 'tel': 'te',
+        'tgk': 'tg', 'tha': 'th', 'tir': 'ti', 'tuk': 'tk', 'tgl': 'tl', 'tsn': 'tn', 'ton': 'to', 'tur': 'tr', 'tso': 'ts', 'tat': 'tt', 'twi': 'tw',
+        'tah': 'ty', 'uig': 'ug', 'ukr': 'uk', 'urd': 'ur', 'uzb': 'uz', 'ven': 've', 'vie': 'vi', 'vol': 'vo', 'wln': 'wa', 'wol': 'wo', 'xho': 'xh',
+        'yid': 'yi', 'yor': 'yo', 'zha': 'za', 'chi': 'zh', 'chi': 'zh', 'zul': 'zu'
+    };
+};
+
+LANG.prototype = {
+    getCode: function (code) {
+        var flip = {};
+        code = code.toLowerCase();
+        if (code.length == 2) {
+            for (var key in this.codes) {
+                flip[this.codes[key]] = key;
+            }
+        } else if (code.length == 3) {
+            flip = this.codes;
+        } else {
+            return false;
+        }
+        if (flip.hasOwnProperty(code)) {
+            return flip[code];
+        }
+        return false;
+    }
+};
+

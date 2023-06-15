@@ -464,8 +464,12 @@ function getTextToInsert(theShortCut, theTable, theTag, doInsert)
 function insertTableText(theText)
 {
 	var theTitle = application.activeWindow.title;
+	if('ZDB-Hauptbestand' == application.activeWindow.getVariable('database')) {
+		theTitle.insertText(theText);
+		return;
+	}
 	var selStart = theTitle.selStart;
-	
+
 	// The replacing text
 	theText = theText.replace(/\\r/g, "\n"); 
 	 
@@ -481,6 +485,7 @@ function insertTableText(theText)
 	//	strShortCut = Trim(theTitle.currentField); 
 		strShortCut = theTitle.currentField; 	
 	    theSelStart = theTitle.selStart; 
+		alert(theSelStart);
 	    theTitle.startOfField(false);
 	    theStartField = theTitle.selStart;  
 	    theTitle.setSelection(theSelStart, theSelStart, false);
@@ -505,13 +510,12 @@ function insertTableText(theText)
 				theTitle.selStart = selStart-strShortCut.length-1; 
 		    }		
 		} 
-        // ZDB-Korrektur: Bestehende Werte sollen nicht ersetzt werden
-        /*else if ((ind = strShortCut.lastIndexOf(" ")) >= 0) { 
+        else if ((ind = strShortCut.lastIndexOf(" ")) >= 0) { 
 		    // If no selection, the text from the last space before the current cursor will be highlighted
 		    theTitle.selEnd   = selStart;  
 		    strShortCut = strShortCut.substr(ind+1, strShortCut.length-ind-1); 
 		    theTitle.selStart = selStart-strShortCut.length; 		    
-		} */
+		}
 	}
 			
 	theTitle.insertText(theText);

@@ -26,7 +26,7 @@ pref("ibw.presentation.syntaxcolor.D.format.3", '$2<a href="http://ld.zdb-servic
 pref("ibw.presentation.syntaxcolor.D.regex.5", "(>[67][01357][0138]5?</[sS][pP][aA][nN]> )(.*?)(</[dD][iI][vV]>)");
 pref("ibw.presentation.syntaxcolor.D.format.5", '$1<span>$2</span>');
 
-//6. Dollar-Subfelder in Rot 
+//6. Dollar-Subfelder in Rot
 pref("ibw.presentation.syntaxcolor.D.regex.6", "(\$[a-zA-Z0-9])");
 pref("ibw.presentation.syntaxcolor.D.format.6", '<span style="font-weight:bold;color:CC3300;margin-left:2px">$0</span>');
 
@@ -68,7 +68,7 @@ pref("ibw.presentation.syntaxcolor.DA.format.4", '<div style="direction: ltr">$1
 //5. Hervorhebung der Vorzugsbenennungen in der GND (1XX, zusaetzlich eventuell 5XX bei Tu)
 pref("ibw.presentation.syntaxcolor.DA.regex.5", "(>[67][01357][0138]5?</[sS][pP][aA][nN]> )(.*?)(</[dD][iI][vV]>)");
 pref("ibw.presentation.syntaxcolor.DA.format.5", '$1<span>$2</span>');
-//6. Dollar-Subfelder in Rot 
+//6. Dollar-Subfelder in Rot
 //pref("ibw.presentation.syntaxcolor.DA.regex.6", "(\$[a-zA-Z0-9])");
 //pref("ibw.presentation.syntaxcolor.DA.format.6", '<span style="font-weight:bold;color:CC3300">$0</span>');
 //7. Erzeugung von anklickbaren Links in GDN-Kommentarfeldern, mehr als zwei URLs werden nicht anklickbar
@@ -109,5 +109,5 @@ pref("ibw.presentation.syntaxcolor.PA.format.subfield", '<span style="font-weigh
 pref("ibw.presentation.syntaxcolor.PA.regex.subfield2", "(\u0192[a-zA-Z0-9])");
 pref("ibw.presentation.syntaxcolor.PA.format.subfield2", '<span style="font-weight:bold;color:CC3300">$0</span>');
 
-// ZDB hack gegen unn√∂tige Scrollbalken bei gro√üer Schrift
+// ZDB hack gegen unnˆtige Scrollbalken bei groﬂer Schrift
 pref("ibw.inject.head.value.100", "\n<link rel=\"stylesheet\" type=\"text/css\" media=\"screen\" href=\"chrome://ibw/content/xul/zdb.css\">\n");

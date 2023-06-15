@@ -112,8 +112,8 @@ function onLoad() {
         hinweisVZG = "Sie haben Kategorien der bibliographischen Ebene (Titelebene) ausgewählt. " +
             "\nDas Bearbeiten ganzer Sets auf bibliographischer Ebene ist der Zentralredaktion vorbehalten." +
             "\nBitte senden Sie Ihre Korrekturvorschläge an zdb-winibw@sbb.spk-berlin.de";
-        strELN = "8007|8009|9001|9006|9002";
-        strUser = "6001|6199|6099|6004|6207";
+        strELN = "8007|8009|9001|9006|9002|6666|4065";
+        strUser = "6001|6005|6199|6099|6004|6207|6257";
         strKatLok = "2080|348[01]|354[0-9]|471[056]|476[34]|60[0-9xX][0-9xX]|6100|65[0-9xX][0-9xX]";
         strKatExe = "480[012]|4820|4822|6700|70[0-9xX][0-9xX]|710[0-9]|7120|713[345678]|714[0-9]|715[09]|7[89]00|8001|803[12345]|8[12]00|844[89]|846[567]|8510|859[45678]";
         break;
@@ -241,6 +241,9 @@ function bearbeiteSetErsetzen() {
 
         strSuche = document.getElementById("idSuche").value;
         strErsetze = document.getElementById("idErsetze").value;
+        if (true == document.getElementById("idCheckboxEval").checked) {
+            strErsetze = eval('"' + strErsetze + '"');
+        }
         Kat1 = document.getElementById("idKategorie1").value;
         Kat2 = document.getElementById("idKategorie2").value;
 
@@ -1010,4 +1013,3 @@ function verbergeSchlussmeldung(bVerberge) {
     document.getElementById("idGroupboxSchlussmeldung").hidden = bVerberge;
     window.sizeToContent();
 }
-

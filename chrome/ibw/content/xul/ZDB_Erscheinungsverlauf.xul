@@ -6,7 +6,7 @@
 <!-- Define the dialog: -->
 <dialog
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-    title="Erscheinungsverlauf"
+    title="Erscheinungsverlauf Neu"
     onload="onLoad();"
     buttons="accept,cancel"
     ondialogaccept="return onAccept();"
@@ -43,9 +43,7 @@
         
         function onAccept()
         {
-            var bb,bj,bh,bm,bt,eb,ej,eh,em,et;
-            var feld4024;
-            var _feld4024 = [];
+            var bb,bj,bh,bm,bt,eb,ej,eh,em,et,feld4024,_feld4024 = [];
             for(var g = 1; g <= count; g++)
             {
                 feld4024 = "";
@@ -61,51 +59,51 @@
                 et = "";
                 if("" != (bb = document.getElementById('bb'+g).value))
                 {
-                    feld4024 += "/v"+bb;
+                    feld4024 += "$d"+bb;
                 }
                 
                 if("" != (bh = document.getElementById('bh'+g).value))
                 {
-                    feld4024 += "/a"+bh;
+                    feld4024 += "$e"+bh;
                 }
                 if("" != (bt = document.getElementById('bt'+g).value))
                 {
-                    feld4024 += "/d"+bt;
+                    feld4024 += "$b"+bt;
                 }
                 if("" != (bm = document.getElementById('bm'+g).value))
                 {
-                    feld4024 += "/m"+bm;
+                    feld4024 += "$c"+bm;
                 }
                 if("" != (bj = document.getElementById('bj'+g).value))
                 {
-                    feld4024 += "/b"+bj;
+                    feld4024 += "$j"+bj;
                 }
                 
                 if("" != (eb = document.getElementById('eb'+g).value))
                 {
-                    feld4024 += "/V"+eb;
+                    feld4024 += "$n"+eb;
                 }
                 
                 if("" != (eh = document.getElementById('eh'+g).value))
                 {
-                    feld4024 += "/A"+eh;
+                    feld4024 += "$o"+eh;
                 }
                 if("" != (et = document.getElementById('et'+g).value))
                 {
-                    feld4024 += "/D"+et;
+                    feld4024 += "$l"+et;
                 }
                 if("" != (em = document.getElementById('em'+g).value))
                 {
-                    feld4024 += "/M"+em;
+                    feld4024 += "$m"+em;
                 }
                 if("" != (ej = document.getElementById('ej'+g).value))
                 {
-                    feld4024 += "/E"+ej;
+                    feld4024 += "$k"+ej;
                 }
                 
                 if("" != feld4024) _feld4024.push(feld4024);
             }
-            
+
             feld4024 = application.activeWindow.title.findTag('4024',0,true,true,false);
 
             if("" != feld4024)
@@ -114,21 +112,21 @@
             }
             else
             {
-                application.activeWindow.title.endOfBuffer(false);
+                application.activeWindow.title.endOfField(false);
                 application.activeWindow.title.insertText("\n");
             }
-            application.activeWindow.title.insertText("4024 "+_feld4024.join("; "));
+            application.activeWindow.title.insertText('4024 '+_feld4024.join('$0;'));
             if(document.getElementById('lfd').checked)
             {
                 var ende = _feld4024[_feld4024.length-1];
-                if(ende.match(/\/V|\/A|\/D|\/M|\/E/))
+                if(ende.match(/\$o|\$l|\$m|\$n|\$k/))
                 {
                     alert("Da ein Wert in der letzten Endgruppe vorhanden ist, wird die Angabe 'laufend' ignoriert.");
                     application.activeWindow.title.insertText("\n");
                 }
                 else
                 {
-                    application.activeWindow.title.insertText("-\n");
+                    application.activeWindow.title.insertText("$6-\n");
                 }
             }
             else
@@ -166,51 +164,50 @@
                     lfd = true;
                     document.getElementById('lfd').checked = true;
                 }
-                split4024 = feld4024.split(";");
-                splitter = new RegExp("/");
+                split4024 = feld4024.split('$0;');
+                splitter = new RegExp("$");
                 for(var s in split4024)
                 {
                     group = {};
                     
-                    if(bb = split4024[s].match(/\/v((?:[0-9]|\/(?!(?:[a-vA-V])))+)/)) {
+                    if(bb = split4024[s].match(/\$d([^\$]+)/)) {
                         group['bb'] = getChained(bb[1], splitter, 'b');
                     }
-                    if(bj = split4024[s].match(/\/b((?:[0-9]|\/(?!(?:[a-vA-V])))+)/)) {
+                    if(bj = split4024[s].match(/\$j([^\$]+)/)) {
                         group['bj'] = getChained(bj[1], splitter, 'b');
                     }
-                    if(bh = split4024[s].match(/\/a((?:[0-9]|\/(?!(?:[a-vA-V])))+)/)) {
+                    if(bh = split4024[s].match(/\$e([^\$]+)/)) {
                         group['bh'] = getChained(bh[1], splitter, 'b');
                     }
-                    if(bm = split4024[s].match(/\/m((?:[0-9]|\/(?!(?:[a-vA-V])))+)/)) {
+                    if(bm = split4024[s].match(/\$c([^\$]+)/)) {
                         group['bm'] = getChained(bm[1], splitter, 'b');
                     }
-                    if(bt = split4024[s].match(/\/d((?:[0-9]|\/(?!(?:[a-vA-V])))+)/)) {
+                    if(bt = split4024[s].match(/\$b([^\$]+)/)) {
                         group['bt'] = getChained(bt[1], splitter, 'b');
                     }
-                    if(eb = split4024[s].match(/\/V((?:[0-9]|\/(?!(?:[a-vA-V])))+)/)) {
+                    if(eb = split4024[s].match(/\$n([^\$]+)/)) {
                         group['eb'] = getChained(eb[1], splitter, 'e');
                     }
-                    if(ej = split4024[s].match(/\/E((?:[0-9]|\/(?!(?:[a-vA-V])))+)/)) {
+                    if(ej = split4024[s].match(/\$k([^\$]+)/)) {
                         group['ej'] = getChained(ej[1], splitter, 'e');
                         if (2 === group['ej'].length)
                         {
                             group['ej'] = ej[1].substr(0,2) + group['ej']; // 1998/99 -> 1999
                         }
                     }
-                    if(eh = split4024[s].match(/\/A((?:[0-9]|\/(?!(?:[a-vA-V])))+)/)) {
+                    if(eh = split4024[s].match(/\$o([^\$]+)/)) {
                         group['eh'] = getChained(eh[1], splitter, 'e');
                     }
-                    if(em = split4024[s].match(/\/M((?:[0-9]|\/(?!(?:[a-vA-V])))+)/)) {
+                    if(em = split4024[s].match(/\$m([^\$]+)/)) {
                         group['em'] = getChained(em[1], splitter, 'e');
                     }
-                    if(et = split4024[s].match(/\/D((?:[0-9]|\/(?!(?:[a-vA-V])))+)/)) {
+                    if(et = split4024[s].match(/\$l([^\$]+)/)) {
                         group['et'] = getChained(et[1], splitter, 'e');
                     }
 
                     groups.push(group);
                 }
             }
-            
             groupcount = groups.length;
             return true;
         }

@@ -36,6 +36,7 @@
 <row>Bhutan QQ /1XB-BT
 <row>Birma ( - 1989) QQ /1XB-BUMM
 <row>Bolivien QQ /1XD-BO
+<row>Bonaire Sint Eustatius und Saba QQ /1XD-BQ
 <row>Bosnien und Herzegowina QQ /1XA-BA
 <row>Botsuana QQ /1XC-BW
 <row>Bouvetinsel QQ /1XK-BV
@@ -53,6 +54,7 @@
 <row>Cookinseln QQ /1XE-CK
 <row>Costa Rica QQ /1XD-CR
 <row>Côte d’Ivoire QQ /1XC-CI
+<row>Curacao QQ /1XD-CW
 <row>Dänemark QQ /1XA-DK
 <row>Dahome ( - 1977) QQ /1XC-DYBJ
 <row>Deutsche Demokratische Republik (bis 3.10.1990) QQ /1XA-DDDE
@@ -133,9 +135,11 @@
 <row>Kongo, Demokratische Republik QQ /1XC-CD
 <row>Korea, Demokratische Volksrepublik QQ /1XB-KP
 <row>Korea, Republik QQ /1XB-KR
+<row>Kosovo QQ /1XA-QV
 <row>Kroatien QQ /1XA-HR
 <row>Kuba QQ /1XD-CU
 <row>Kuwait QQ /1XB-KW
+<row>Land unbekant QQ /1ZZ
 <row>Laos, Demokratische Volksrepublik QQ /1XB-LA
 <row>Lesotho QQ /1XC-LS
 <row>Lettland QQ /1XA-LV
@@ -186,6 +190,7 @@
 <row>Norfolkinsel QQ /1XE-NF
 <row>Norwegen QQ /1XA-NO
 <row>Obervolta ( - 1984) QQ /1XC-HVBF
+<row>Osmanisches Reich QQ /1XV
 <row>Österreich QQ /1XA-AT
 <row>Österreich ( - 12.11.1918) QQ /1XA-AAAT
 <row>Oman QQ /1XB-OM
@@ -235,6 +240,7 @@
 <row>St. Kitts und Nevis QQ /1XD-KN
 <row>St. Lucia QQ /1XD-LC
 <row>St. Martin, Nord QQ /1XD-MF
+<row>St. Martin (niederl. Teil) QQ /1XD-SX
 <row>St. Pierre und Miquelon QQ /1XD-PM
 <row>St. Vincent und die Grenadinen QQ /1XD-VC
 <row>Sudan QQ /1XC-SD
@@ -283,5 +289,6 @@
 <row>Westsahara QQ /1XC-EH
 <row>Zaire QQ /1XC-ZRCD
 <row>Zentralafrikanische Republik QQ /1XC-CF
+<row>Zypern QQ /1XA-CY
 <row>Zypern QQ /1XA-CY
 </tbl>

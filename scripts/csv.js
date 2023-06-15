@@ -1,25 +1,25 @@
 //--------------------------------------------------------------------------------------------------------
 //name:		CSV
 //description:	initiates a csv import
+//user:		staff only
 //author: 	Carsten Klee ZDB
 //status:	testing
 // see https://github.com/cKlee/WinIBW3/wiki/CSV for documentation and tutorial
 //--------------------------------------------------------------------------------------------------------
-function CSV(){
+function CSV() {
 
-    this.callback = function() {};
-    this.keys = ["","ZDB-ID","URL","Band Beginn","Jahr Beginn","Heft Beginn","Band Ende","Jahr Ende","Heft Ende","Moving Wall","Suchstring"];
+    this.callback = function () { };
+    this.keys = ["", "ZDB-ID", "URL", "Band Beginn", "Jahr Beginn", "Heft Beginn", "Band Ende", "Jahr Ende", "Heft Ende", "Moving Wall", "Suchstring"];
     this.id_key = "ZDB-ID";
-    this.searchindex = "zdb";
+    this.searchindex = false;
     this.withbib = true;
     this.logFilename = "ZDB_LOG.txt";
     this.eigene_bibliothek = "";
 
     var scr = application.activeWindow.getVariable("scr");
 
-    if ( (scr == "") || ("#7A#8A#FI#".indexOf(scr) < 0) ) {
-        throw("Sie müssen sich eingeloggt haben um mit diesem Skript arbeiten zu können.");
-        return null;
+    if ((scr == "") || ("#7A#8A#FI#".indexOf(scr) < 0)) {
+        throw ("Sie müssen sich eingeloggt haben um mit diesem Skript arbeiten zu können.");
     }
 }
 
@@ -27,8 +27,7 @@ CSV.prototype =
 {
 
     __csvSetProperties:
-        function(callback,keys,id_key,searchindex,withbib,logFilename)
-        {
+        function (callback, keys, id_key, searchindex, withbib, logFilename) {
             this.callback = callback;
             this.keys = keys;
             this.id_key = id_key;
@@ -38,60 +37,55 @@ CSV.prototype =
         },
 
     __csvSetCallback:
-        function(callback)
-        {
+        function (callback) {
             this.callback = callback;
         },
 
     __csvSetLogFilename:
-        function(logFilename)
-        {
+        function (logFilename) {
             this.logFilename = logFilename;
         },
 
     __csvSetEigeneBibliothek:
-        function(eigene_bibliothek)
-        {
+        function (eigene_bibliothek) {
             this.eigene_bibliothek = "!" + eigene_bibliothek + "!";
         },
 
 
     __csvConfig:
-        function()
-        {
+        function () {
             const params = Components.classes["@mozilla.org/embedcomp/dialogparam;1"]
-                            .createInstance(Components.interfaces.nsIDialogParamBlock);
+                .createInstance(Components.interfaces.nsIDialogParamBlock);
             params.SetNumberStrings(999);
 
-            params.SetString(1,this.callback);
-            params.SetString(2,this.keys);
+            params.SetString(1, this.callback);
+            params.SetString(2, this.keys);
 
             open_xul_dialog("chrome://ibw/content/xul/ZDB_BatchCsv.xul", null, params);
 
             // on cancel
-            if(params.GetString(1) == "cancel") {
-                this.csvFilename 	= false;
+            if (params.GetString(1) == "cancel") {
+                this.csvFilename = false;
                 return;
             }
 
-            this.config = new Array();
+            this.config = [];
 
-            for(var i = 0; i <= params.GetString(0);i++)
-            {
-                if(params.GetString(i) !== "")
-                    this.config[params.GetString(i)] = i-1;
+            for (var i = 0; i <= params.GetString(0); i++) {
+                if (params.GetString(i) !== "")
+                    this.config[params.GetString(i)] = i - 1;
 
             }
 
 
-            this.params			= params;
+            this.params = params;
             //this.constants		= params.GetString(992);
-            this.text			= params.GetString(993);
-            this.isil 			= params.GetString(994);
-            this.code			= params.GetString(995);
-            this.startLine 		= params.GetString(996);
-            this.csvFilename 	= params.GetString(997);
-            this.delimiter		= params.GetString(998);
+            this.text = params.GetString(993);
+            this.isil = params.GetString(994);
+            this.code = params.GetString(995);
+            this.startLine = params.GetString(996);
+            this.csvFilename = params.GetString(997);
+            this.delimiter = params.GetString(998);
             //params = null;
 
             //__zeigeEigenschaften(params);
@@ -105,105 +99,32 @@ CSV.prototype =
 
 
     __csvEigeneBibliothek:
-        function()
-        {
+        function () {
             //define eigene bibliothek
             this.eigene_bibliothek = this.__csvBatchBibIdn();
-            if(this.eigene_bibliothek == false){
+            if (this.eigene_bibliothek == false) {
                 this.__csvLOG(this.isil + "\tDer Bibliothekssatz für das Produktsigel konnte nicht gefunden werden.");
                 throw "Das Skript wird abgebrochen. Der Bibliothekssatz für das Produktsigel konnte nicht gefunden werden.";
-                return false;
             } else {
                 this.eigene_bibliothek = "!" + this.eigene_bibliothek + "!";
                 return true;
             }
         },
 
-     __csvBatch:
-        function()
-        {
+    __csvBatch:
+        function () {
             // on cancel
-            if(this.csvFilename == false) return;
+            if (this.csvFilename == false) return;
 
-            if(this.withbib == true) {
-                if(!this.__csvEigeneBibliothek()) return;
+            if (this.withbib == true) {
+                if (!this.__csvEigeneBibliothek()) return;
             }
 
             // first selct the file you want to work with
             // open the input file
             var csv = utility.newFileInput();
 
-            if(!csv.openSpecial("ProfD", "\csv\\" + this.csvFilename)){
-                throw "Datei " + this.csvFilename + " wurde nicht gefunden.";
-                throw "Das Skript wird abgebrochen. Datei " + this.csvFilename + " wurde nicht gefunden.";
-                return false;
-            }
-
-            // read the start line
-            var aLine, idn, cbsMessage;
-            var theStart = parseInt(this.startLine);
-
-
-            // for each line of the csv file
-            var i = 1;
-
-            while((aLine = csv.readLine()) != null)
-            {
-                // when aLine is empty memory error occours
-                if(i >= theStart && aLine != "")
-                {
-                    // call CSVToArray() function
-                    this.lineArray 	= this.__csvToArray(aLine);
-
-                    this.line = new Array();
-                    // for better acces write a simple array
-                    for(var y = 0;y < this.keys.length; y++)
-                        this.line[this.keys[y]] = this.lineArray[[this.config[this.keys[y]]]];
-
-                    application.activeWindow.setVariable("P3GPP","");
-
-                    // search for zdb-id
-                    application.activeWindow.command("f " + this.searchindex + " " + this.line[this.id_key],false);
-
-                    idn = application.activeWindow.getVariable("P3GPP");
-                    cbsMessage = this.__csvGetMessages();
-
-                    if("" == idn || cbsMessage)
-                    {
-                        this.__csvLOG(this.line[this.id_key] + cbsMessage);
-                    }
-                    else
-                    {
-                        this.callback();
-                    }
-
-                }
-                else
-                {
-                    // do nothing
-                }
-                i++;
-            }
-            csv.close();
-
-            return;
-        },
-
-     __csvAPI:
-        function()
-        {
-            // on cancel
-            if(this.csvFilename == false) return;
-
-            if(this.withbib == true) {
-                if(!this.__csvEigeneBibliothek()) return;
-            }
-
-            // first selct the file you want to work with
-            // open the input file
-            var csv = utility.newFileInput();
-
-            if(!csv.openSpecial("ProfD", "\csv\\" + this.csvFilename)){
+            if (!csv.openSpecial("ProfD", "\csv\\" + this.csvFilename)) {
                 throw "Datei " + this.csvFilename + " wurde nicht gefunden.";
             }
 
@@ -215,38 +136,34 @@ CSV.prototype =
             // for each line of the csv file
             var i = 1;
 
-            while((aLine = csv.readLine()) != null)
-            {
+            while ((aLine = csv.readLine()) != null) {
                 // when aLine is empty memory error occours
-                if(i >= theStart && aLine != "")
-                {
+                if (i >= theStart && aLine != "") {
                     // call CSVToArray() function
                     this.lineArray = this.__csvToArray(aLine);
 
-                    this.line = new Array();
+                    this.line = [];
                     // for better acces write a simple array
-                    for(var y = 0;y < this.keys.length; y++)
-                        this.line[this.keys[y]] = this.lineArray[y];
+                    for (var y = 0; y < this.keys.length; y++)
+                        this.line[this.keys[y]] = this.lineArray[[this.config[this.keys[y]]]];
 
-                    application.activeWindow.setVariable("P3GPP","");
+                    application.activeWindow.setVariable("P3GPP", "");
 
                     // search for zdb-id
-                    application.activeWindow.command("f " + this.searchindex + " " + this.line[this.id_key],false);
+                    application.activeWindow.command("f " + this.searchindex + " " + this.line[this.id_key], false);
 
                     idn = application.activeWindow.getVariable("P3GPP");
                     cbsMessage = this.__csvGetMessages();
 
-                    if("" == idn || cbsMessage)
-                    {
-                        this.__csvLOG(this.line[this.id_key] + " " +cbsMessage);
+                    if ("" == idn || cbsMessage) {
+                        this.__csvLOG("f " + this.searchindex + " " + this.line[this.id_key] + cbsMessage + ';' + application.activeWindow.status);
                     }
-                    else
-                    {
+                    else {
                         this.callback();
                     }
+
                 }
-                else
-                {
+                else {
                     // do nothing
                 }
                 i++;
@@ -256,20 +173,82 @@ CSV.prototype =
             return;
         },
 
-     __csvBatchImport:
-        function()
-        {
+    __csvAPI:
+        function () {
             // on cancel
-            if(this.csvFilename == false) return;
+            if (this.csvFilename == false) return;
+
+            if (this.withbib == true) {
+                if (!this.__csvEigeneBibliothek()) return;
+            }
 
             // first selct the file you want to work with
             // open the input file
             var csv = utility.newFileInput();
 
-            if(!csv.openSpecial("ProfD", "\csv\\" + this.csvFilename)){
+            if (!csv.openSpecial("ProfD", "\csv\\" + this.csvFilename)) {
                 throw "Datei " + this.csvFilename + " wurde nicht gefunden.";
-                throw "Das Skript wird abgebrochen. Datei " + this.csvFilename + " wurde nicht gefunden.";
-                return false;
+            }
+
+            // read the start line
+            var aLine, idn, cbsMessage;
+            var theStart = parseInt(this.startLine);
+
+
+            // for each line of the csv file
+            var i = 1;
+
+            while ((aLine = csv.readLine()) != null) {
+                if (i > this.endLine) {
+                    break;
+                }
+                // when aLine is empty memory error occours
+                if (i >= theStart && aLine != "") {
+                    // call CSVToArray() function
+                    this.lineArray = this.__csvToArray(aLine);
+                    this.line = {};
+                    // for better acces write a simple array
+                    for (var y = 0; y < this.keys.length; y++) {
+                        this.line[this.keys[y]] = this.lineArray[y];
+                    }
+                    if (!this.searchindex) {
+                        this.callback();
+                        i++;
+                        continue;
+                    }
+                    application.activeWindow.setVariable("P3GPP", "");
+
+                    // search for zdb-id
+                    application.activeWindow.command("f " + this.searchindex + " " + this.line[this.id_key], false);
+
+                    idn = application.activeWindow.getVariable("P3GPP");
+                    cbsMessage = this.__csvGetMessages();
+
+                    if ("" == idn || cbsMessage) {
+                        this.__csvLOG("f " + this.searchindex + " " + this.line[this.id_key] + " " + cbsMessage + ';' + application.activeWindow.status);
+                    }
+                    else {
+                        this.callback();
+                    }
+                }
+                i++;
+            }
+            csv.close();
+
+            return;
+        },
+
+    __csvBatchImport:
+        function () {
+            // on cancel
+            if (this.csvFilename == false) return;
+
+            // first selct the file you want to work with
+            // open the input file
+            var csv = utility.newFileInput();
+
+            if (!csv.openSpecial("ProfD", "\csv\\" + this.csvFilename)) {
+                throw "Datei " + this.csvFilename + " wurde nicht gefunden.";
             }
 
             // read the start line
@@ -280,31 +259,26 @@ CSV.prototype =
             // for each line of the csv file
             var i = 1;
 
-            while((aLine = csv.readLine()) != null)
-            {
+            while ((aLine = csv.readLine()) != null) {
                 // when aLine is empty memory error occours
-                if(i >= theStart && aLine != "")
-                {
+                if (i >= theStart && aLine != "") {
                     // call CSVToArray() function
-                    this.lineArray 	= this.__csvToArray(aLine);
+                    this.lineArray = this.__csvToArray(aLine);
 
-                    this.line = new Array();
+                    this.line = [];
                     // for better acces write a simple array
-                    for(var y = 0;y < this.keys.length; y++)
+                    for (var y = 0; y < this.keys.length; y++)
                         this.line[this.keys[y]] = this.lineArray[[this.config[this.keys[y]]]];
 
-                    try
-                    {
+                    try {
                         this.callback();
                     }
-                    catch(e)
-                    {
+                    catch (e) {
                         this.__csvLOG(this.line[this.id_key] + e);
                     }
 
                 }
-                else
-                {
+                else {
                     // do nothing
                 }
                 i++;
@@ -316,14 +290,13 @@ CSV.prototype =
 
 
     __csvBatchBibIdn:
-        function()
-        {
-            application.activeWindow.setVariable("P3GPP","");
+        function () {
+            application.activeWindow.setVariable("P3GPP", "");
             // find record
             //application.activeWindow.command("f sg \"" + this.isil + "\" AND bbg tw",false);
-            application.activeWindow.command("f isi \"" + this.isil + "\" AND bbg tw",false);
+            application.activeWindow.command("f isi \"" + this.isil + "\" AND bbg tw", false);
             var idn = application.activeWindow.getVariable("P3GPP");
-            if(idn != ""){
+            if (idn != "") {
                 return application.activeWindow.getVariable("P3GPP");
             } else {
                 return false;
@@ -332,127 +305,106 @@ CSV.prototype =
 
 
     __csvLOG:
-        function(message)
-        {
-
+        function (message) {
             var theFileInput = utility.newFileInput();
-            var	theFileOutput = utility.newFileOutput();
+            var theFileOutput = utility.newFileOutput();
             // check if file already exists
-            if(!theFileInput.openSpecial("ProfD",this.logFilename))
-            {
-            //	create file
-                if(!theFileOutput.createSpecial("ProfD",this.logFilename))
-                {
+            if (!theFileInput.openSpecial("ProfD", this.logFilename)) {
+                //	create file
+                if (!theFileOutput.createSpecial("ProfD", this.logFilename)) {
                     //this.__csvError("Die LOG-Datei " + this.logFilename + " konnte nicht erstellt werden");
                     throw "Die LOG-Datei " + this.logFilename + " konnte nicht erstellt werden";
-                    return;
                 }
             }
-            else
-            {
-            //	use  existing file
-                theFileOutput.createSpecial("ProfD",this.logFilename);
+            else {
+                // use  existing file
+                theFileOutput.createSpecial("ProfD", this.logFilename);
             }
-            var simpleDate = new Date();
-            var idn = (!this.line) ? application.activeWindow.getVariable("P3GPP") : this.line[this.id_key];
-            theFileOutput.writeLine(simpleDate+";"+idn+";"+message);
-            theFileInput.close();
+            var d = new Date();
+            var dateString = d.getDate() + '-' + (d.getMonth() + 1) + '-' + d.getFullYear().toString().substr(-2) + ' ' + d.getHours() + ':' + d.getMinutes() + ':';
+            var seconds = d.getSeconds();
+            seconds = seconds <= 9 ? '0' + seconds : seconds;
+            theFileOutput.writeLine(dateString + seconds + ';' + application.activeWindow.getVariable("P3GPP") + ';' + this.line[this.id_key] + ';' + message);
             theFileOutput.close();
             return;
         },
 
     __csvError:
-        function(msgText)
-        {
-            application.messageBox("Fehler",msgText,"eror-icon");
+        function (msgText) {
+            application.messageBox("Fehler", msgText, "eror-icon");
             return;
         },
 
 
     __csvSaveBuffer:
-        function(save,message)
-        {
+        function (save, message) {
             message = "\"" + message + "\"";
             var cbsMessage;
-            if (application.activeWindow.status == "OK" && save == true)
-            {
+            if (application.activeWindow.status == "OK" && save == true) {
                 application.activeWindow.simulateIBWKey("FR");
                 cbsMessage = this.__csvGetMessages();
-                if(cbsMessage) message = message + ";" + cbsMessage;
-                if(application.activeWindow.getVariable("scr") != "8A")
-                {
+                if (cbsMessage) message = message + ";" + cbsMessage;
+                if (application.activeWindow.getVariable("scr") != "8A") {
                     //	return undone but write error to a log file
-                    this.__csvLOG("Datensatz kann nicht gespeichert werden;" + application.activeWindow.status
-                    + ";" + message
+                    this.__csvLOG("Datensatz kann nicht gespeichert werden;" + application.activeWindow.status + ";" + message
                     );
                     application.activeWindow.simulateIBWKey("FE");
                     return false;
                 }
-                else
-                {
-                    this.__csvLOG("Datensatz wurde gespeichert;" + application.activeWindow.status
-                    + ";" + message
+                else {
+                    this.__csvLOG("Datensatz wurde gespeichert;" + application.activeWindow.status + ";" + message
                     );
                     return true;
                 }
             }
-            else if (save == false)
-            {
+            else if (save == false) {
                 //	return undone but write error to a log file
-                this.__csvLOG("Datensatz wurde verlassen und nicht gespeichert;" + application.activeWindow.status
-                + ";" + message
+                this.__csvLOG("Datensatz wurde verlassen und nicht gespeichert;" + application.activeWindow.status + ";" + message
                 );
                 application.activeWindow.simulateIBWKey("FE");
                 return false;
             }
-            else
-            {
+            else {
                 //	return undone but write error to a log file
-                this.__csvLOG("Datensatz kann nicht gespeichert werden;" + application.activeWindow.status
-                + ";" + message
+                this.__csvLOG("Datensatz kann nicht gespeichert werden;" + application.activeWindow.status + ";" + message
                 );
                 application.activeWindow.simulateIBWKey("FE");
                 return false;
             }
-
         },
 
     __csvGetMessages:
-        function()
-        {
+        function () {
             var messageText = "";
-            if(application.activeWindow.messages.count > 0)
-            {
-                for(var i = 0; i < application.activeWindow.messages.count; i++){
+            if (application.activeWindow.messages.count > 0) {
+                for (var i = 0; i < application.activeWindow.messages.count; i++) {
                     messageText += application.activeWindow.messages.item(i).text + ";";
                 }
             }
-            else
-            {
+            else {
                 return false;
             }
             return "\"" + messageText + "\"";
-
         },
 
 
     __csvToArray:
-        function(strData)
-        {
+        function (strData, delimit) {
+            delimiter = delimit || this.delimiter;
             // in case last character of line is not the delimiter
-            if(strData.substring(strData.length) != this.delimiter) strData + this.delimiter;
+            if (strData.substring(strData.length) != delimiter) {
+                strData = strData + delimiter;
+            }
 
             // Create a regular expression to parse the CSV values.
             var objPattern = new RegExp(
                 (
                     // Delimiters.
-                    "(\\" + this.delimiter  + "|\\r?\\n|\\r|^)" +
-
+                    "(\\" + delimiter + "|\\r?\\n|\\r|^)" +
                     // Quoted fields.
                     "(?:\"([^\"]*(?:\"\"[^\"]*)*)\"|" +
-
                     // Standard fields.
-                    "([^\"\\" + this.delimiter  + "\\r\\n]*))"
+                    "([^\"\\" + delimiter + "\\r\\n]*))"
                 ),
                 "gi"
             );
@@ -466,12 +418,14 @@ CSV.prototype =
             // matching groups.
             var arrMatches = null;
 
+            var strMatchedValue;
+
             // Keep looping over the regular expression matches
             // until we can no longer find a match.
-            while (arrMatches = objPattern.exec( strData )){
+            while (arrMatches = objPattern.exec(strData)) {
 
                 // Get the delimiter that was found.
-                var strMatchedDelimiter = arrMatches[ 1 ];
+                var strMatchedDelimiter = arrMatches[1];
 
                 // Check to see if the given delimiter has a length
                 // (is not the start of string) and if it matches
@@ -483,32 +437,31 @@ CSV.prototype =
                     )*/
                 if (
                     strMatchedDelimiter.length
-                    )
-                {
+                ) {
                     // Since we have reached a new row of data,
                     // add an empty row to our data array.
-                    arrData.push( [] );
+                    arrData.push([]);
                 }
                 // Now that we have our delimiter out of the way,
                 // let's check to see which kind of value we
                 // captured (quoted or unquoted).
-                if (arrMatches[ 2 ]){
+                if (arrMatches[2]) {
                     // We found a quoted value. When we capture
                     // this value, unescape any double quotes.
-                    var strMatchedValue = arrMatches[ 2 ].replace(
-                        new RegExp( "\"\"", "g" ),
+                    strMatchedValue = arrMatches[2].replace(
+                        new RegExp("\"\"", "g"),
                         "\""
-                        );
+                    );
                 } else {
                     // We found a non-quoted value.
-                    var strMatchedValue = arrMatches[ 3 ];
+                    strMatchedValue = arrMatches[3];
                 }
                 // Now that we have our value string, let's add
                 // it to the data array.
-                arrData[ arrData.length - 1 ].push( strMatchedValue );
+                arrData[arrData.length - 1].push(strMatchedValue);
             }
             // Return the parsed data.
-            return( arrData );
+            return (arrData);
         },
 
     /**
@@ -519,19 +472,18 @@ CSV.prototype =
     * @return	array			lines
     */
     __utilCsvBatchCSVSearch:
-        function (term,lastline)
-        {
-            var lines = new Array();
-            regex = new RegExp(term,"gm");
+        function (term, lastline) {
+            var lines = [];
+            var regex = new RegExp(term, "gm");
             var count = 1;
             var currentField = "";
             var currentLine = application.activeWindow.title.currentLineNumber;
-            while(currentLine != lastline){
+            while (currentLine != lastline) {
                 // write selection into variable
                 currentField = application.activeWindow.title.currentField;
-                if(regex.test(currentField)) lines.push(count);
+                if (regex.test(currentField)) lines.push(count);
 
-                application.activeWindow.title.lineDown(1,false);
+                application.activeWindow.title.lineDown(1, false);
                 currentLine = application.activeWindow.title.currentLineNumber;
                 count++;
 
@@ -540,10 +492,9 @@ CSV.prototype =
         },
 
     __utilCsvBatchCSVLineUpAndTest70XX:
-        function (currentField)
-        {
+        function (currentField) {
             // go one line up
-            application.activeWindow.title.lineUp(1,false);
+            application.activeWindow.title.lineUp(1, false);
             // test regex
             var regex = /: [xaul].{0,2}/g;
             var test = regex.test(currentField);
@@ -551,20 +502,18 @@ CSV.prototype =
         },
 
     __utilCsvBatchCSVLineUpAndTestRegex:
-        function (currentField,regex)
-        {
+        function (currentField, regex) {
             // go one line up
-            application.activeWindow.title.lineUp(1,false);
+            application.activeWindow.title.lineUp(1, false);
             // text regex
             var test = regex.test(currentField);
             return test;
         },
 
     __utilCsvBatchCSVLineDownAndTestRegex:
-        function (currentField,regex)
-        {
+        function (currentField, regex) {
             // go one line up
-            application.activeWindow.title.lineDown(1,false);
+            application.activeWindow.title.lineDown(1, false);
             // text regex
             var test = regex.test(currentField);
             return test;

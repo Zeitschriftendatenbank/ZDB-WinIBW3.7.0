@@ -49,6 +49,7 @@
 						</rows>
 					</grid>
                      <checkbox id="idCheckboxSuche" name="checkbox" label="nutze Regulären Ausdruck"/>
+                     <checkbox id="idCheckboxEval" name="checkbox2" label="evaluiere Ausdruck"/>
 				</groupbox>
 				<groupbox>
 				<caption label="In welcher Kategorie soll Text ersetzt werden?"/>

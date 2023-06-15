@@ -30,9 +30,11 @@ function onLoad()
 	strSuche = application.activeWindow.clipboard;
 	strSuche = strSuche.replace(/\n\n/g,"\n");//Leerzeilen entfernen 1x
 	strSuche = strSuche.replace(/\n\n/g,"\n");//Leerzeilen entfernen nochmal
+	strSuche = strSuche.replace(/\//g,"\\/");//Leerzeilen entfernen nochmal
 	document.getElementById("idSchluessel").value = application.getProfileString("winibw", "GBVsuchboxZeileKey", "PPN");
 	document.getElementById("idOperator").selectedIndex = application.getProfileInt("winibw", "GBVsuchboxZeileOperator", 0);
 	document.getElementById("idTrunkierung").selectedIndex = application.getProfileInt("winibw", "GBVsuchboxTrunkierung", 0);
+	document.getElementById("idPhrase").selectedIndex = application.getProfileInt("winibw", "GBVsuchboxPhrase", 0);
 	
 	//der Inhalt des Zwischenspeichers wird in das Textfeld geschrieben:
 	document.getElementById("idSuchbox").value = strSuche;
@@ -42,7 +44,8 @@ function onAccept()
 {
 	var searchKey = document.getElementById("idSchluessel").value;
 	var searchString = document.getElementById("idSuchbox").value;
-	//alert("1: " + searchString)
+	var phrase = document.getElementById("idPhrase").selectedIndex;
+	//alert("phrase: " + phrase)
 	var searchOperator = "";
 	var searchTrunkierung = "";
 	var groups = [],
@@ -79,20 +82,20 @@ function onAccept()
     if(i > 500) {
         // Gruppen erstellen
         do {
-            groups.push(zeilen.splice(0,500));
+            groups.push(zeilen.splice(0,100));
         } while(zeilen.length > 0)
         
         var sets = [];
         // suche jede gruppe
         for(var y = 0 ; y < groups.length; y += 1) {
-            search(groups[y], searchKey, searchTrunkierung, searchOperator);
+            search(groups[y], searchKey, searchTrunkierung, searchOperator, phrase);
             if (application.activeWindow.status!="NOHITS"){
                 sets.push(application.activeWindow.getVariable("P3GSE"))
             }
         }
         application.activeWindow.command("f s" + sets.join(' or s'), false);
     } else {
-        search(zeilen, searchKey, searchTrunkierung, searchOperator);
+        search(zeilen, searchKey, searchTrunkierung, searchOperator, phrase);
         if (application.activeWindow.status!="NOHITS"){
             //weil das Set in der Kurzanzeige mit merkwürdig breiten Spalten angezeigt wird
             //hole ich das Set nochmals mit "f s<setnr>", danach ist die Anzeige schön.
@@ -104,11 +107,15 @@ function onAccept()
 	application.writeProfileString("winibw", "GBVsuchboxZeileKey", searchKey);
 	application.writeProfileInt("winibw", "GBVsuchboxZeileOperator", document.getElementById("idOperator").selectedIndex);
 	application.writeProfileInt("winibw", "GBVsuchboxTrunkierung", document.getElementById("idTrunkierung").selectedIndex);
+	application.writeProfileInt("winibw", "GBVsuchboxPhrase", document.getElementById("idPhrase").selectedIndex);
 }
 
-function search(arr, searchKey, searchTrunkierung, searchOperator) {
-	searchString = arr.join(searchTrunkierung + searchOperator);
-	searchString = searchString + searchTrunkierung;//am Ende des Kommandos nochmals die Trunkierungseinstellung
+function search(arr, searchKey, searchTrunkierung, searchOperator, phrase) {
+	if(phrase) {
+		searchString = '("' + arr.join(searchTrunkierung + '"' + searchOperator + '"') + searchTrunkierung +'")';
+	} else {
+		searchString = '(' + arr.join(searchTrunkierung + '' + searchOperator + '') + searchTrunkierung +')';
+	}
 	//alert("3: "+searchString);
 	application.activeWindow.command("f " + searchKey + " " + searchString, false);
 }
@@ -153,6 +160,13 @@ function zeigeEntitaeten()
 			<radiogroup name="radio" orient="horizontal" id="idTrunkierung">
 						<radio label="nicht trunkiert" />
 						<radio label="trunkiert"/>
+			</radiogroup> 
+		</groupbox>
+		<groupbox>
+			<caption label="Phrasensuche?"/>
+			<radiogroup name="radio" orient="horizontal" id="idPhrase">
+						<radio label="ohne Anführungszeichen" />
+						<radio label="mit Anführungszeichen"/>
 			</radiogroup> 
 		</groupbox>
         <groupbox>

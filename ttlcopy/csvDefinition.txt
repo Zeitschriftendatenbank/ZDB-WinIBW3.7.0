@@ -62,6 +62,7 @@ TitelOhneArtikel+Zusatz:          S021A $a+" [[$n]]"+" : $d" $a+" : $d"
 TitelÜbersetz:         046N $a
 Ansetzungssachtitel:   025@ $a
 Nebentitel:            046C $a
+Unterreihe:            021C "*$l*"+$a
 ZSkurztitel:           026C $a
 ErschVerlauf4024:      031N "/s$f"+"/v$d"+"/a$e"+"/d$b"+"/m$c"+"/b$j"+"/k$g"+"/V$n"+"/A$o"+"/D$l"+"/M$m"+"/E$k"+"/K$q"+"-$6"
 Ort:                   033A $p

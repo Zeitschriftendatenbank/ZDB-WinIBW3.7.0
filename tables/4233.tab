@@ -1,0 +1,58 @@
+<tbl>
+<tt> Bestandserhaltung und Archivierung/Langzeitarchivierung
+<dt> 4233.tab
+<tag> 4233
+<row> aa QQ $aaa QQ Archivierung/Langzeitarchivierung gewährleistet
+<row> ab QQ $aab QQ Archivierung/Langzeitarchivierung geplant
+<row> ac QQ $aac QQ Archivierung/Langzeitarchivierung nicht möglich
+<row> ba Mg3/MBG QQ $aba$iMg3/MBG QQ (massenentsäuert) Magnesium dibutoxytriethylene glycoate/Magnesium butyl glycoate (z.B. FMC)
+<row> ba METE QQ $aba$iMETE QQ (massenentsäuert) Magnesium ethoxide & titanium ethoxide (z.B. Battelle)
+<row> ba MgO QQ $aba$iMgO QQ (massenentsäuert) Magnesium oxide (z.B. Bookkeeper)
+<row> ba MgPC QQ $aba$iMgPC QQ MgPC (Carbonated magnesium di-n-propylate)
+<row> ba MMMC QQ $aba$iMMMC QQ (massenentsäuert) Methoxy magnesium methylcarbonate (z.B. Wei T’o)
+<row> bb QQ $abb QQ Massenentsäuerung geplant
+<row> bc QQ $abc QQ Massenentsäuerung nicht möglich
+<row> ca QQ $aca QQ Digitalisiert
+<row> cb QQ $acb QQ Digitalisierung geplant
+<row> cc QQ $acc QQ Digitalisierung nicht möglich
+<row> cd QQ $acd QQ Fremddigitalisat/Parallelausgabe verfügbar
+<row> da QQ $ada QQ Verfilmt
+<row> db QQ $adb QQ Verfilmung geplant
+<row> dc QQ $adc QQ Verfilmung nicht möglich
+<row> eb QQ $aeb QQ Archivierung prüfen
+<row> -- -- -- UF $f
+<row> PEBW QQ $fPEBW QQ Baden-Württemberg
+<row> PEBY QQ $fPEBY QQ Bayern
+<row> PEBE QQ $fPEBE QQ Berlin
+<row> PEBB QQ $fPEBB QQ Brandenburg
+<row> PEHB QQ $fPEHB QQ Bremen
+<row> PEHH QQ $fPEHH QQ Hamburg
+<row> PEHE QQ $fPEHE QQ Hessen
+<row> PEMV QQ $fPEMV QQ Mecklenburg-Vorpommern
+<row> PENI QQ $fPENI QQ Niedersachsen
+<row> PENW QQ $fPENW QQ Nordrhein-Westfalen
+<row> PERP QQ $fPERP QQ Rheinland-Pfalz
+<row> PESL QQ $fPESL QQ Saarland
+<row> PESN QQ $fPESN QQ Sachsen
+<row> PEST QQ $fPEST QQ Sachsen-Anhalt
+<row> PESH QQ $fPESH QQ Schleswig-Holstein
+<row> PETH QQ $fPETH QQ Thüringen
+</tbl>
+
+
+
+
+ba PAL QQ $aba$iPAL QQ (massenentsäuert) Nichtwässriges Flüssigverfahren der Firma PAL Preservation Academy, Leipzig
+ba ZFB:2 QQ $aba$iZFB:2 QQ (massenentsäuert) Nichtwässriges Flüssigverfahren des Zentrums für Bucherhaltung, Leipzig
+Schutzverpackung säurefrei nach DIN ISO 162 QQ Schutzverpackung säurefrei nach DIN ISO 162 QQ 
+Schutzverpackung säurefrei maßgefertigt nach DIN ISO 16245 QQ Schutzverpackung säurefrei maßgefertigt nach DIN ISO 16245 QQ 
+Reparatur/Neubindung/Fragmentsicherung QQ Reparatur/Neubindung/Fragmentsicherung QQ 
+Liegendlagerung QQ Liegendlagerung QQ 
+Trockenreinigung QQ Trockenreinigung QQ 
+Nassreinigung QQ Nassreinigung QQ 
+Schimmelbehandlung QQ Schimmelbehandlung QQ 
+Kühllagerung QQ Kühllagerung QQ 
+Gefriertrocknung QQ Gefriertrocknung QQ 
+Stickstoffbehandlung QQ Stickstoffbehandlung QQ 
+Umlagerung in Sondermagazin QQ Umlagerung in Sondermagazin QQ 
+Gammabestrahlung QQ Gammabestrahlung QQ 

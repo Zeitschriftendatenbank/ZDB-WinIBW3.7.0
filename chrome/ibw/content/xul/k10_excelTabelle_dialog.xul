@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0"?> <!-- -*- Mode: HTML -*- -->
-<?xml-stylesheet href="chrome://global/skin/" type="text/css"?> 
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 <?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
 
 <dialog
@@ -11,16 +11,17 @@
 	onunload="application.activate();"
 	buttons="cancel,help"
 	ondialoghelp="wikiWinibw();"
+
 	style="min-height: 30em; min-width: 50em"
 >
-<script type="application/x-javascript" src="chrome://ibw/content/xul/gbv_excelTabelle_dialog.js" />
+<script type="application/x-javascript" src="chrome://ibw/content/xul/k10_excelTabelle_dialog.js" />
 	<tabbox flex="1">
 		<tabs >
 			<tab label="Tabelle erstellen" accesskey="T" />
 			<tab label="Konfigurationstabelle" accesskey="K"/>
 		</tabs>
 		<tabpanels >
-			<tabpanel id="idSeite1" flex="1">	
+			<tabpanel id="idSeite1" flex="1">
 				<vbox flex="1">
 					<groupbox orient="horizontal">
 						<caption label="Infos" />
@@ -34,8 +35,8 @@
 								value = ""
 								/>
 						</vbox>
-						<box align="right" onclick="wikiAnzeigen1();">
-							<image src="chrome://ibw/content/xul/icons/info32x32.png" 
+						<box align="right" onclick="wikiWinibw();">
+							<image src="chrome://ibw/content/xul/icons/info32x32.png"
 								tooltiptext="Klick ... Kapitel im WinIBW3-Wiki aufrufen"
 								/>
 						</box>
@@ -45,7 +46,7 @@
 						<caption label="Einschränkung auf Standortangaben" />
 						<hbox>
 							<vbox>
-								<label value="Standortangabe:"/> 
+								<label value="Standortangabe:"/>
 							</vbox>
 						<textbox id="idTextboxSST"
 							 name="textbox"
@@ -56,19 +57,19 @@
 						</hbox>
 						<label id = "idLabelInfos3"
 							value=""
-							/> 
+							/>
 						<label id = "idLabelInfos4"
 							value=""
-							/> 
+							/>
 					</groupbox>
 					<groupbox style="min-height: 8em">
 						<caption label="Ergebnis" />
 						<label id = "idLabelErgebnis1"
-							value="" 
-							hidden = "true"/> 
+							value=""
+							hidden = "true"/>
 						<label id = "idLabelErgebnis2"
-							value="" 
-							hidden = "true"/> 
+							value=""
+							hidden = "true"/>
 						<textbox id="idTextboxPfad"
 							 name="textbox"
 							 flex="0.5"
@@ -82,18 +83,18 @@
 			<tabpanel id="idSeite2">
 				<vbox flex="1">
 					<box align="right" onclick="wikiAnzeigen2();">
-						<image src="chrome://ibw/content/xul/icons/info32x32.png" 
+						<image src="chrome://ibw/content/xul/icons/info32x32.png"
 							tooltiptext="Klick ... Kapitel im WinIBW3-Wiki aufrufen"
 							/>
 					</box>
 					<hbox flex="1">
 						<groupbox flex="1" minheight="380px">
-							<caption label="Standardtabelle:"/> 
-							<tree 
-								id="idTree" 
+							<caption label="Standardtabelle:"/>
+							<tree
+								id="idTree"
 								flex="1"
-								seltype="single" 
-								style="margin-top: 1em;" 
+								seltype="single"
+								style="margin-top: 1em;"
 								ondblclick ="waehleZeile();"
 							>
 								<treecols>
@@ -109,7 +110,7 @@
 							/>
 						</groupbox>
 						<groupbox flex="1" >
-							<caption label="Meine Auswahl:"/> 
+							<caption label="Meine Auswahl:"/>
 							<textbox id="idAuswahlZeilen"
 								 name="textbox"
 								 flex="1"
@@ -135,18 +136,18 @@
 						<caption label="Trennzeichen" />
 						<hbox>
 							<vbox flex="8">
-								<label id="idLabelInfos5"/> 
-								<label id="idLabelInfos6"/> 
+								<label id="idLabelInfos5"/>
+								<label id="idLabelInfos6"/>
 							</vbox>
 							<box align="right" onclick="wikiAnzeigen3();">
-								<image src="chrome://ibw/content/xul/icons/info32x32.png" 
+								<image src="chrome://ibw/content/xul/icons/info32x32.png"
 									tooltiptext="Klick ... Kapitel im WinIBW3-Wiki aufrufen"
 									flex="1"
 								/>
 							</box>
 						</hbox>
 						<hbox>
-							<label value="Zeichen:"/> 
+							<label value="Zeichen:"/>
 							<textbox id="idTextboxTrennzeichen"
 								 name="textbox"
 								 onchange="bContentsChanged=true;"
