@@ -44,13 +44,11 @@
   <file source="tables/1131.tab" destination="tables\1131.tab"/>
   <file source="tables/1133.tab" destination="tables\1133.tab"/>
   <file source="tables/1140.tab" destination="tables\1140.tab"/>
-  <file source="tables/1700.tab" destination="tables\1700.tab"/>
   <file source="tables/1800.tab" destination="tables\1800.tab"/>
   <file source="tables/3010.tab" destination="tables\3010.tab"/>
   <file source="tables/31XX.tab" destination="tables\31XX.tab"/>
   <file source="tables/380.tab" destination="tables\380.tab"/>
   <file source="tables/382.tab" destination="tables\382.tab"/>
-  <file source="tables/4030.tab" destination="tables\4030.tab"/>
   <file source="tables/4233.tab" destination="tables\4233.tab"/>
   <file source="tables/4241.tab" destination="tables\4241.tab"/>
   <file source="tables/4242.tab" destination="tables\4242.tab"/>
@@ -63,7 +61,6 @@
   <file source="tables/450.tab" destination="tables\450.tab"/>
   <file source="tables/4713.tab" destination="tables\4713.tab"/>
   <file source="tables/5056.tab" destination="tables\5056.tab"/>
-  <file source="tables/5080.tab" destination="tables\5080.tab"/>
   <file source="tables/670.tab" destination="tables\670.tab"/>
   <file source="tables/675.tab" destination="tables\675.tab"/>
   <file source="tables/XXXX.tab" destination="tables\XXXX.tab"/>
@@ -122,11 +119,21 @@
  <update date="20230324">
   <file source="scripts/zdb_scripte_intern.js" destination="scripts\zdb_scripte_intern.js"/>
  </update>
- <update date="20230615">
+ <update date="20231129">
   <file source="scripts/zdb_scripte_public.js" destination="scripts\zdb_scripte_public.js"/>
  </update>
  <update date="20230301">
   <file source="tables/1500.tab" destination="tables\1500.tab"/>
+ </update>
+ <update date="20230628">
+  <file source="tables/1700.tab" destination="tables\1700.tab"/>
+ </update>
+ <update date="20231027">
+  <file source="tables/4030.tab" destination="tables\4030.tab"/>
+  <file source="tables/5080.tab" destination="tables\5080.tab"/>
+ </update>
+ <update date="20231117">
+  <file source="ttlcopy/opac_textbausteine.txt" destination="ttlcopy\opac_textbausteine.txt"/>
  </update>
  <update date="20230227">
   <file source="chrome/ibw/content/xul/ZDB_Erscheinungsverlauf.xul" destination="chrome\ibw\content\xul\ZDB_Erscheinungsverlauf.xul"/>

@@ -911,7 +911,7 @@ function zdb_EZB() {
         title, publisher, eissn, url, urls, sprachen = [], indxISSN,
         dppn = false,
         pissn = '',
-        first_volume, first_date, first_issue, idx, winsnap, EZB_satz,
+        first_volume, first_date, first_issue, last_issue, last_volume, last_date, idx, winsnap, EZB_satz,
         bibid = __checkEZBAccount();
     L = new LANG();
     if (!bibid) {
@@ -919,8 +919,8 @@ function zdb_EZB() {
     }
 
     //	url zur EZB
-    var dbformUrl = 'http://ezb.uni-regensburg.de/admin/newtitle.php?';
-    var frontDoor = 'http://www.bibliothek.uni-regensburg.de/ezeit/?';
+    var dbformUrl = 'https://ezb.uni-regensburg.de/admin/newtitle.php?';
+    var frontDoor = 'https://ezb.ur.de/?';
 
     // set global variable _rec
     __zdbJSON();
@@ -993,6 +993,9 @@ function zdb_EZB() {
     first_volume = '';
     first_date = '';
     first_issue = '';
+    last_issue = '';
+    last_volume = '';
+    last_date = '';
     if (_rec['031N']) {
         if (__zdbCheckSF('031N', 'd')) {
             first_volume = _rec['031N'][0]['d'][0];
@@ -1002,6 +1005,15 @@ function zdb_EZB() {
         }
         if (__zdbCheckSF('031N', 'j')) {
             first_date = _rec['031N'][0]['j'][0];
+        }
+        if (__zdbCheckSF('031N', 'o')) {
+            last_issue = _rec['031N'][0]['o'].slice(-1);
+        }
+        if (__zdbCheckSF('031N', 'n')) {
+            last_volume = _rec['031N'][0]['n'].slice(-1);
+        }
+        if (__zdbCheckSF('031N', 'k')) {
+            last_date = _rec['031N'][0]['k'].slice(-1);
         }
     }
     else if (_rec['031@']) {
@@ -1065,7 +1077,10 @@ function zdb_EZB() {
         + '&zdb_id=' + _rec['006Z'][0][0][0] + '&url=' + escape(url)
         + '&first_volume=' + escape(first_volume)
         + '&first_date=' + escape(first_date)
-        + '&first_issue=' + escape(first_issue);
+        + '&first_issue=' + escape(first_issue)
+        + '&last_issue=' + escape(last_issue)
+        + '&last_volume=' + escape(last_volume)
+        + '&last_date=' + escape(last_date);
 
     EZB_satz += '&languages[]=' + sprachen.join('&languages[]=');
 
@@ -1094,8 +1109,7 @@ function zdb_EZB() {
         //	Go to end of buffer without expanding the selection
         application.activeWindow.title.endOfBuffer(false);
         //	EZB-Frontdoor einfügen
-        application.activeWindow.title.insertText('4085 =u ' + frontDoor);
-        application.activeWindow.title.insertText(_rec['006Z'][0][0][0].substr(0, _rec['006Z'][0][0][0].length - 2));
+        application.activeWindow.title.insertText('4085 =u ' + frontDoor + _rec['006Z'][0][0][0]);
         application.activeWindow.title.insertText('=x F');
         //	Press the <ENTER> key
         application.activeWindow.simulateIBWKey('FR');
@@ -1108,7 +1122,6 @@ function zdb_EZB() {
         }
     }
 }
-
 
 // =======================================================================
 // ENDE ***** EZB *****
