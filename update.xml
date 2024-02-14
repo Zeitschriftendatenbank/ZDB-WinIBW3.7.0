@@ -39,7 +39,6 @@
   <file source="tables/0501.tab" destination="tables\0501.tab"/>
   <file source="tables/0502.tab" destination="tables\0502.tab"/>
   <file source="tables/0503.tab" destination="tables\0503.tab"/>
-  <file source="tables/0600.tab" destination="tables\0600.tab"/>
   <file source="tables/1130.tab" destination="tables\1130.tab"/>
   <file source="tables/1131.tab" destination="tables\1131.tab"/>
   <file source="tables/1133.tab" destination="tables\1133.tab"/>
@@ -69,7 +68,6 @@
   <file source="ttlcopy/relaCodes4xx.txt" destination="ttlcopy\relaCodes4xx.txt"/>
   <file source="ttlcopy/relaCodes5xx.txt" destination="ttlcopy\relaCodes5xx.txt"/>
   <file source="ttlcopy/zdb_titeldatenkopie.ttl" destination="ttlcopy\zdb_titeldatenkopie.ttl"/>
-  <file source="ttlcopy/zdb_titeldatenkopie_digi.ttl" destination="ttlcopy\zdb_titeldatenkopie_digi.ttl"/>
   <file source="ttlcopy/zdb_titeldatenkopie_parallel.ttl" destination="ttlcopy\zdb_titeldatenkopie_parallel.ttl"/>
   <file source="defaults/pref/diacritics.js" destination="defaults\pref\diacritics.js"/>
   <file source="defaults/pref/diacritics_description_de.js" destination="defaults\pref\diacritics_description_de.js"/>
@@ -84,7 +82,6 @@
   <file source="chrome/ibw/content/xul/ZDB_BatchCsv.js" destination="chrome\ibw\content\xul\ZDB_BatchCsv.js"/>
   <file source="chrome/ibw/content/xul/ZDB_BatchCsv.xul" destination="chrome\ibw\content\xul\ZDB_BatchCsv.xul"/>
   <file source="chrome/ibw/content/xul/ZDB_BibliothekDefinieren.xul" destination="chrome\ibw\content\xul\ZDB_BibliothekDefinieren.xul"/>
-  <file source="chrome/ibw/content/xul/ZDB_DigitalisierungConfig.xul" destination="chrome\ibw\content\xul\ZDB_DigitalisierungConfig.xul"/>
   <file source="chrome/ibw/content/xul/ZDB_EZBAccountDefinieren.xul" destination="chrome\ibw\content\xul\ZDB_EZBAccountDefinieren.xul"/>
   <file source="chrome/ibw/content/xul/ZDB_KennungWechseln.xul" destination="chrome\ibw\content\xul\ZDB_KennungWechseln.xul"/>
   <file source="chrome/ibw/content/xul/ZDB_LinkUrl.xul" destination="chrome\ibw\content\xul\ZDB_LinkUrl.xul"/>
@@ -119,8 +116,13 @@
  <update date="20230324">
   <file source="scripts/zdb_scripte_intern.js" destination="scripts\zdb_scripte_intern.js"/>
  </update>
- <update date="20231129">
+ <update date="20240205">
   <file source="scripts/zdb_scripte_public.js" destination="scripts\zdb_scripte_public.js"/>
+  <file source="ttlcopy/zdb_titeldatenkopie_digi.ttl" destination="ttlcopy\zdb_titeldatenkopie_digi.ttl"/>
+  <file source="chrome/ibw/content/xul/ZDB_DigitalisierungConfig.xul" destination="chrome\ibw\content\xul\ZDB_DigitalisierungConfig.xul"/>
+ </update>
+ <update date="20240201">
+  <file source="tables/0600.tab" destination="tables\0600.tab"/>
  </update>
  <update date="20230301">
   <file source="tables/1500.tab" destination="tables\1500.tab"/>

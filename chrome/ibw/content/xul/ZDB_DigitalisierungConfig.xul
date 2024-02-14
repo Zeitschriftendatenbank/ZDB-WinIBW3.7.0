@@ -1,4 +1,4 @@
-﻿<?xml version="1.0"?>
+<?xml version="1.0"?>
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?> 
 <?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
 <!-- Include your own stylesheet here. -->
@@ -21,20 +21,22 @@
 
 var application = Components.classes["@oclcpica.nl/kitabapplication;1"]
                         .getService(Components.interfaces.IApplication);
-var fields = ["1101","1109","2050","2051","4048","4085","4119","4233", "4237"];
+var fields = ["1101","2050","2051","4085","4233","4238a","4238b","4238c","4238d","4238e","4238f","4238g","4238h","4238m","4238n"];
 
 function onLoad()
 {
     for(var f in fields)
     {
-        document.getElementById(fields[f]).value = application.getProfileString("zdb.userdata.digiconfig", fields[f], "");
+        document.getElementById(fields[f]).value = application.getProfileString("zdb.userdata.digiconfig", fields[f], document.getElementById(fields[f]).value);
     }
     return true;
 }
 
 function onAccept()
 {
-    if("" == document.getElementById("1101").value) document.getElementById("1101").value = "cr";
+    if("" == document.getElementById("1101").value) {
+        document.getElementById("1101").value = "cr";
+    }
     if(!document.getElementById("4085").value.match(/^=u.*/))
     {
         document.getElementById("4085").value = "=u " + document.getElementById("4085").value;
@@ -54,8 +56,6 @@ function onCancel()
 
 ]]>
 </script>
-
-    <!-- Layout the dialog controls: -->
     <vbox>
         <vbox align="left" flex="1">
             <description style="width: 30em;" flex="1">
@@ -67,10 +67,6 @@ function onCancel()
                 <textbox id="1101" value="" size="70"/>
             </vbox>
             <vbox>
-                <label value="1109:"/>
-                <textbox id="1109" value="" size="70"/>
-            </vbox>
-            <vbox>
                 <label value="2050:"/>
                 <textbox id="2050" value="" size="70"/>
             </vbox>
@@ -79,24 +75,52 @@ function onCancel()
                 <textbox id="2051" value="" size="70"/>
             </vbox>
             <vbox>
-                <label value="4048:"/>
-                <textbox id="4048" value="" size="70"/>
-            </vbox>
-            <vbox>
                 <label value="4085:"/>
                 <textbox id="4085" value="" size="70"/>
-            </vbox>
-            <vbox>
-                <label value="4119:"/>
-                <textbox id="4119" value="" size="70"/>
             </vbox>
             <vbox>
                 <label value="4233:"/>
                 <textbox id="4233" value="" size="70"/>
             </vbox>
             <vbox>
-                <label value="4237:"/>
-                <textbox id="4237" value="" size="70"/>
+                <label value="4238a:"/>
+                <textbox id="4238a" value="[Online-Ausgabe/CD-ROM-Ausgabe/Mikrofilm-Ausgabe]" size="70"/>
+            </vbox>
+            <vbox>
+                <label value="4238b:"/>
+                <textbox id="4238b" value="[Reproduktionsort]" size="70"/>
+            </vbox>
+            <vbox>
+                <label value="4238c:"/>
+                <textbox id="4238c" value="[Digitalisierende Institution]" size="70"/>
+            </vbox>
+            <vbox>
+                <label value="4238d:"/>
+                <textbox id="4238d" value="[Erscheinungsdaten der Reproduktion (nicht normiert)]" size="70"/>
+            </vbox>
+            <vbox>
+                <label value="4238e:"/>
+                <textbox id="4238e" value="[Umfangsangabe der Reproduktion]" size="70"/>
+            </vbox>
+            <vbox>
+                <label value="4238f:"/>
+                <textbox id="4238f" value="[Ungezählter Gesamttitel der Reproduktion]" size="70"/>
+            </vbox>
+            <vbox>
+                <label value="4238g:"/>
+                <textbox id="4238g" value="[Zählung der Reproduktion in Sortierform (JJJJ) - Anfang]" size="70"/>
+            </vbox>
+            <vbox>
+                <label value="4238h:"/>
+                <textbox id="4238h" value="[Zählung der Reproduktion in Sortierform (JJJJ) - Ende]" size="70"/>
+            </vbox>
+            <vbox>
+                <label value="4238m:"/>
+                <textbox id="4238m" value="[Zählung der reproduzierten Teile (Bände, Jahrgänge) in Vorlageform]" size="70"/>
+            </vbox>
+            <vbox>
+                <label value="4238n:"/>
+                <textbox id="4238n" value="[Fußnote zur Reproduktion]" size="70"/>
             </vbox>
         </vbox>
     </vbox>

@@ -440,11 +440,7 @@ function __zdbOnlineRessource(copyFile,showComment,add0600,digi){
             application.activeWindow.title.insertText(digi[x].kat + digi[x].cont + "\n");
         }
     } else if(digi !== false) {
-        application.activeWindow.title.insertText("\n1109 "+application.getProfileString('zdb.userdata.digiconfig', '1109', ''));
         application.activeWindow.title.insertText("\n1101 "+application.getProfileString('zdb.userdata.digiconfig', '1101', ''));
-        application.activeWindow.title.insertText("\n1700 "+application.getProfileString('zdb.userdata.digiconfig', '1700', ''));
-        application.activeWindow.title.insertText("\n2050 "+application.getProfileString('zdb.userdata.digiconfig', '2050', ''));
-        application.activeWindow.title.insertText("\n2051 "+application.getProfileString('zdb.userdata.digiconfig', '2051', ''));
     }
 
     // Kategorie 4215,4225 ‰ndern
@@ -503,10 +499,9 @@ function __zdbOnlineRessource(copyFile,showComment,add0600,digi){
 
     if(digi === true)
     {
-        application.activeWindow.title.insertText("\n4048 "+application.getProfileString('zdb.userdata.digiconfig', '4048', ''));
+        application.activeWindow.title.insertText("\n2050 "+application.getProfileString('zdb.userdata.digiconfig', '2050', ''));
+        application.activeWindow.title.insertText("\n2051 "+application.getProfileString('zdb.userdata.digiconfig', '2051', ''));
         application.activeWindow.title.insertText("\n4085 "+application.getProfileString('zdb.userdata.digiconfig', '4085', ''));
-        application.activeWindow.title.insertText("\n4119 "+application.getProfileString('zdb.userdata.digiconfig', '4119', ''));
-        application.activeWindow.title.insertText("\n4237 "+application.getProfileString('zdb.userdata.digiconfig', '4237', ''));
     }
     // Kategorie 4212 mit neuem Vortext
     if(_rec['046C'])
@@ -520,6 +515,7 @@ function __zdbOnlineRessource(copyFile,showComment,add0600,digi){
     if(digi === true)
     {
         application.activeWindow.title.insertText("\n4233 "+application.getProfileString('zdb.userdata.digiconfig', '4233', ''));
+        application.activeWindow.title.insertText(feld4238());
     }
     application.activeWindow.title.insertText("\n");
     application.activeWindow.title.endOfBuffer(false);
@@ -527,6 +523,21 @@ function __zdbOnlineRessource(copyFile,showComment,add0600,digi){
     __zdbFeld424XSet(_felder424X);
 
     return true;
+}
+
+function feld4238() {
+    var feld = "\n4238 ";
+    feld += application.getProfileString('zdb.userdata.digiconfig', '4238a', '[Online-Ausgabe/CD-ROM-Ausgabe/Mikrofilm-Ausgabe]');
+    feld += '$b'+application.getProfileString('zdb.userdata.digiconfig', '4238b', '[Reproduktionsort]');
+    feld += '$c'+application.getProfileString('zdb.userdata.digiconfig', '4238c', '[Digitalisierende Institution]');
+    feld += '$d'+application.getProfileString('zdb.userdata.digiconfig', '4238d', '[Erscheinungsdaten der Reproduktion (nicht normiert)]');
+    feld += '$e'+application.getProfileString('zdb.userdata.digiconfig', '4238e', '[Umfangsangabe der Reproduktion]');
+    feld += '$f'+application.getProfileString('zdb.userdata.digiconfig', '4238f', '[Ungez‰hlter Gesamttitel der Reproduktion]');
+    feld += '$g'+application.getProfileString('zdb.userdata.digiconfig', '4238g', '[Z‰hlung der Reproduktion in Sortierform (JJJJ) - Anfang]');
+    feld += '$h'+application.getProfileString('zdb.userdata.digiconfig', '4238h', '[Z‰hlung der Reproduktion in Sortierform (JJJJ) - Ende]');
+    feld += '$m'+application.getProfileString('zdb.userdata.digiconfig', '4238m', '[Z‰hlung der reproduzierten Teile (B‰nde, Jahrg‰nge) in Vorlageform]');
+    feld += '$n'+application.getProfileString('zdb.userdata.digiconfig', '4238n', '[Fuﬂnote zur Reproduktion]');
+    return feld;
 }
 
 function __zdbTitelAnpassen()
@@ -942,25 +953,30 @@ function zdb_EZB() {
     if (_rec['021C']) {
         var unterreihe_bez = '',
             unterreihe_tit = '';
-        for (var p in _rec['021C']) {
+        for (var p in _rec['021C']) { // 4005 ist wiederholbar
+            title += ' / ';
+            unterreihe_bez = '',
+            unterreihe_tit = '';
             if (!_rec['021C'].hasOwnProperty(p)) { continue; }
-            if (__zdbCheckSF('021C', 'r', p)) {
-                unterreihe_bez += ' / ' + _rec['021C'][0]['r'][0];
+            if (__zdbCheckSF('021C', 'l', p)) {
+                unterreihe_bez += _rec['021C'][p]['l'][0];
             }
-            else {
-                if (__zdbCheckSF('021C', 'l', p)) {
-                    unterreihe_bez += ' / ' + _rec['021C'][p]['l'][0];
-                } else {
-                    if (__zdbCheckSF('021C', 'a', p)) {
-                        unterreihe_bez += ' / ' + _rec['021C'][p]['a'][0]; // wenn l nicht vh nimm a
-                    }
+            if (__zdbCheckSF('021C', 'a', p)) {
+                if ('' != unterreihe_bez) {
+                    unterreihe_tit += ", ";
                 }
-                if (__zdbCheckSF('021C', 'a', p)) {
-                    unterreihe_tit = ': ' + _rec['021C'][p]['a'][0]
+                unterreihe_tit += _rec['021C'][p]['a'][0];
+                if (__zdbCheckSF('021C', 'd', p)) {
+                    unterreihe_tit += ' : ' + _rec['021C'][p]['d'][0];
                 }
             }
+            title += unterreihe_bez + unterreihe_tit;
         }
-        title += unterreihe_bez + unterreihe_tit;
+    }
+    if(_rec['032@']) {
+        if (__zdbCheckSF('032@', 'a', 0)) {
+            title += ' / ' + _rec['032@'][0]['a'][0];
+        }
     }
 
     if (__zdbCheckSF('021A', 'e')) title += ' / ' + _rec['021A'][0]['e'][0];
