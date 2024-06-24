@@ -43,16 +43,24 @@
 					</groupbox>
 					<separator/>
 					<groupbox>
-						<caption label="Einschränkung auf Standortangaben" />
+						<caption label="Bestandsfilter" />
 						<hbox>
 							<vbox>
-								<label value="Standortangabe:"/>
+								<label value="In diesem PICA+-Feld:"/>
 							</vbox>
-						<textbox id="idTextboxSST"
+						<textbox id="idTextboxFeldSST"
 							 name="textbox"
 							 cols="12"
 							 height="22px"
 							 maxwidth="68px"
+						/>
+							<vbox>
+								<label value="Muss dieser Text vorkommen:"/>
+							</vbox>
+						<textbox id="idTextboxSST"
+							 name="textboxFeld"
+							 cols="50"
+							 height="22px"
 						/>
 						</hbox>
 						<label id = "idLabelInfos3"

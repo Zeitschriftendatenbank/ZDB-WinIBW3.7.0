@@ -849,14 +849,16 @@ function isil_online() {
 */
 function __zdbInsertSubfield(field, subfield, content, pos, occ) {
     var data = '',
-        splitted = [];
+        splitted = [],
+        splitter;
     if (typeof occ === 'undefined') {
         occ = 0;
     }
     if ('' == (data = application.activeWindow.title.findTag(field, occ, false, true, false))) {
         return false;
     }
-    splitted = data.split('$');
+    splitter = ('P' == __zdbGetFormat()) ? delimiter : '$';
+    splitted = data.split(splitter);
     if (typeof pos === 'undefined') {
         splitted.push(subfield + content);
         if('a' != splitted[0][0]) {
@@ -867,5 +869,5 @@ function __zdbInsertSubfield(field, subfield, content, pos, occ) {
     } else {
         splitted.splice(pos, 0, subfield + content);
     }
-    application.activeWindow.title.insertText(splitted.join('$'));
+    application.activeWindow.title.insertText(splitted.join(splitter));
 }

@@ -31,8 +31,8 @@ function onLoad() {
 	document.getElementById("idLabelInfos1a").value = "Schritt 1: Recherchieren Sie nach den Titeln, die in eine csv-Datei geschrieben werden sollen.";
 	document.getElementById("idLabelInfos1b").value = "Schritt 2: Füllen Sie ggf. die Standortangabe im unteren Feld aus.";
 	document.getElementById("idLabelInfos1c").value = "Schritt 3: Klicken Sie auf 'Start', um ALLE Datensätze des angezeigten Sets in eine csv-Datei zu schreiben. ";
-	document.getElementById("idLabelInfos3").value = "Beim Auswerten der Exemplare werden nur solche berücksichtigt, deren Standortangabe in Feld 7100";
-	document.getElementById("idLabelInfos4").value = "mit Ihren Angaben im obigen Feld übereinstimmt. Achten Sie auch auf Groß- und Kleinschreibung!";
+	document.getElementById("idLabelInfos3").value = "Beim Auswerten der Exemplare werden nur solche berücksichtigt, die ";
+	document.getElementById("idLabelInfos4").value = "mit Ihren Angaben im obigen Feld übereinstimmen. Achten Sie auch auf Groß- und Kleinschreibung!";
 	document.getElementById("idLabelInfos5").value = "Welches Trennzeichen soll zur Unterteilung von wiederholbaren Feldern verwendet werden?";
 	document.getElementById("idLabelInfos6").value = "Standard: Semikolon";
 	strTrennzeichen = application.getProfileString("Exceltool", "Trennzeichen", "");
@@ -57,6 +57,7 @@ function onAccept() {
 	document.getElementById("idLabelErgebnis1").value = "Bitte warten bis Schlussmeldung angezeigt wird!";
 	document.getElementById("idLabelErgebnis2").value = "WinIBW3 zeigt evtl. keine Reaktion bis zum Ende des Downloads.";
 	document.getElementById("idTextboxPfad").value = "";
+	feldSST = document.getElementById("idTextboxFeldSST").value;
 	strSST = document.getElementById("idTextboxSST").value;
 	strTrennzeichen = document.getElementById("idTextboxTrennzeichen").value; //das aktuelle wird verwendet
 	if (strTrennzeichen === "") { strTrennzeichen = "; "; }
@@ -70,7 +71,7 @@ function onCancel() {
 
 //----------------------------------------------------------------------------
 // Globale Variable:
-var global = new Object(), bContentsChanged, strSST, strTrennzeichen;
+var global = new Object(), bContentsChanged, strSST, feldSST, strTrennzeichen;
 var delimiter = '\u0192'; // Unterfeldzeichen "ƒ" = \u0192
 var charCode = 402; // Unterfeldzeichen "ƒ" = 402, Unterfeldzeichen "$" = 36
 //----------------------------------------------------------------------------
@@ -736,27 +737,33 @@ function filterCopy(satz, occ) {
 			}
 		}
 	}
-
 	if (!found) { tmp_satz = ""; }
 
 	//GBV: Prüfung nur wenn Feld "Standort" ausgefüllt wurde
 	// wenn der SST nicht übereinstimmt, soll das Exemplar nicht
 	// in die Tabelle
 	//Prüfung, ob Kat. 7100 vorkommt:
-	var regex7100 = /209A\/.*?x00/;
-	if (strSST !== "") {
-		if (regex7100.test(tmp_satz) === false) {
+	//var regex7100 = /209A\/.*?x00/;
+	
+	var regex4800 = new RegExp(feldSST + ".+" + strSST);
+	return (regex4800.test(tmp_satz)) ? tmp_satz : '';
+	/*if (strSST !== "") {
+		//if (regex7100.test(tmp_satz) === false) {
+		if (regex4800.test(tmp_satz) === false) {
 			tmp_satz = "";
 		} else {
-			var arr7100 = tmp_satz.match(regex7100);
+			alert(strSST);
+			//var arr7100 = tmp_satz.match(regex7100);
+			var arr7100 = tmp_satz.match(regex4800);
 			// Unterfeldzeichen "ƒ" = \u0192
-			if (arr7100[0].indexOf(delimiter + "f" + strSST + delimiter) == -1) {
+			//if (arr7100[0].indexOf(delimiter + "f" + strSST + delimiter) == -1) {
+			if (arr7100[0].indexOf(delimiter + "9" + strSST + delimiter) == -1) {
 				tmp_satz = "";
 			}
 		}
 	}
 	//alert("filterCopy: tmp_satz = \n" + tmp_satz);
-	return tmp_satz;
+	return tmp_satz;*/
 }
 
 // --------------------------------------------------------------------------------

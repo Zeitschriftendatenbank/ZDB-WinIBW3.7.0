@@ -38,13 +38,14 @@ SET.prototype = {
                 throw new Error('IDN der eigenen Bibliothek ist nicht definiert');
             }
             if (!this.alleExe) {
-                //return false;
                 this.ex_numbers();
             }
             this.current_ex = this.next_ex;
             if (this.current_ex < this.alleExe.length) {
-                this.exNum = this.alleExe[this.current_ex].substring(3, 5),
+                //this.exNum = this.alleExe[this.current_ex].substring(3, 5),
+                this.exNum = this.alleExe[this.current_ex],
                     ex = this.edit('e' + this.exNum);
+                
                 this.next_ex += 1;
                 if (!this.test_eigene(ex, this.eigeneBibliothek)) {
                     application.activeWindow.simulateIBWKey('FR'); // exit Exemplar
@@ -61,13 +62,15 @@ SET.prototype = {
             switch (this.format) {
             case 'd':
                 kat = '4800';
+                regex = new RegExp('!(.+)\!', 'g');
                 break;
             case 'p':
                 kat = '247C';
+                regex = new RegExp(delimiter + '9(.+)' + delimiter + '8', 'g');
                 break;
             }
             ex.findTag(kat, 0, false, true, false);
-            var idn = /\!(.+)\!/.exec(ex.selection);
+            var idn = regex.exec(ex.selection);
             if (this.eigeneBibliothek.constructor == Array) {
                 for (i = 0; i < this.eigeneBibliothek.length; i += 1) {
                     if (this.eigeneBibliothek[i] == idn[1]) {
@@ -86,17 +89,20 @@ SET.prototype = {
             this.next_ex = 0;
             this.current_ex = 0;
             var regexpExe,
-                strTitle =  application.activeWindow.getVariable("P3CLIP");
+                strTitle =  application.activeWindow.getVariable("P3CLIP"),
+                match;
             switch (this.format) {
             case "d":
-                regexpExe = /\n(70[0-9][0-9])/g;
+                regexpExe = new RegExp("\n70([0-9][0-9])", 'g');
                 break;
             case "p":
-                regexpExe = /\n(208@)/g;
+                regexpExe = new RegExp("\n208@\/([0-9][0-9])", 'g');
                 break;
             }
             this.alleExe = [];
-            this.alleExe = strTitle.match(regexpExe);
+            while ((match = regexpExe.exec(strTitle)) !== null) {
+                this.alleExe.push(match[1]);
+              } 
         },
     getMessages:
         function () {

@@ -47,6 +47,7 @@ pref("ibw.standardScripts.script.20", "resource:/scripts/zdb_scripts_perUser.js"
 pref("ibw.standardScripts.script.21", "resource:/scripts/zdb_scripte_feld7120.js");
 pref("ibw.standardScripts.script.22", "resource:/scripts/zdb_set.js");
 pref("ibw.standardScripts.script.23", "resource:/scripts/zdb_isil.js");
+pref("ibw.standardScripts.script.24", "resource:/scripts/k10_suchen_linken.js");
 pref("ibw.hyperlinks.PPNMatch.create", true);
 pref("ibw.hyperlinks.TitleWord.regex", "([^ \r(),;:.?/]*)([ \r(),;:.?/]*)");
 pref("ibw.hyperlinks.TitleWord.ignorecase", false);
