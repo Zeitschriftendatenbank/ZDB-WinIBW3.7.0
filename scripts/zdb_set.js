@@ -93,7 +93,7 @@ SET.prototype = {
                 match;
             switch (this.format) {
             case "d":
-                regexpExe = new RegExp("\n70([0-9][0-9])", 'g');
+                regexpExe = new RegExp("\nE0([0-9][0-9])", 'g');
                 break;
             case "p":
                 regexpExe = new RegExp("\n208@\/([0-9][0-9])", 'g');

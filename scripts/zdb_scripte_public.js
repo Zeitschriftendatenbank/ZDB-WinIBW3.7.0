@@ -7,9 +7,9 @@
 // auto Suchbox
 var anfangsfenster;
 // delimiter
-var delimiter = '\u0192'; // Unterfeldzeichen 'ƒ' = \u0192
+var delimiter = '\u0192'; // Unterfeldzeichen '?' = \u0192
 var delimiterReg = '\u0192'; // regualr expression version Unterfeldzeichen '$' = \$
-var charCode = 402; // Unterfeldzeichen 'ƒ' = 402, Unterfeldzeichen '$' = 36
+var charCode = 402; // Unterfeldzeichen '?' = 402, Unterfeldzeichen '$' = 36
 // message box
 var messageBoxHeader = 'Header';
 // JSON
@@ -86,6 +86,7 @@ function __zdbExemplarNummer(){
     //Schleife von 1 bis 99, da max. 99 Exemplare pro Bibliothek erfasst werden können
     for (var i = 1; i <= 99; i++) {
         var vergleich = 7000 + i;
+		vergleich = "E" +("000" + (vergleich%1000)).slice(-3);
         if (record.indexOf(vergleich) == -1) {
             return i;
         }
@@ -99,7 +100,7 @@ function __zdbExemplarNummer(){
 function __zdbExemplarNummern(){
     application.activeWindow.command('show d', false);
     const record = application.activeWindow.getVariable('P3CLIP');
-    const found = record.match(/\n(70\d\d)/g);
+    const found = record.match(/\n(E\d\d\d)/g);
     found.sort();
     for(var i = 0; i < found.length; i += 1) {
         if('0' == found[i][3]) {
@@ -121,6 +122,7 @@ function __zdbExemplarErfassen(exNum, content, callback){
     // Exemplarsatz anlegen und befüllen
     application.activeWindow.command('e e' + exNum, false);
     var kat70xx = 7000 + exNum; // addition
+	kat70xx = "E" +("000" + (kat70xx%1000)).slice(-3);
     kat70xx = kat70xx + " x\n";
     application.activeWindow.title.insertText(kat70xx);
     application.activeWindow.title.insertText(content);
@@ -1760,4 +1762,3 @@ LANG.prototype = {
         return false;
     }
 };
-

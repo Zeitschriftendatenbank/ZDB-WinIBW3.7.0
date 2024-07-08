@@ -9,7 +9,7 @@
 
 
 //1. ILN, Bibliotheksangaben bei Exemplardaten
-pref("ibw.presentation.syntaxcolor.D.regex.1", "(<[bB][rR]>)(70[0-9][0-9])");
+pref("ibw.presentation.syntaxcolor.D.regex.1", "(<[bB][rR]>)(E[0-9][0-9][0-9])");
 pref("ibw.presentation.syntaxcolor.D.format.1", '$1<span style="font-weight:bold;color:CC3300">$2</span>');
 
 //2. Tags werden fett
@@ -57,9 +57,9 @@ pref("ibw.presentation.syntaxcolor.D.format.12", '$1<a href="$2">$2</a>$3');
 //
 // DA
 //
-pref("ibw.presentation.syntaxcolor.DA.regex.1", "(<[bB][rR]>)(\[\d{4} *\])(.*?)(<[bB][rR]>)");
+pref("ibw.presentation.syntaxcolor.DA.regex.1", "(<[bB][rR]>)(\[\d{3} *\])(.*?)(<[bB][rR]>)");
 pref("ibw.presentation.syntaxcolor.DA.format.1", '$1<span style="font-weight:bold;color:CC3300">$2 $3</span>$4');
-pref("ibw.presentation.syntaxcolor.DA.regex.2", "(<[bB][rR]>)(70[0-9][1-9])");
+pref("ibw.presentation.syntaxcolor.DA.regex.2", "(<[bB][rR]>)(E[0-9][0-9][0-9])");
 pref("ibw.presentation.syntaxcolor.DA.format.2", '$1<span style="font-weight:bold;color:CC3300">$2</span>');
 pref("ibw.presentation.syntaxcolor.DA.regex.3", "(<[bB][rR]>)(7[1-9]\d\d|8\d{3}|4800)");
 pref("ibw.presentation.syntaxcolor.DA.format.3", '$1<span style="font-weight:bold">$2</span>');
@@ -89,7 +89,7 @@ pref("ibw.presentation.syntaxcolor.P.regex.level0", "(<[bB][rR]>)(0\d{2}[A-Z@])"
 pref("ibw.presentation.syntaxcolor.P.format.level0", '$1<span style="font-weight:bold;color:008080">$2</span>');
 pref("ibw.presentation.syntaxcolor.P.regex.level1", "(<[bB][rR]>)(1\d{2}[A-Z@])");
 pref("ibw.presentation.syntaxcolor.P.format.level1", '$1<span style="font-weight:bold;color:000099">$2</span>');
-pref("ibw.presentation.syntaxcolor.P.regex.exnr", "(<[bB][rR]>)(208@\\/\\d{2})");
+pref("ibw.presentation.syntaxcolor.P.regex.exnr", "(<[bB][rR]>)(208@\\/\\d{3})");
 pref("ibw.presentation.syntaxcolor.P.format.exnr", '$1<span style="font-weight:bold;color:CC3300">$2</span>');
 pref("ibw.presentation.syntaxcolor.P.regex.level2", "(<[bB][rR]>)(2\d{2}[A-Z@])");
 pref("ibw.presentation.syntaxcolor.P.format.level2", '$1<span style="font-weight:bold">$2</span>');
@@ -102,7 +102,7 @@ pref("ibw.presentation.syntaxcolor.P.format.subfield2", '<span style="font-weigh
 //
 pref("ibw.presentation.syntaxcolor.PA.regex.iln", "(<[bB][rR]>)(101@ )");
 pref("ibw.presentation.syntaxcolor.PA.format.iln", '$1<span style="font-weight:bold">$2</span>');
-pref("ibw.presentation.syntaxcolor.PA.regex.exnr", "(<[bB][rR]>)(208@\\/\\d{2})");
+pref("ibw.presentation.syntaxcolor.PA.regex.exnr", "(<[bB][rR]>)(208@\\/\\d{3})");
 pref("ibw.presentation.syntaxcolor.PA.format.exnr", '$1<span style="font-weight:bold;color:CC3300">$2</span>');
 pref("ibw.presentation.syntaxcolor.PA.regex.subfield", "(\xc6\x92[a-zA-Z0-9])");
 pref("ibw.presentation.syntaxcolor.PA.format.subfield", '<span style="font-weight:bold;color:CC3300">$0</span>');

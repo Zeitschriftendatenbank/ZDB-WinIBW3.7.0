@@ -4,7 +4,7 @@
 var alt_ppn;
 
 var zdb_updateURL = application.getProfileString('ibw.updateservice', 'url', '');
-if (-1 != zdb_updateURL.indexOf('zeitschriftendatenbank')) {
+if(-1 != zdb_updateURL.indexOf('zeitschriftendatenbank')) {
     application.writeProfileString('ibw.updateservice', 'url', 'http://winibw-repo.sbb.berlin/winibw/37');
 }
 
@@ -12,14 +12,15 @@ if (-1 != zdb_updateURL.indexOf('zeitschriftendatenbank')) {
  * checks if a user script file is already configured . If not a file is created and path configured
  * this function is called on startup
  * */
-__enableUserScriptFile();
-function __enableUserScriptFile() {
-    var loadandSave = application.getProfileString("ibw.userscript.location", "loadandSave", "");
-    if (loadandSave == "") {
-        var language = application.getProfileString("ibw.userscript", "language", "JS").toLowerCase();
-        var theOutput = utility.newFileOutput();
-        var fileOutput = theOutput.createSpecial("ProfD", "winibw." + language);
-        theOutput.close();
+ __enableUserScriptFile();
+function __enableUserScriptFile(){
+    var loadandSave = application.getProfileString("ibw.userscript.location","loadandSave","");
+        if(loadandSave == "")
+        {
+            var language = application.getProfileString("ibw.userscript","language","JS").toLowerCase();
+            var theOutput = utility.newFileOutput();
+            var fileOutput = theOutput.createSpecial("ProfD", "winibw." + language);
+            theOutput.close();
     }
 }
 /**
@@ -27,13 +28,13 @@ function __enableUserScriptFile() {
  *
  * @return array|null
  */
-function __exemplareAnzahl() {
+function __exemplareAnzahl(){
     var regexpExe;
     var format = __zdbGetFormat();
-    var strTitle = application.activeWindow.getVariable("P3CLIP");
-    switch (format) {
+    var strTitle =  application.activeWindow.getVariable("P3CLIP");
+    switch(format) {
         case "D": regexpExe = /\n(70[0-9][0-9])/g;
-            break;
+        break;
         case "P": regexpExe = /\n(208@)/g;
     }
     var alleExe = new Array();
@@ -50,49 +51,56 @@ function __exemplareAnzahl() {
 //date:		2014-03-24
 //--------------------------------------------------------------------------------------------------------
 
-function __zdbGetParallel() {
-    var scr = __zdbCheckScreen(["MT", "8A"], "Parallelausgabe");
-    if (false == scr) return false;
-    var tag, content, regex, matches,
+function __zdbGetParallel(){
+    var scr = __zdbCheckScreen(["MT","8A"],"Parallelausgabe");
+    if(false == scr) return false;
+    var tag, content,regex,matches,
         contents = [],
         i = 0,
         vortext = /Online|Druck/,
         parallel = {};
 
-    if (application.activeWindow.getVariable("P3GDB").match(/P|PA/i)) {
+    if(application.activeWindow.getVariable("P3GDB").match(/P|PA/i))
+    {
         tag = "039D";
-        regex = new RegExp(delimiterReg + "a([^" + delimiterReg + "]*)(?:" + delimiterReg + "n([^" + delimiterReg + "]*))?" + delimiterReg + "9([^" + delimiterReg + "]*)");
+        regex = new RegExp(delimiterReg+"a([^"+delimiterReg+"]*)(?:"+delimiterReg+"n([^"+delimiterReg+"]*))?"+delimiterReg+"9([^"+delimiterReg+"]*)");
     }
-    else if (application.activeWindow.getVariable("P3GDB").match(/D|DA/i)) {
+    else if(application.activeWindow.getVariable("P3GDB").match(/D|DA/i))
+    {
         tag = "4243";
         regex = /([^!]*)!([^!]*)/;
     }
 
-    if ("MT" == scr) {
-        while ((content = application.activeWindow.title.findTag(tag, i, false, false, false)) != "") {
+    if("MT" == scr)
+    {
+        while((content = application.activeWindow.title.findTag(tag,i,false,false,false)) != "")
+        {
             contents[i] = content;
             content = "";
             i++;
         }
     }
-    else ("8A" == scr)
+    else("8A" == scr)
     {
-        while ((content = application.activeWindow.findTagContent(tag, i, false)) != "") {
+        while((content = application.activeWindow.findTagContent(tag,i,false)) != "")
+        {
             // workaround since findTagContent has errors
-            content = content.replace(/^\s+|\s?\n$/g, '');
+            content = content.replace(/^\s+|\s?\n$/g,'');
             contents[i] = content;
             content = "";
             i++;
         }
     }
 
-    for (var x = 0; x < contents.length; x++) {
-        if (vortext.test(contents[x])) {
+    for(var x = 0; x < contents.length; x++)
+    {
+        if(vortext.test(contents[x]))
+        {
             matches = regex.exec(contents[x]);
-            if (matches[3]) {
-                parallel[x] = { votext: matches[2], idn: matches[3] };
+            if(matches[3]) {
+                parallel[x] = {votext:matches[2],idn:matches[3]};
             } else {
-                parallel[x] = { votext: matches[1], idn: matches[2] };
+                 parallel[x] = {votext:matches[1],idn:matches[2]};
             }
         }
     }
@@ -101,14 +109,14 @@ function __zdbGetParallel() {
 
 
 
-function zdbFIDcsv() {
+function zdbFIDcsv(){
     const params = Components.classes["@mozilla.org/embedcomp/dialogparam;1"]
-        .createInstance(Components.interfaces.nsIDialogParamBlock);
+    .createInstance(Components.interfaces.nsIDialogParamBlock);
     params.SetNumberStrings(5);
-    params.SetString(0, "pa");
-    open_xul_dialog("chrome://ibw/content/xul/ZDB_FID_dialog.xul", null, params);
+    params.SetString(0,"pa");
+    open_xul_dialog("chrome://ibw/content/xul/ZDB_FID_dialog.xul", null,params);
     // on cancel
-    if (params.GetString(1) == "cancel") {
+    if(params.GetString(1) == "cancel") {
         return;
     }
 
@@ -117,26 +125,30 @@ function zdbFIDcsv() {
     csv.delimiter = params.GetString(2);
     var start = parseInt(params.GetString(3));
     var zdbid = parseInt(params.GetString(4));
-    zdbid = zdbid - 1;
+    zdbid = zdbid-1;
     params = null;
     var lineArray;
     var zdbids = new Array();
 
     // load file object
     var theFileInput = utility.newFileInput();
-    if (!theFileInput.open(file)) {
-        alert("Datei " + file + " wurde nicht gefunden.");
-        return false;
+    if (!theFileInput.open(file))
+    {
+      alert("Datei " + file + " wurde nicht gefunden.");
+      return false;
     }
     var prompter = utility.newPrompter();
-    if (prompter.confirm("Set erstellen", "Erstelle ein Set anhand der Datei " + file + ". Melde mich wieder, wenn ich fertig bin.")) {
+    if(prompter.confirm("Set erstellen","Erstelle ein Set anhand der Datei " + file+ ". Melde mich wieder, wenn ich fertig bin."))
+    {
         // read the start line
         var aLine = "";
         var i = 1;
         var x = 0;
-        while ((aLine = theFileInput.readLine()) != null) {
-            if ("" == aLine) continue;
-            if (start <= i) {
+        while( (aLine = theFileInput.readLine()) != null)
+        {
+            if("" == aLine) continue;
+            if(start <= i)
+            {
                 lineArray = csv.__csvToArray(aLine);
                 zdbids[x] = lineArray[zdbid];
                 x++;
@@ -145,124 +157,141 @@ function zdbFIDcsv() {
         }
         theFileInput.close();
 
-        application.activeWindow.command("del s0", false);
+        application.activeWindow.command("del s0",false);
         var parallel = new Array();
-        for (var y = 0; y < zdbids.length; y++) {
-            application.activeWindow.command("f zdb " + zdbids[y], false);
+        for(var y = 0; y < zdbids.length; y++)
+        {
+            application.activeWindow.command("f zdb " + zdbids[y],false);
             var tinumber = application.activeWindow.getVariable("P3GTI");
-            application.activeWindow.command("sav " + tinumber, false);
-            if (parallel = __zdbGetParallel()) {
+            application.activeWindow.command("sav " + tinumber,false);
+            if(parallel = __zdbGetParallel())
+            {
 
-                for (var o in parallel) {
-                    application.activeWindow.command("f idn " + parallel[o].idn, false);
+                for(var o in parallel)
+                {
+                    application.activeWindow.command("f idn " + parallel[o].idn,false);
                     var tinumber = application.activeWindow.getVariable("P3GTI");
-                    application.activeWindow.command("sav " + tinumber, false);
+                    application.activeWindow.command("sav " + tinumber,false);
                 }
             }
         }
-        application.activeWindow.command("s s0", false);
-        if (prompter.confirm("Set erstellt", "Fertig! Habe Set erstellt. Soll das Excel-Skript zum Download geöffnet werden?")) {
+        application.activeWindow.command("s s0",false);
+        if(prompter.confirm("Set erstellt","Fertig! Habe Set erstellt. Soll das Excel-Skript zum Download geöffnet werden?"))
+        {
             var xulFeatures = "centerscreen, chrome, close, titlebar,modal=no,dependent=yes, dialog=yes";
-            open_xul_dialog("chrome://ibw/content/xul/ZDB_excelFID_dialog.xul", xulFeatures, params);
+            open_xul_dialog("chrome://ibw/content/xul/ZDB_excelFID_dialog.xul", xulFeatures,params);
         }
     }
-    else {
-        prompter.alert("Abbruch", "Habe Vorgang abgebrochen.")
+    else
+    {
+        prompter.alert("Abbruch","Habe Vorgang abgebrochen.")
     }
 
 }
 
-function zdbFIDset() {
+function zdbFIDset(){
     var currentSet = application.activeWindow.getVariable("P3GSE");
     var setSize = application.activeWindow.getVariable("P3GSZ");
     var prompter = utility.newPrompter();
     //Ergänzung GBV: Wenn in Set0 ausgeführt, wird das Exceltool aufgerufen.
-    if (currentSet == 0) {
+    if (currentSet == 0){
         open_xul_dialog("chrome://ibw/content/xul/ZDB_excelFID_dialog.xul");
         return;
     }
-    if (prompter.confirm("Set erstellen", "Erstelle ein Set anhand des Sets " + currentSet + " mit " + setSize + " Titeln. Melde mich wieder, wenn ich fertig bin.")) {
-        application.activeWindow.command("del s0", false);
+    if(prompter.confirm("Set erstellen","Erstelle ein Set anhand des Sets " + currentSet + " mit " + setSize + " Titeln. Melde mich wieder, wenn ich fertig bin."))
+    {
+        application.activeWindow.command("del s0",false);
         var parallel = new Array();
         var i = 1;
         do {
 
-            application.activeWindow.command("s s" + currentSet + " " + i, false);
+            application.activeWindow.command("s s" + currentSet + " " + i,false);
             var tinumber = application.activeWindow.getVariable("P3GTI");
-            application.activeWindow.command("sav " + tinumber, false);
-            if (parallel = __zdbGetParallel()) {
-                for (var o in parallel) {
-                    application.activeWindow.command("f idn " + parallel[o].idn, false);
+            application.activeWindow.command("sav " + tinumber,false);
+            if(parallel = __zdbGetParallel())
+            {
+                for(var o in parallel)
+                {
+                    application.activeWindow.command("f idn " + parallel[o].idn,false);
                     tinumber = application.activeWindow.getVariable("P3GTI");
-                    application.activeWindow.command("sav " + tinumber, false);
+                    application.activeWindow.command("sav " + tinumber,false);
                 }
             }
             i++;
 
         } while (i <= setSize)
 
-        application.activeWindow.command("s s0", false);
-        if (prompter.confirm("Set erstellt", "Fertig! Habe Set erstellt. Soll das Excel-Skript zum Download geöffnet werden?")) {
+        application.activeWindow.command("s s0",false);
+        if(prompter.confirm("Set erstellt","Fertig! Habe Set erstellt. Soll das Excel-Skript zum Download geöffnet werden?"))
+        {
             open_xul_dialog("chrome://ibw/content/xul/ZDB_excelFID_dialog.xul");
         }
     }
-    else {
-        prompter.alert("Abbruch", "Habe Vorgang abgebrochen.")
+    else
+    {
+        prompter.alert("Abbruch","Habe Vorgang abgebrochen.")
     }
 
 }
 
-function csvBatchTitel() {
+function csvBatchTitel(){
     var csv = new CSV();
-    csv.__csvBatchTitle = function () {
+    csv.__csvBatchTitle = function ()
+    {
         var codes = "";
-        var fields = new Array("0600", "0601");
-        var values = new Array(csv.code, csv.isil);
+        var fields = new Array("0600","0601");
+        var values = new Array(csv.code,csv.isil);
         application.activeWindow.command("k", false);
-        for (var f in fields) {
+        for(var f in fields){
             // we don't want empty fields
-            if (fields[f] != "") {
+            if(fields[f] != "")
+            {
                 //	check if field alredy exists
-                if ((codes = application.activeWindow.title.findTag(fields[f], 0, false, true, false)) == false) {
-                    //		move cursor to the end of the buffer
-                    application.activeWindow.title.endOfBuffer(false);
-                    //		insert a new field with the params value
-                    application.activeWindow.title.insertText(fields[f] + " " + values[f] + "\n");
-                    //	field does already exist
-                }
-                else {
-                    var codeFalse = 0;
-                    // check field  if code is already in it
-                    var code = codes.split(";");
-                    for (var y in code) {
-                        if (code[y].replace(/^\s+/, '').replace(/\s+$/, '') == values[f].replace(/^\s+/, '').replace(/\s+$/, '')) { // replace leading an following whitespaces
-                            csv.__csvLOG("Zeichenkette " + values[f] + " war schon im Feld " + fields[f] + " vorhanden.");
-                            codeFalse = 1;
-                        }
+                    if((codes = application.activeWindow.title.findTag(fields[f], 0, false, true, false)) == false)
+                    {
+                //		move cursor to the end of the buffer
+                        application.activeWindow.title.endOfBuffer(false);
+                //		insert a new field with the params value
+                        application.activeWindow.title.insertText(fields[f] + " " + values[f] + "\n");
+                //	field does already exist
                     }
-                    // if code is not already in field
-                    if (codeFalse == 0) {
-                        application.activeWindow.title.endOfField(false);
+                    else
+                    {
+                        var codeFalse = 0;
+                        // check field  if code is already in it
+                        var code = codes.split(";");
+                        for(var y in code){
+                            if(code[y].replace (/^\s+/, '').replace (/\s+$/, '') == values[f].replace (/^\s+/, '').replace (/\s+$/, '')){ // replace leading an following whitespaces
+                                csv.__csvLOG("Zeichenkette " + values[f] + " war schon im Feld " + fields[f] + " vorhanden.");
+                                codeFalse = 1;
+                            }
+                        }
+                        // if code is not already in field
+                        if(codeFalse == 0) {
+                            application.activeWindow.title.endOfField(false);
                         //		insert params value
 
-                        application.activeWindow.title.insertText(";" + values[f]);
+                            application.activeWindow.title.insertText(";" + values[f]);
+                        }
                     }
-                }
             }
-            else {
+            else
+            {
                 //do nothing
             }
         }
         //			save buffer
-        return csv.__csvSaveBuffer(true, "hinzugefuegt " + values[f]);
+            return csv.__csvSaveBuffer(true,"hinzugefuegt " + values[f]);
     }
 
-    csv.__csvSetProperties(csv.__csvBatchTitle, ["", "ZDB-ID"], 'ZDB-ID', 'zdb', false, "ZDB_LOG.txt");
-    try {
+    csv.__csvSetProperties(csv.__csvBatchTitle,["","ZDB-ID"],'ZDB-ID','zdb',false,"ZDB_LOG.txt");
+    try
+    {
         csv.__csvConfig();
         csv.__csvBatch();
     }
-    catch (e) {
+    catch(e)
+    {
         csv.__csvError(e);
     }
 }
@@ -284,7 +313,7 @@ function csvBatchTitel() {
 //--------------------------------------------------------------------------------------------------------
 function csvBatchExemplar() {
     var csv = new CSV();
-    csv.__csvBatchExemplar = function () {
+    csv.__csvBatchExemplar = function() {
 
         //	create field 7120 content
         // start volume
@@ -294,7 +323,7 @@ function csvBatchExemplar() {
         var b2trenner = (csv.line['Band Beginn'] == "" || !csv.line['Band Beginn']) ? "" : ".";
 
         // issue start
-        var h = (csv.line['Heft Beginn'] == "" || !csv.line['Heft Beginn']) ? "" : "," + csv.line['Heft Beginn'];
+        var h = (csv.line['Heft Beginn'] == "" || !csv.line['Heft Beginn']) ? "" : ","+ csv.line['Heft Beginn'];
 
         // start year
         var b = (csv.line['Jahr Beginn'] == "" || !csv.line['Jahr Beginn']) ? "" : "/b" + csv.line['Jahr Beginn'];
@@ -307,13 +336,13 @@ function csvBatchExemplar() {
         var E2trenner = (csv.line['Band Ende'] == "" || !csv.line['Band Ende']) ? "" : ".";
 
         // issue end
-        var H = (csv.line['Heft Ende'] == "" || !csv.line['Heft Ende']) ? "" : "," + csv.line['Heft Ende'];
+        var H = (csv.line['Heft Ende'] == "" || !csv.line['Heft Ende']) ? "" : ","+csv.line['Heft Ende'];
 
         // year end
         var E = (csv.line['Jahr Ende'] == "" || !csv.line['Jahr Ende']) ? "" : "/E" + csv.line['Jahr Ende'];
         var E2 = (csv.line['Jahr Ende'] == "" || !csv.line['Jahr Ende']) ? "" : csv.line['Jahr Ende'];
 
-        if ((csv.line['Band Ende'] == "" || !csv.line['Band Ende']) && (csv.line['Jahr Ende'] == "" || !csv.line['Jahr Ende'])) {
+        if((csv.line['Band Ende'] == "" || !csv.line['Band Ende']) && (csv.line['Jahr Ende']  == "" || !csv.line['Jahr Ende'])) {
             V = "-";
         }
 
@@ -323,39 +352,40 @@ function csvBatchExemplar() {
         var movingWall = false;
         var mw7140 = "";
         var mw8032 = "";
-        if (csv.line['Moving Wall'] && csv.line['Moving Wall'] != '') {
+        if(csv.line['Moving Wall'] && csv.line['Moving Wall'] != '')
+        {
             movingWall = csv.line['Moving Wall'].toString();
             var mwTeile = movingWall.match(/([+-])(\d)([YVMDI])/);
-            mw7140 = "\n7140 " + mwTeile[1] + mwTeile[3] + "00" + mwTeile[2];
-            switch (mwTeile[3]) {
-                case "Y": var entity = "Jahre";
-                    break;
-                case "V": var entity = "Jahrgänge";
-                    break;
-                case "M": var entity = "Monate";
-                    break;
-                case "D": var entity = "Tage";
-                    break;
-                case "I": var entity = "Hefte";
-                    break;
+            mw7140 = "\n7140 "+mwTeile[1]+mwTeile[3]+"00"+mwTeile[2];
+            switch(mwTeile[3]){
+                case "Y":  var entity = "Jahre";
+                break;
+                case "V":  var entity = "Jahrgänge";
+                break;
+                case "M":  var entity = "Monate";
+                break;
+                case "D":  var entity = "Tage";
+                break;
+                case "I":  var entity = "Hefte";
+                break;
             }
-            mw8032 = " [" + mwTeile[1] + mwTeile[2] + " " + entity + "]";
+            mw8032 = " ["+mwTeile[1]+mwTeile[2]+" "+entity+"]";
         }
 
 
-        //	create value for field 7135
+    //	create value for field 7135
         var lizenz = "";
-        switch (csv.code) {
+        switch(csv.code){
             case "nl": lizenz = "=x Nationallizenz";
-                break;
+            break;
             case "ad": lizenz = "=x DFG-geförderte Allianz-Lizenz";
-                break;
+            break;
             case "al": lizenz = "=x Allianz-Lizenz";
-                break;
+            break;
             case "nk": lizenz = "=x Nationalkonsortium";
-                break;
+            break;
             case "": lizenz = "";
-                break;
+            break;
             default: lizenz = "";
         }
 
@@ -363,9 +393,9 @@ function csvBatchExemplar() {
         application.activeWindow.command("show d", false);
         // Sichert Inhalt des Zwischenspeichers, da dieser sonst durch copyTitle() überschrieben würde
 
-        try {
+        try{
             var clipboard = application.activeWindow.clipboard;
-        } catch (e) {
+        } catch(e){
             // do nothing
         }
         // Kopiert Titel
@@ -374,9 +404,10 @@ function csvBatchExemplar() {
         //Schleife von 1 bis 99, da max. 99 Exemplare pro Bibliothek erfasst werden können
         for (var i = 1; i <= 99; i++) {
             var vergleich = 7000 + i;
-            if (kopie.indexOf(vergleich) == -1) {
+            if (kopie.indexOf(vergleich) == -1) {	
+				vergleich = "E" +("000" + (vergleich%1000)).slice(-3);			
                 var eingabe = vergleich + " x\n4800 " + csv.eigene_bibliothek + "\n7120 " + bestandsangaben + "\n7135 =u " + csv.line['URL'] + lizenz + mw7140 + "\n8032 " + bestandsangaben2 + mw8032 + "\n";
-                if ('' !== csv.text) eingabe += "8034 " + csv.text + "\n";
+                if('' !== csv.text) eingabe += "8034 " + csv.text + "\n";
                 // Exemplarsatz anlegen und befüllen
                 application.activeWindow.command("e e" + i, false);
                 if (application.activeWindow.status != "ERROR") {
@@ -384,63 +415,68 @@ function csvBatchExemplar() {
                     application.activeWindow.title.insertText(eingabe);
                 }
                 //save buffer
-                return csv.__csvSaveBuffer(true, eingabe);
+                return csv.__csvSaveBuffer(true,eingabe);
             }
         }
     }
     csv.__csvSetCallback(csv.__csvBatchExemplar);
-    try {
+    try
+    {
         csv.__csvConfig();
         csv.__csvBatch();
     }
-    catch (e) {
+    catch(e)
+    {
         csv.__csvError("csvBatchExemplar:" + e);
     }
 }
 
-function excelTabelle() {
+function excelTabelle(){
     var xulFeatures = "centerscreen, chrome, close, titlebar,modal=no,dependent=yes, dialog=yes";
     open_xul_dialog("chrome://ibw/content/xul/k10_excelTabelle_dialog.xul", xulFeatures);
 }
 
-function ZDBWinIBWInfo() {
-    application.shellExecute("http://www.zeitschriftendatenbank.de/erschliessung/winibw", 5, "open", "");
+function ZDBWinIBWInfo(){
+    application.shellExecute ("http://www.zeitschriftendatenbank.de/erschliessung/winibw", 5, "open", "");
 }
 
-function WinIBWSupport() {
-    application.shellExecute("mailto:zdb-winibw@sbb.spk-berlin.de?subject=[WinIBW 3.7.0] ", 5, "open", "");
+function WinIBWSupport(){
+    application.shellExecute ("mailto:zdb-winibw@sbb.spk-berlin.de?subject=[WinIBW 3.7.0] ", 5, "open", "");
 }
 
-function zdbformat() {
+function zdbformat(){
     var strkat, re;
-    if (!application.activeWindow.title) {
-        application.shellExecute("https://www.zeitschriftendatenbank.de/erschliessung/zdb-format/", 5, "open", "");
+    if (!application.activeWindow.title)
+    {
+        application.shellExecute ("http://www.zeitschriftendatenbank.de/erschliessung/zdbformat/", 5, "open", "");
     }
-    else {
+    else
+    {
         strkat = application.activeWindow.title.tag;
         re = new RegExp("480.|482[02]|6700|7...|8[0-5]..|^...$");
-        if (re.test(strkat)) {
-            application.shellExecute("http://www.zeitschriftendatenbank.de/erschliessung/zdb-format/" + strkat, 5, "open", "");
+        if(re.test(strkat)) {
+            application.shellExecute ("http://www.zeitschriftendatenbank.de/erschliessung/zdbformat/" + strkat, 5, "open", "");
         } else {
-            application.shellExecute("http://www.zeitschriftendatenbank.de/fileadmin/user_upload/ZDB/pdf/zdbformat/" + strkat + ".pdf", 5, "open", "");
+            application.shellExecute ("http://www.zeitschriftendatenbank.de/fileadmin/user_upload/ZDB/pdf/zdbformat/" + strkat + ".pdf", 5, "open", "");
         }
     }
 }
 
-function sucheErsetze() {
+function sucheErsetze(){
     var xulFeatures = "centerscreen, chrome, close, titlebar,resizable, modal=no, dependent=yes, dialog=no";
-    open_xul_dialog("chrome://ibw/content/xul/gbv_sucheErsetze_dialog.xul", xulFeatures);
+    open_xul_dialog("chrome://ibw/content/xul/k10_sucheErsetze_dialog.xul", xulFeatures);
 }
 
 /**
 * Scherer Birgit, BSZ
 * 10.04.2012
 */
-function tf_vollenden() {
+function tf_vollenden()
+{
     var katString;
     var temp;
-    var pos = 0;
-    var strCounter = 0;
+    var pos=0;
+    var strCounter=0;
     var windstat;
 
 
@@ -452,7 +488,7 @@ function tf_vollenden() {
     alt_ppn = 0;
 
 
-    //-------------------------------------------
+        //-------------------------------------------
     // Behandlung von $d (Datum)
     //-------------------------------------------
 
@@ -460,16 +496,16 @@ function tf_vollenden() {
 
 
     // String $d bis Ende
-    pos = temp.indexOf(delimiter + "d");
-    if ((pos > 0) && (temp.length > pos + 2)) {
-        temp = temp.substring(pos + 2);
+    pos = temp.indexOf(delimiter+"d");
+    if ((pos > 0) && (temp.length > pos+2)) {
+        temp = temp.substring(pos+2);
     }
 
     //** Eine Jahreszahl muss vorhanden sein. Deshalb die unsaubere Programmierung. **
 
     // Falls $c vorhanden, dann nur den Inhalt *bis* $c verwenden
-    var pos1 = temp.indexOf(delimiter + "c");
-    var pos2 = temp.indexOf(delimiter + "g");
+    var pos1 = temp.indexOf(delimiter+"c");
+    var pos2 = temp.indexOf(delimiter+"g");
 
     // Den kleineren (aber positiven) Wert verwenden.
     // Beachte: $c kommt immer vor $g (Reihenfolge)
@@ -484,10 +520,10 @@ function tf_vollenden() {
 
     // Nur wenn ein Positionswert gefunden wurde und.. s.u.
     if (pos > 0) {
-        temp = temp.substring(0, pos);
+        temp = temp.substring(0,pos);
         //..und der Datumsstring keinen Bindestrich enthaelt.
         if (temp.indexOf("-") <= 0) {
-            temp = delimiter + "c" + temp;
+            temp = delimiter+"c" + temp;
         }
     }
 
@@ -502,14 +538,14 @@ function tf_vollenden() {
         temp = temp.replace(" ", "");
 
         // Sonderfall: Kein Endedatum, String endet mit Bindestrich
-        if (temp.charAt(temp.length - 1) == "-")
-            temp = temp.replace("-", "");
+        if (temp.charAt(temp.length-1) == "-")
+            temp = temp.replace("-" , "");
 
-        temp = temp.replace("-", delimiter + "b");
+        temp = temp.replace("-", delimiter+"b");
     }
 
     application.activeWindow.title.endOfBuffer(false);
-    application.activeWindow.title.insertText("\n548 " + temp + delimiter + "datv");
+    application.activeWindow.title.insertText("\n548 " + temp + delimiter+"datv");
 
 
 
@@ -517,23 +553,23 @@ function tf_vollenden() {
     // Behandlung der Veranstaltungsorte ($c)
     //-------------------------------------------
 
-    var ppn = "";
+    var ppn="";
 
     temp = katString;  // Urspruenglichen Kategoriestring in temp einspeichen
 
 
     //-- Erstes $c suchen und den String danach mit split aufteilen (in ein Orte-Array)
 
-    pos = temp.indexOf(delimiter + "c");
-    if ((pos > 0) && (temp.length > pos + 2)) {
-        temp = temp.substring(pos + 2);
+    pos = temp.indexOf(delimiter+"c");
+    if ((pos > 0) && (temp.length > pos+2)) {
+        temp = temp.substring(pos+2);
 
         //_showMessage("$c ist vorhanden");
 
         // Falls noch $g vorkommt
-        pos = temp.indexOf(delimiter + "g");
+        pos = temp.indexOf(delimiter+"g");
         if (pos > 0) {
-            temp = temp.substring(0, pos);
+            temp = temp.substring(0,pos);
         }
 
         var ortArray = temp.split("; ");
@@ -554,7 +590,7 @@ function tf_vollenden() {
 
 
         // Schleife ueber die Orte (gelistet im Editfenster)
-        for (var i = 0; i < anzOrte; i++) {
+        for (var i=0; i<anzOrte; i++) {
 
             ort = ortArray[i];
 
@@ -571,8 +607,8 @@ function tf_vollenden() {
 
             // Eintraege in die globalen Arrays einstellen
             winId = application.activeWindow.windowID;  // ID des Suchfensters
-            search_winIdArray.push(winId);
-            search_ortArray.push(ort);
+            search_winIdArray.push( winId );
+            search_ortArray.push( ort );
 
             windstat = application.activeWindow.status;  // Fuer den Nohits-Fall
 
@@ -590,7 +626,7 @@ function tf_vollenden() {
 
                 application.activeWindow.closeWindow();  // Schliessen des Suchfensters
                 application.activateWindow(edit_winId);  // Editfenster aktivieren
-                application.activeWindow.title.insertText("\n551 " + ort + delimiter + "4ortv");
+                application.activeWindow.title.insertText("\n551 " + ort + delimiter+"4ortv");
 
                 // Eintraege aus den globalen Arrays entfernen.
                 // (Relevant bei mehreren Orten/Suchfenstern.)
@@ -599,7 +635,7 @@ function tf_vollenden() {
 
                 // Wechsel zu einem evtl. noch vorhandenen Suchfenster
                 if (search_winIdArray.length > 0) {
-                    application.activateWindow(search_winIdArray[search_winIdArray.length - 1])
+                    application.activateWindow( search_winIdArray[search_winIdArray.length-1] )
                 }
             }
             else { // Es gibt Treffer -> zwei Faelle
@@ -611,7 +647,7 @@ function tf_vollenden() {
 
                     application.activeWindow.closeWindow();  // Schliessen des Suchfensters
                     application.activateWindow(edit_winId);  // Editfenster aktivieren
-                    application.activeWindow.title.insertText("\n551 !" + ppn + "!" + delimiter + "4ortv");
+                    application.activeWindow.title.insertText("\n551 !" + ppn + "!"+delimiter+"4ortv");
 
                     // Eintraege aus den globalen Arrays entfernen.
                     // (Relevant bei mehreren Orten/Suchfenstern.)
@@ -620,7 +656,7 @@ function tf_vollenden() {
 
                     // Wechsel zu einem evtl. noch vorhandenen Suchfenster
                     if (search_winIdArray.length > 0) {
-                        application.activateWindow(search_winIdArray[search_winIdArray.length - 1])
+                        application.activateWindow( search_winIdArray[search_winIdArray.length-1] )
                     }
                 }
                 else {
@@ -635,12 +671,12 @@ function tf_vollenden() {
                     // Hintergrund: Wuerde der Nutzer das Suchfenster (fuer die Orte)
                     // einfach schliessen, so gaebe es ueberhaupt einen Eintrag.
 
-                    // Zum Editfenster wechseln
+                        // Zum Editfenster wechseln
                     application.activateWindow(edit_winId);
-                    // Der prophylaktische Eintrag
-                    application.activeWindow.title.insertText("\n551 " + ort + delimiter + "4ortv");
-                    // Wiederaktivieren des Suchfensters
-                    application.activateWindow(winId);
+                        // Der prophylaktische Eintrag
+                    application.activeWindow.title.insertText("\n551 " + ort + delimiter+"4ortv");
+                        // Wiederaktivieren des Suchfensters
+                    application.activateWindow( winId );
 
 
                     ortSuchfensterZaehler++;  // Hochzaehlen
@@ -648,16 +684,16 @@ function tf_vollenden() {
                     // Zusatztext fuer die Message-Box (ab zwei Orten)
                     if (ortSuchfensterZaehler > 1) {
                         zusatzText = "Achtung, Suchfenster fuer den "
-                            + ortSuchfensterZaehler + "-ten Ort\n\n";
+                                   + ortSuchfensterZaehler + "-ten Ort\n\n";
                     }
 
                     application.messageBox("", zusatzText
-                        + "Die Körperschaftensuche ergab " + strCounter
-                        + " Treffer, bitte wählen Sie einen Satz aus aktivieren Sie"
-                        + " dann die Funktion 'TF_Vollenden_Forsetzen'.\n"
-                        + "Wenn Sie den passenden Ort nicht finden, können Sie in"
-                        + " dem Fenster eine erneute Suche tätigen und dann erst die"
-                        + " Funktion 'TF_Vollenden_Fortsetzen' ausführen", "");
+                      + "Die Körperschaftensuche ergab " + strCounter
+                      + " Treffer, bitte wählen Sie einen Satz aus aktivieren Sie"
+                      + " dann die Funktion 'TF_Vollenden_Forsetzen'.\n"
+                      + "Wenn Sie den passenden Ort nicht finden, können Sie in"
+                       + " dem Fenster eine erneute Suche tätigen und dann erst die"
+                      + " Funktion 'TF_Vollenden_Fortsetzen' ausführen", "");
                     // "Sollten Sie keinen entsprechenden Normdatensatz vorfinden,
                     //so schließen Sie einfach das aktuelle Fenster.", "");
                 }
@@ -673,7 +709,8 @@ function tf_vollenden() {
 * Scherer Birgit, BSZ
 * 10.04.2012
 */
-function tf_vollenden_fortsetzen() {
+function tf_vollenden_fortsetzen()
+{
     var anzSuchfenster = search_winIdArray.length;  // Anzahl der geoeffneten Suchfenster
     var ppn;
     var winId;
@@ -684,7 +721,7 @@ function tf_vollenden_fortsetzen() {
 
 
     //-- Stets nur das letzte Suchfenster 'abarbeiten' (sofern es mehrere gibt).
-    winId = search_winIdArray[anzSuchfenster - 1];  // ID des (letzten) Suchfensters
+    winId = search_winIdArray[anzSuchfenster-1];  // ID des (letzten) Suchfensters
 
     //_showMessage("WINID: " + winId + " -- Ort: " + search_ortArray[anzSuchfenster-1]);
 
@@ -745,8 +782,8 @@ function tf_vollenden_fortsetzen() {
         ppn = application.activeWindow.getVariable("P3GPP");
     }
 
-    //_showMessage("alt_ppn: " + alt_ppn + "\n\n"   + "XX: " + xx + " -- PPN: " + ppn);
-    //_showMessage("XX: " + xx + " -- PPN: " + ppn);
+//_showMessage("alt_ppn: " + alt_ppn + "\n\n"   + "XX: " + xx + " -- PPN: " + ppn);
+//_showMessage("XX: " + xx + " -- PPN: " + ppn);
 
     alt_ppn = ppn;  // Merker belegen (alt_ppn ist eine glob. Variable)
 
@@ -762,9 +799,9 @@ function tf_vollenden_fortsetzen() {
     application.activateWindow(edit_winId);
 
     application.activeWindow.title.startOfBuffer(false);  // Ganz oba na ganna
-    suchZeile = "551 " + search_ortArray[anzSuchfenster - 1] + delimiter + "4ortv";  // Suchzeile
-    // Suche ausfuehren
-    flg = application.activeWindow.title.find(suchZeile, false, false, false);
+    suchZeile = "551 " + search_ortArray[anzSuchfenster-1] + delimiter+"4ortv";  // Suchzeile
+        // Suche ausfuehren
+    flg = application.activeWindow.title.find(suchZeile,false,false,false);
 
     if (flg) {
         //_showMessage("gefunden");
@@ -772,7 +809,7 @@ function tf_vollenden_fortsetzen() {
         //application.activeWindow.title.lineUp(1,false);
 
         //application.activeWindow.title.endOfBuffer(false);
-        application.activeWindow.title.insertText("551 !" + ppn + "!" + delimiter + "4ortv\n");
+        application.activeWindow.title.insertText("551 !" + ppn + "!"+delimiter+"4ortv\n");
     }
     else {
         _showMessage("Fehler Ortsnamenvorage: Keine Uebereinstimmung Array-Editfenster" + suchZeile);
@@ -790,7 +827,7 @@ function tf_vollenden_fortsetzen() {
     // Suchfenster zur Abarbeitung aktiviert.
     if (search_winIdArray.length > 0) {
         //_showMessage("Anz. Such-WinIDs (nachher 2): " + search_winIdArray.length, "vollenden_fortsetzen()");
-        winId = search_winIdArray[search_winIdArray.length - 1];
+        winId = search_winIdArray[ search_winIdArray.length-1 ];
 
         // Die Try-Struktur wird benoetigt, wenn bei zwei Suchfenstern das
         // erst-geoeffnete haendich geschlossen wurde.
@@ -798,8 +835,8 @@ function tf_vollenden_fortsetzen() {
             flgWinId = application.activateWindow(winId);    // Suchfenster aktivieren
 
             // Im FEHLERFALL abarbeiten
-            if (!flgWinId) {
-                _showMessage("Fehler mit WinID (Restfenster): " + winId, "vollenden_fortsetzen");
+            if (! flgWinId) {
+                _showMessage("Fehler mit WinID (Restfenster): " + winId , "vollenden_fortsetzen");
                 search_winIdArray.pop();  // WinID aus dem Array entfernen
                 search_ortArray.pop();
             }
@@ -819,55 +856,70 @@ function tf_vollenden_fortsetzen() {
 //author: 		Carsten Klee
 //date:		2012-11-12
 //--------------------------------------------------------------------------------------------------------
-function zdbGNDSkripte() {
-    application.shellExecute("https://wiki.dnb.de/display/ILTIS/GND-WinIBW-Skripte+und+-Datenmasken", 5, "open", "");
+function zdbGNDSkripte()
+{
+    application.shellExecute ("https://wiki.dnb.de/display/ILTIS/GND-WinIBW-Skripte+und+-Datenmasken", 5, "open", "");
 }
 
-function stapelJob() {
+function stapelJob()
+{
     var xulFeatures = "centerscreen, chrome, close, titlebar,resizable, modal=no, dependent=yes, dialog=no";
     open_xul_dialog("chrome://ibw/content/xul/ZDB_stapelJob_dialog.xul", xulFeatures);
 }
 
+function Pruezibik() {
+    __zdbPruezibik();
+}
+
+function __zdbPruezibik(bin) {
+    bin = (typeof bin !== 'undefined') ?  bin : '';
+    var bik_in = inputBox('Prüfziffer-Berechnung','Bitte die sechstellige Grund-BIK eingeben', bin);
+    if(!bik_in) {
+        return false;
+    }
+    if(bik_in.length != 6) {
+        __zdbError('Die BIK muss aus genau 6 Ziffern bestehen');
+        __zdbPruezibik(bik_in);
+        return;
+    }
+    var z1 = bik_in[5] * 2,
+        z2 = bik_in[4] * 3,
+        z3 = bik_in[3] * 4,
+        z4 = bik_in[2] * 5,
+        z5 = bik_in[1] * 6,
+        z6 = bik_in[0] * 7;
+
+    var sum = z1 + z2 + z3 + z4 + z5 + z6;
+    var sum2 = Math.floor(sum / 11);
+    var prue = sum - ( sum2 * 11);
+    if(prue == 10) {
+        prue = 'X'
+    }
+    var bik = bik_in + "-" + prue;
+    application.activeWindow.clipboard = bik;
+
+    __meldung('Einzelne Schritte der Berechnung für BIK ' + bik_in + " :\n"
+            + "Wert Ziffer 1: " + z6 + "\n"
+            + "Wert Ziffer 2: " + z5 + "\n"
+            + "Wert Ziffer 3: " + z4 + "\n"
+            + "Wert Ziffer 4: " + z3 + "\n"
+            + "Wert Ziffer 5: " + z2 + "\n"
+            + "Wert Ziffer 6: " + z1 + "\n"
+            + "Summe der Werte: " + sum + "\n"
+            + "INTEGER von Summe/11: " + sum2 + "\n"
+            + "Prüfziffer ist " + prue + "\n"
+            + "-------------------------------------\n"
+            + "BIK = " + bik + "\n"
+            + "... wurde in die Zwischenablage kopiert."
+    );
+}
+
 function isil_online() {
-    var strScreen = __zdbCheckScreen(['8A', 'MT', 'IT', 'MI'], 'ISIL Online');
-    if (false == strScreen) return false;
-    if ('Tw' != application.activeWindow.getVariable('P3VMC')) {
+    var strScreen = __zdbCheckScreen(['8A','MT','IT','MI'],'ISIL Online');
+    if(false == strScreen) return false;
+    if('Tw' != application.activeWindow.getVariable('P3VMC')) {
         return __zdbError('Die Funktion kann nur in Verbindung mit Tw-Sätzen genutzt werden.');
     }
     __zdbJSON(application.activeWindow.getVariable('P3GPP'));
-    application.shellExecute('http://ld.zdb-services.de/resource/organisations/' + _rec['008H'][0]['e'][0], 5, 'open', '');
-}
-
-/**
-* Inserts a subfield with content
-*
-* @param {string} field the field for the subfield
-* @param {string} subfield the subfield tag
-* @param {string} content the content of the subfield
-* @param {string} pos optional: the subfield position 0 ... x
-* @param {string} pos optional: the occurence of a repeatable field 0 ... x
-*/
-function __zdbInsertSubfield(field, subfield, content, pos, occ) {
-    var data = '',
-        splitted = [],
-        splitter;
-    if (typeof occ === 'undefined') {
-        occ = 0;
-    }
-    if ('' == (data = application.activeWindow.title.findTag(field, occ, false, true, false))) {
-        return false;
-    }
-    splitter = ('P' == __zdbGetFormat()) ? delimiter : '$';
-    splitted = data.split(splitter);
-    if (typeof pos === 'undefined') {
-        splitted.push(subfield + content);
-        if('a' != splitted[0][0]) {
-            splitted[0] = 'a' + splitted[0];
-        }
-        splitted.sort();
-        splitted[0] = splitted[0].substr(1);
-    } else {
-        splitted.splice(pos, 0, subfield + content);
-    }
-    application.activeWindow.title.insertText(splitted.join(splitter));
+    application.shellExecute('http://ld.zdb-services.de/resource/organisations/'+_rec['008H'][0]['e'][0],5,'open','');
 }
