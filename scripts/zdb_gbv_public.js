@@ -391,3 +391,35 @@ function rechercheStapel()
 	var xulFeatures = "centerscreen, chrome, close, titlebar,resizable, modal=no,dependent=yes, dialog=yes";
 	open_xul_dialog("chrome://ibw/content/xul/gbv_rechercheStapel_dialog.xul", xulFeatures);
 }
+
+function __feldInhalt(strTitle, strFeld, bPlus){
+	/*Ermitteln von Feldern aus der Vollanzeige (nicht Korrekturstatus!)
+	Nur das 1. Vorkommnis der Feld + Inhalt wird zurückgegeben
+	In strTitle muss der kopierte Datensatz übergeben werden
+	In strFeld muss das gesuchte Feld genannt werden
+	Mit bPlus wird festgelegt, ob Ausgabewert mit Feld (true) oder ohne (false)
+	Funktionsaufruf: __feldInhalt(strTitle, "4000", true)
+	auch Pica+ möglich: __feldInhalt(strTitle, "209A", true);
+	*/
+	var strGesuchtesFeld, strGesuchtesFeldPlus;
+	var zeilen = strTitle.split("\r\n");
+	var laenge = strFeld.length;
+	var i;
+	for (i=0; i<zeilen.length; i++){
+		if (zeilen[i].substring(0,laenge) == strFeld) {
+//		strGesuchtesFeldPlus = zeilen[i];
+			strGesuchtesFeldPlus = "\n" + zeilen[i]; //14.6.18: Zeilenumbruch davorgesetzt!
+			strGesuchtesFeld = zeilen[i].substring(laenge+1);
+			break;
+		} else {
+			strGesuchtesFeldPlus= "";
+			strGesuchtesFeld = "";
+		}
+	}
+	//Rückgabewert mit Feld oder ohne?
+	if (bPlus == true){
+		return strGesuchtesFeldPlus;
+		} else {
+			return strGesuchtesFeld
+		}
+}

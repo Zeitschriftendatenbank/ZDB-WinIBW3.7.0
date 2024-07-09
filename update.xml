@@ -31,8 +31,6 @@
   <file source="scripts/dnb_public_extern.js" destination="scripts\dnb_public_extern.js"/>
   <file source="scripts/dnb_titles.js" destination="scripts\dnb_titles.js"/>
   <file source="scripts/zdb_datenmasken.js" destination="scripts\zdb_datenmasken.js"/>
-  <file source="scripts/zdb_exemplarmasken.js" destination="scripts\zdb_exemplarmasken.js"/>
-  <file source="scripts/zdb_gbv_public.js" destination="scripts\zdb_gbv_public.js"/>
   <file source="startup/start_GBV.htm" destination="startup\start_GBV.htm"/>
   <file source="startup/start_ZDB.htm" destination="startup\start_ZDB.htm"/>
   <file source="tables/0501.tab" destination="tables\0501.tab"/>
@@ -89,8 +87,6 @@
   <file source="chrome/ibw/content/xul/ZDB_stapelJob_dialog.xul" destination="chrome\ibw\content\xul\ZDB_stapelJob_dialog.xul"/>
   <file source="chrome/ibw/content/xul/gbv_datenmasken_dialog.js" destination="chrome\ibw\content\xul\gbv_datenmasken_dialog.js"/>
   <file source="chrome/ibw/content/xul/gbv_datenmasken_dialog.xul" destination="chrome\ibw\content\xul\gbv_datenmasken_dialog.xul"/>
-  <file source="chrome/ibw/content/xul/gbv_exemplarmasken_dialog.js" destination="chrome\ibw\content\xul\gbv_exemplarmasken_dialog.js"/>
-  <file source="chrome/ibw/content/xul/gbv_exemplarmasken_dialog.xul" destination="chrome\ibw\content\xul\gbv_exemplarmasken_dialog.xul"/>
   <file source="chrome/ibw/content/xul/gbv_hilfe_dialog.js" destination="chrome\ibw\content\xul\gbv_hilfe_dialog.js"/>
   <file source="chrome/ibw/content/xul/gbv_hilfe_dialog.xul" destination="chrome\ibw\content\xul\gbv_hilfe_dialog.xul"/>
   <file source="chrome/ibw/content/xul/gbv_kategorie_dialog.xul" destination="chrome\ibw\content\xul\gbv_kategorie_dialog.xul"/>
@@ -110,6 +106,14 @@
   <file source="ttlcopy/zdb_titeldatenkopie_parallel.ttl" destination="ttlcopy\zdb_titeldatenkopie_parallel.ttl"/>
   <file source="defaults/pref/setup.js" destination="defaults\pref\setup.js"/>
   <file source="defaults/pref/syntaxcolor.js" destination="defaults\pref\syntaxcolor.js"/>
+ </update>
+ <update date="20240709">
+  <file source="scripts/zdb_exemplarmasken.js" destination="scripts\zdb_exemplarmasken.js"/>
+  <file source="scripts/zdb_gbv_public.js" destination="scripts\zdb_gbv_public.js"/>
+  <file source="chrome/ibw/content/xul/gbv_exemplarmasken_dialog.js" destination="chrome\ibw\content\xul\gbv_exemplarmasken_dialog.js"/>
+  <file source="chrome/ibw/content/xul/gbv_exemplarmasken_dialog.xul" destination="chrome\ibw\content\xul\gbv_exemplarmasken_dialog.xul"/>
+  <file source="chrome/ibw/content/xul/k10_exemplarmasken_dialog.js" destination="chrome\ibw\content\xul\k10_exemplarmasken_dialog.js"/>
+  <file source="chrome/ibw/content/xul/k10_exemplarmasken_dialog.xul" destination="chrome\ibw\content\xul\k10_exemplarmasken_dialog.xul"/>
  </update>
  <update date="20230522">
   <file source="scripts/zdb_isil.js" destination="scripts\zdb_isil.js"/>
