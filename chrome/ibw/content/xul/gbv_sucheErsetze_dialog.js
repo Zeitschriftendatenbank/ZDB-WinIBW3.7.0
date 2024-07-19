@@ -21,22 +21,22 @@ Bei XUL soll dies mit einer  zukünftigen WinIBW3-Version auch möglich sein.
 //Globale Variable: -------------------------------------------------------
 // Pull in the WinIBW application object:
 var application = Components.classes["@oclcpica.nl/kitabapplication;1"]
-                    .getService(Components.interfaces.IApplication),
+    .getService(Components.interfaces.IApplication),
 
     zeigeWeitereBedingungen = false,
 
     utility = {
         newFileInput: function () {
             return Components.classes["@oclcpica.nl/scriptinputfile;1"]
-                        .createInstance(Components.interfaces.IInputTextFile);
+                .createInstance(Components.interfaces.IInputTextFile);
         },
         newFileOutput: function () {
             return Components.classes["@oclcpica.nl/scriptoutputfile;1"]
-                        .createInstance(Components.interfaces.IOutputTextFile);
+                .createInstance(Components.interfaces.IOutputTextFile);
         },
     },
     prompter = Components.classes["@oclcpica.nl/scriptpromptutility;1"]
-                        .createInstance(Components.interfaces.IPromptUtilities),
+        .createInstance(Components.interfaces.IPromptUtilities),
     lProfileAlert,
     lProfileError,
     lProfileMessage,
@@ -58,7 +58,7 @@ var application = Components.classes["@oclcpica.nl/kitabapplication;1"]
     strSatzart = "",
     hinweisVZG = "",
     bError,
-//Variable des Zufügen-Tabs:
+    //Variable des Zufügen-Tabs:
     wennKat = "",
     wennText = "",
     dannKat = "",
@@ -66,11 +66,13 @@ var application = Components.classes["@oclcpica.nl/kitabapplication;1"]
     loescheKat = "",
     loeschenSichtbar = false,
     elnText = "",
-//Variable, abhängig vom Verbund!
+    //Variable, abhängig vom Verbund!
     strELN = "",
     strUser = "",
     strKatLok = "",
-    strKatExe = "";
+    strKatExe = "",
+    meldungFelder = "Bitte geben Sie im Feld 'Feld(er)' nur Ziffern ein. Ausnahme: E001 bis E999!",
+    regexpExxx = /^E[0-9][0-9][0-9]$/
 //-------------------------------------------------------------------------
 function erweitereRechte() {
     //Prüfe ELN:
@@ -99,26 +101,26 @@ function erweitereRechte() {
 function onLoad() {
     var strVerbund = application.activeWindow.getVariable("P3GCN");
     switch (strVerbund) {
-    case "GBV":
-        hinweisVZG = "Sie haben Kategorien der bibliographischen Ebene (Titelebene) ausgewählt. " +
-            "\nDas Bearbeiten ganzer Sets auf bibliographischer Ebene ist der Verbundzentrale vorbehalten." +
-            "\nBitte senden Sie Ihre Korrekturvorschläge an Frau Hachmann: hachmann@gbv.de";
-        strELN = "1999|2012|2013|7777";
-        strUser = "1343|6723";
-        strKatLok = "2080|348[01]|354[0-9]|471[056]|476[34]|60[0-9xX][0-9xX]|6100|65[0-9xX][0-9xX]";
-        strKatExe = "43[0-9][0-9]|480[12347]|67[0-9xX][0-9xX]|68[0-9xX][0-9xX]|70[0-9xX][0-9xX]|71[0-9][0-9]|712[0123]|713[39]|7200|73[0-9][0-9]|7800|7901|8[0-8][0-9][0-9]";
-        break;
-    case "DNB":
-        hinweisVZG = "Sie haben Kategorien der bibliographischen Ebene (Titelebene) ausgewählt. " +
-            "\nDas Bearbeiten ganzer Sets auf bibliographischer Ebene ist der Zentralredaktion vorbehalten." +
-            "\nBitte senden Sie Ihre Korrekturvorschläge an zdb-winibw@sbb.spk-berlin.de";
-        strELN = "8007|8009|9001|9006|9002|6666|4065";
-        strUser = "6001|6005|6199|6099|6004|6207|6257";
-        strKatLok = "2080|348[01]|354[0-9]|471[056]|476[34]|60[0-9xX][0-9xX]|6100|65[0-9xX][0-9xX]";
-        strKatExe = "480[012]|4820|4822|6700|70[0-9xX][0-9xX]|710[0-9]|7120|713[345678]|714[0-9]|715[09]|7[89]00|8001|803[12345]|8[12]00|844[89]|846[567]|8510|859[45678]";
-        break;
-    default:
-        alert("Unbekannte Datenbank!");
+        case "K10plus":
+            hinweisVZG = "Sie haben Kategorien der bibliographischen Ebene (Titelebene) ausgewählt. " +
+                "\nDas Bearbeiten ganzer Sets auf bibliographischer Ebene ist der Verbundzentrale vorbehalten." +
+                "\nBitte senden Sie Ihre Korrekturvorschläge an Frau Hachmann: hachmann@gbv.de";
+            strELN = "1999|2012|2013|7777";
+            strUser = "1343|6723";
+            strKatLok = "2080|348[01]|354[0-9]|471[056]|476[34]|60[0-9xX][0-9xX]|6100|65[0-9xX][0-9xX]";
+            strKatExe = "43[0-9][0-9]|480[12347]|67[0-9xX][0-9xX]|68[0-9xX][0-9xX]|70[0-9xX][0-9xX]|71[0-9][0-9]|712[0123]|713[39]|7200|73[0-9][0-9]|7800|7901|8[0-8][0-9][0-9]";
+            break;
+        case "DNB":
+            hinweisVZG = "Sie haben Kategorien der bibliographischen Ebene (Titelebene) ausgewählt. " +
+                "\nDas Bearbeiten ganzer Sets auf bibliographischer Ebene ist der Zentralredaktion vorbehalten." +
+                "\nBitte senden Sie Ihre Korrekturvorschläge an zdb-winibw@sbb.spk-berlin.de";
+            strELN = "8007|8009|9001|9006|9002|6666|4065";
+            strUser = "6001|6005|6199|6099|6004|6207|6257";
+            strKatLok = "2080|348[01]|354[0-9]|471[056]|476[34]|60[0-9xX][0-9xX]|6100|65[0-9xX][0-9xX]";
+            strKatExe = "480[012]|4820|4822|6700|70[0-9xX][0-9xX]|710[0-9]|7120|713[345678]|714[0-9]|715[09]|7[89]00|8001|803[12345]|8[12]00|844[89]|846[567]|8510|859[45678]";
+            break;
+        default:
+            alert("Unbekannte Datenbank!");
     }
     if (!erweitereRechte()) {
         document.getElementById("idCheckboxExemplar").checked = true;
@@ -283,7 +285,7 @@ function bearbeiteSetErsetzen() {
         }
 
         if (Kat1 == "") {
-            alert("Im Feld 'Kategorie' muss eine Kategorie eingetragen werden!");
+            alert(meldungFelder);
             return;
         }
 
@@ -292,8 +294,11 @@ function bearbeiteSetErsetzen() {
             return;
         }
 
-        if (isNaN(Kat1) || isNaN(Kat2) || isNaN(strBedingung2Kat)) {
-            alert("Bitte geben Sie im Feld 'Kategorie' nur Zahlen ein!");
+        //Korrektur 17.08.2021: Jetzt werden alle drei Angaben zu Feldern geprüft.
+        //Fehlermeldung, wenn in einem der drei Felder die Angaben keine Ziffer und keine Exemplarnummer sind.
+        if ((isNaN(Kat1) && regexpExxx.test(Kat1) == false) || (isNaN(Kat2) && regexpExxx.test(Kat2) == false) || (isNaN(strBedingung2Kat) && regexpExxx.test(strBedingung2Kat) == false)) {
+            //alert("Kat1: " + Kat1 + "\nKat2: " + Kat2 + "\nstrBedingung2Kat: " + strBedingung2Kat)
+            alert(meldungFelder);
             return;
         }
 
@@ -424,8 +429,8 @@ function bearbeiteSetZufuegen() {
             return;
         }
 
-        if (isNaN(wennKat) || isNaN(dannKat)) {
-            alert("Bitte geben Sie im Feld 'Kategorie' nur Zahlen ein!");
+        if (isNaN(wennKat) && regexpExxx.test(wennKat) == false || isNaN(dannKat) && regexpExxx.test(dannKat) == false) {
+            alert(meldungFelder);
             return;
         }
 
@@ -567,15 +572,15 @@ function bearbeiteSetLoeschen() {
 //----------------------------------------------------------------
 function doAktion(aktion) {
     switch (aktion) {
-    case 'ersetzen':
-        bearbeiteZeilenErsetzen();
-        break;
-    case 'zufuegen':
-        bearbeiteZeilenZufuegen();
-        break;
-    case 'loeschen':
-        bearbeiteZeilenLoeschen();
-        break;
+        case 'ersetzen':
+            bearbeiteZeilenErsetzen();
+            break;
+        case 'zufuegen':
+            bearbeiteZeilenZufuegen();
+            break;
+        case 'loeschen':
+            bearbeiteZeilenLoeschen();
+            break;
     }
     application.activeWindow.simulateIBWKey("FR");
     zaehleDatensaetze();
@@ -608,7 +613,7 @@ function bearbeiteEbene2(aktion) {
     //bearbeite Exemplare
     strSatzart = "Exemplarsätzen";
     var strTitle = application.activeWindow.getVariable('P3CLIP'),
-    //var strTitle = application.activeWindow.copyTitle();
+        //var strTitle = application.activeWindow.copyTitle();
         regexpExe = /\n(70[0-9][0-9])/g,
         alleExe = [],
         exNr,
@@ -743,7 +748,7 @@ function bearbeiteZeilenLoeschen() {
         if ((strTag == loescheKat) && (bBedingung == true)) {
             application.activeWindow.title.deleteLine(1);
         } else {
-        //diesen Sprung in der Zeile machen wir nur, wenn keine Zeile gelöscht wurde:
+            //diesen Sprung in der Zeile machen wir nur, wenn keine Zeile gelöscht wurde:
             application.activeWindow.title.endOfField(false);//wichtig bei mehrzeiligen Inhalten!
             application.activeWindow.title.lineDown(1, false);
             application.activeWindow.title.startOfField(false);
@@ -835,7 +840,7 @@ function getSpecialPath(theDirName, theRelativePath) {
     //gibt den Pfad als String aus
     var nsIProperties = Components.interfaces.nsIProperties,
         dirService = Components.classes["@mozilla.org/file/directory_service;1"]
-                            .getService(nsIProperties),
+            .getService(nsIProperties),
         theFile = dirService.get(theDirName, Components.interfaces.nsILocalFile);
     theFile.appendRelativePath(theRelativePath);
     return theFile.path;
@@ -845,7 +850,7 @@ function getSpecialDirectory(name) {
     //gibt ein Object zurück
     var nsIProperties = Components.interfaces.nsIProperties,
         dirService = Components.classes["@mozilla.org/file/directory_service;1"]
-                            .getService(nsIProperties);
+            .getService(nsIProperties);
     return dirService.get(name, Components.interfaces.nsIFile);
 }
 

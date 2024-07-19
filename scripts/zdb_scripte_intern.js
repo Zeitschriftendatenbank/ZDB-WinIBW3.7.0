@@ -464,7 +464,7 @@ function zdbformat(){
 
 function sucheErsetze(){
     var xulFeatures = "centerscreen, chrome, close, titlebar,resizable, modal=no, dependent=yes, dialog=no";
-    open_xul_dialog("chrome://ibw/content/xul/k10_sucheErsetze_dialog.xul", xulFeatures);
+    open_xul_dialog("chrome://ibw/content/xul/gbv_sucheErsetze_dialog.xul", xulFeatures);
 }
 
 /**

@@ -91,18 +91,15 @@
   <file source="chrome/ibw/content/xul/gbv_hilfe_dialog.xul" destination="chrome\ibw\content\xul\gbv_hilfe_dialog.xul"/>
   <file source="chrome/ibw/content/xul/gbv_kategorie_dialog.xul" destination="chrome\ibw\content\xul\gbv_kategorie_dialog.xul"/>
   <file source="chrome/ibw/content/xul/gbv_rechercheStapel_dialog.xul" destination="chrome\ibw\content\xul\gbv_rechercheStapel_dialog.xul"/>
-  <file source="chrome/ibw/content/xul/gbv_sucheErsetze_dialog.xul" destination="chrome\ibw\content\xul\gbv_sucheErsetze_dialog.xul"/>
   <file source="chrome/ibw/content/xul/moreDatenmasken_dialog.js" destination="chrome\ibw\content\xul\moreDatenmasken_dialog.js"/>
   <file source="chrome/ibw/content/xul/moreDatenmasken_dialog.xul" destination="chrome\ibw\content\xul\moreDatenmasken_dialog.xul"/>
   <file source="chrome/ibw/content/xul/zdb.css" destination="chrome\ibw\content\xul\zdb.css"/>
  </update>
  <update date="20240708">
   <file source="scripts/k10_suchen_linken.js" destination="scripts\k10_suchen_linken.js"/>
-  <file source="scripts/zdb_scripte_intern.js" destination="scripts\zdb_scripte_intern.js"/>
   <file source="scripts/zdb_scripte_public.js" destination="scripts\zdb_scripte_public.js"/>
   <file source="scripts/zdb_set.js" destination="scripts\zdb_set.js"/>
   <file source="ttlcopy/zdb_titeldatenkopie.ttl" destination="ttlcopy\zdb_titeldatenkopie.ttl"/>
-  <file source="ttlcopy/zdb_titeldatenkopie_digi.ttl" destination="ttlcopy\zdb_titeldatenkopie_digi.ttl"/>
   <file source="ttlcopy/zdb_titeldatenkopie_parallel.ttl" destination="ttlcopy\zdb_titeldatenkopie_parallel.ttl"/>
   <file source="defaults/pref/setup.js" destination="defaults\pref\setup.js"/>
   <file source="defaults/pref/syntaxcolor.js" destination="defaults\pref\syntaxcolor.js"/>
@@ -121,6 +118,11 @@
  <update date="20230307">
   <file source="scripts/zdb_scripte_feld7120.js" destination="scripts\zdb_scripte_feld7120.js"/>
  </update>
+ <update date="20240719">
+  <file source="scripts/zdb_scripte_intern.js" destination="scripts\zdb_scripte_intern.js"/>
+  <file source="chrome/ibw/content/xul/gbv_sucheErsetze_dialog.js" destination="chrome\ibw\content\xul\gbv_sucheErsetze_dialog.js"/>
+  <file source="chrome/ibw/content/xul/gbv_sucheErsetze_dialog.xul" destination="chrome\ibw\content\xul\gbv_sucheErsetze_dialog.xul"/>
+ </update>
  <update date="20240201">
   <file source="tables/0600.tab" destination="tables\0600.tab"/>
  </update>
@@ -134,6 +136,9 @@
   <file source="tables/4030.tab" destination="tables\4030.tab"/>
   <file source="tables/5080.tab" destination="tables\5080.tab"/>
  </update>
+ <update date="20240716">
+  <file source="ttlcopy/zdb_titeldatenkopie_digi.ttl" destination="ttlcopy\zdb_titeldatenkopie_digi.ttl"/>
+ </update>
  <update date="20240205">
   <file source="chrome/ibw/content/xul/ZDB_DigitalisierungConfig.xul" destination="chrome\ibw\content\xul\ZDB_DigitalisierungConfig.xul"/>
  </update>
@@ -142,9 +147,6 @@
  </update>
  <update date="20230321">
   <file source="chrome/ibw/content/xul/gbv_kategorie_dialog.js" destination="chrome\ibw\content\xul\gbv_kategorie_dialog.js"/>
- </update>
- <update date="20230131">
-  <file source="chrome/ibw/content/xul/gbv_sucheErsetze_dialog.js" destination="chrome\ibw\content\xul\gbv_sucheErsetze_dialog.js"/>
  </update>
  <update date="20240320">
   <file source="chrome/ibw/content/xul/k10_excelTabelle_dialog.js" destination="chrome\ibw\content\xul\k10_excelTabelle_dialog.js"/>

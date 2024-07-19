@@ -53,10 +53,6 @@ function ExemplarmaskeK()
 {
 	__exemplarmaskeEinfuegen("_k");
 }
-function ExemplarmaskeOpus()
-{
-	__exemplarmaskeEinfuegen("_opus");
-}
 function ExemplarmaskeZDB()
 {
 	__exemplarmaskeEinfuegen("_zdb");
@@ -70,12 +66,7 @@ function __ExemplarmaskeSet()
 //--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 function __exemplarmaskeEinfuegen(exMaskeNr)
 {
-	//Die unterschiedliche Gestaltung der Exemplare bleibt solange erhalten,
-	//wie die ZDB noch mit 70xx arbeitet!
-	var exSchema="";
-	var lExMaximal=0,
-		exSchema = "E",
-		lExMaximal=999;
+	//Juli 2024: ZDB stellt um auf CBS 9 und von 70xx auf Exxx
 	var naechstesEx = "";
 	var maskenInhalt = "";
 	var exKommando = "";
@@ -87,7 +78,7 @@ function __exemplarmaskeEinfuegen(exMaskeNr)
 	}
 	var strLetztesEx = application.getProfileString("Exemplareingabe", "exNrEnde", "");
 	if (strLetztesEx==""){
-		strLetztesEx = lExMaximal;
+		strLetztesEx = 999;
 	}
 	var lErstesEx = parseInt(strErstesEx,10);
 	var lLetztesEx = parseInt(strLetztesEx,10);
@@ -113,7 +104,7 @@ function __exemplarmaskeEinfuegen(exMaskeNr)
 	//Schirm: Vollanzeige
 	if (derSchirm == "8A" || derSchirm == "7A"){
 		__formatD();
-		naechstesEx = __rechneNaechstesEx("8A", exSchema,lErstesEx, lLetztesEx);
+		naechstesEx = __rechneNaechstesEx("8A", lErstesEx, lLetztesEx);
 		material = __matCode1();
 	}
 	if(application.activeWindow.title){
@@ -134,7 +125,7 @@ function __exemplarmaskeEinfuegen(exMaskeNr)
 	}
 	//Schirm Titel eingeben/ändern
 	if (derSchirm == "IT" || derSchirm == "MT") {
-		naechstesEx = __rechneNaechstesEx(derSchirm, exSchema,lErstesEx, lLetztesEx);
+		naechstesEx = __rechneNaechstesEx(derSchirm, lErstesEx, lLetztesEx);
 	}
 	if (naechstesEx > lLetztesEx){
 		application.messageBox("Exemplarmasken", "Es können nur Exemplare bis zur " +
@@ -156,7 +147,7 @@ function __exemplarmaskeEinfuegen(exMaskeNr)
 		return;
 	}
 	naechstesEx = String(naechstesEx);
-//alert("naechstesEx: " + naechstesEx + "\nLänge: " + naechstesEx.length + "\n" + exSchema);
+//alert("naechstesEx: " + naechstesEx + "\nLänge: " + naechstesEx.length + "\n" + "E");
 	if(naechstesEx.length == 1){
 		naechstesEx = "00" + naechstesEx;
 	}
@@ -164,7 +155,7 @@ function __exemplarmaskeEinfuegen(exMaskeNr)
 		naechstesEx = "0" + naechstesEx;
 	}
 	application.activeWindow.title.endOfBuffer(false);
-	application.activeWindow.title.insertText("\n" + exSchema + naechstesEx + " " + maskenInhalt);
+	application.activeWindow.title.insertText("\n" + "E" + naechstesEx + " " + maskenInhalt);
 
 	//bei elektronischen Aufnahmen sollen evtl. URLs in das Exemplar kopiert werden
 	if (material == "O") {
@@ -206,7 +197,7 @@ function __exemplarMaskeLesen(exMaskeNr)
 	return maskenInhalt;
 }
 
-function __rechneNaechstesEx(derSchirm, exSchema, lErstesEx, lLetztesEx)
+function __rechneNaechstesEx(derSchirm, lErstesEx, lLetztesEx)
 {
 	var naechstesEx=0;
 	var sucheFeld="";
@@ -214,11 +205,11 @@ function __rechneNaechstesEx(derSchirm, exSchema, lErstesEx, lLetztesEx)
 	var strTitle = application.activeWindow.copyTitle();
 	for (i=lErstesEx; i<=lLetztesEx; i++){
 		if(i<10){
-			sucheFeld = exSchema+"00"+String(i);
+			sucheFeld = "E"+"00"+String(i);
 		} else if (i >=10 && i < 100) {
-			sucheFeld = exSchema+"0"+String(i);
+			sucheFeld = "E"+"0"+String(i);
 		} else {
-			sucheFeld = exSchema+String(i);
+			sucheFeld = "E"+String(i);
 		}
 		//im Editschirm:
 		if (derSchirm == "IT" || derSchirm == "MT"){
