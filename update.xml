@@ -120,7 +120,6 @@
  </update>
  <update date="20240719">
   <file source="scripts/zdb_scripte_intern.js" destination="scripts\zdb_scripte_intern.js"/>
-  <file source="chrome/ibw/content/xul/gbv_sucheErsetze_dialog.js" destination="chrome\ibw\content\xul\gbv_sucheErsetze_dialog.js"/>
   <file source="chrome/ibw/content/xul/gbv_sucheErsetze_dialog.xul" destination="chrome\ibw\content\xul\gbv_sucheErsetze_dialog.xul"/>
  </update>
  <update date="20240201">
@@ -147,6 +146,9 @@
  </update>
  <update date="20230321">
   <file source="chrome/ibw/content/xul/gbv_kategorie_dialog.js" destination="chrome\ibw\content\xul\gbv_kategorie_dialog.js"/>
+ </update>
+ <update date="20240815">
+  <file source="chrome/ibw/content/xul/gbv_sucheErsetze_dialog.js" destination="chrome\ibw\content\xul\gbv_sucheErsetze_dialog.js"/>
  </update>
  <update date="20240320">
   <file source="chrome/ibw/content/xul/k10_excelTabelle_dialog.js" destination="chrome\ibw\content\xul\k10_excelTabelle_dialog.js"/>

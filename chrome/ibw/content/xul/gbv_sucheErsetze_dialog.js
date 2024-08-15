@@ -614,7 +614,7 @@ function bearbeiteEbene2(aktion) {
     strSatzart = "Exemplarsätzen";
     var strTitle = application.activeWindow.getVariable('P3CLIP'),
         //var strTitle = application.activeWindow.copyTitle();
-        regexpExe = /\n(70[0-9][0-9])/g,
+        regexpExe = /\n(E[0-9][0-9][0-9])/g,
         alleExe = [],
         exNr,
         i;
@@ -640,7 +640,7 @@ function bearbeiteEbene2(aktion) {
 
 function bearbeiteZeilenErsetzen() {
     //Zuerst werden die Zeilen gezählt, dann wandert das Script durch
-    //den ganzen Datensatz und vergleicht die Kategorien mit den Vorgaben des Anwenders
+    //den ganzen Datensatz und vergleicht die Felder mit den Vorgaben des Anwenders
     //bei der find-Anweisung steht lineOnly immer auf true, weil jede Zeile einzeln
     //untersucht werden soll
     if (pruefeBedingung2() == false) {
@@ -650,7 +650,7 @@ function bearbeiteZeilenErsetzen() {
         regex = false,
         regexBed1 = false,
         zeilenNr,
-        bed1,
+        bed1 = true,
         current,
         replaced,
         lZeilen,
@@ -668,10 +668,9 @@ function bearbeiteZeilenErsetzen() {
 
     //alle Zeilen im Datensatz prüfen:
     for (zeilenNr = 1; zeilenNr <= lZeilen; zeilenNr += 1) {
-        bed1 = true;
         strTag = application.activeWindow.title.tag;
         //alert("strTag: " + strTag + "\nKat1: " + Kat1 + "\nKat2: " + Kat2);
-        //alle Vorkommnisse in der Kategorie werden ersetzt:
+        //alle Vorkommnisse im Feld werden ersetzt:
         if (strTag >= Kat1 && strTag <= Kat2) {
             if (strbedingung1 != "") {
                 if (regexBed1) {
@@ -680,7 +679,7 @@ function bearbeiteZeilenErsetzen() {
                     }
                 } else if (application.activeWindow.title.find(strbedingung1, bcaseSensitive, true, bwholeWord) == false) {
                     bed1 = false;
-                }
+                } 
             }
             if (bed1) {
                 application.activeWindow.title.startOfField(false);
@@ -695,6 +694,8 @@ function bearbeiteZeilenErsetzen() {
                     }
                 }
             }
+            //Korrektur KH: wenn bed1 auf false gesetzt war, wurde die Variable nie wieder true!
+            bed1 = true;
         }
         application.activeWindow.title.endOfField(false);//wichtig bei mehrzeiligen Inhalten!
         application.activeWindow.title.lineDown(1, false);
