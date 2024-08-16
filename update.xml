@@ -95,6 +95,9 @@
   <file source="chrome/ibw/content/xul/moreDatenmasken_dialog.xul" destination="chrome\ibw\content\xul\moreDatenmasken_dialog.xul"/>
   <file source="chrome/ibw/content/xul/zdb.css" destination="chrome\ibw\content\xul\zdb.css"/>
  </update>
+ <update date="20240816">
+  <file source="scripts/config_german.js" destination="scripts\config_german.js"/>
+ </update>
  <update date="20240708">
   <file source="scripts/k10_suchen_linken.js" destination="scripts\k10_suchen_linken.js"/>
   <file source="scripts/zdb_scripte_public.js" destination="scripts\zdb_scripte_public.js"/>
