@@ -209,7 +209,7 @@ CSV.prototype =
                     this.line = {};
                     // for better acces write a simple array
                     for (var y = 0; y < this.keys.length; y++) {
-                        this.line[this.keys[y]] = this.lineArray[y];
+                        this.line[this.keys[y]] = this.lineArray[y].toString();
                     }
                     if (!this.searchindex) {
                         this.callback();

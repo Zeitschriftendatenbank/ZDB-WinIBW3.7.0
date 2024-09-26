@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <WinIBW3UpdateService>
+ <update date="20240906">
+  <file source="test.txt" destination="test.txt"/>
+ </update>
  <update date="20230130">
   <file source="datenmasken/maske01.txt" destination="datenmasken\maske01.txt"/>
   <file source="datenmasken/maske02.txt" destination="datenmasken\maske02.txt"/>
@@ -24,7 +27,6 @@
   <file source="images/zdb_icon.gif" destination="images\zdb_icon.gif"/>
   <file source="images/zdb_logo.gif" destination="images\zdb_logo.gif"/>
   <file source="images/zdb_verlauf.gif" destination="images\zdb_verlauf.gif"/>
-  <file source="scripts/csv.js" destination="scripts\csv.js"/>
   <file source="scripts/dnb_authorities.js" destination="scripts\dnb_authorities.js"/>
   <file source="scripts/dnb_datenmasken.js" destination="scripts\dnb_datenmasken.js"/>
   <file source="scripts/dnb_public.js" destination="scripts\dnb_public.js"/>
@@ -98,9 +100,11 @@
  <update date="20240816">
   <file source="scripts/config_german.js" destination="scripts\config_german.js"/>
  </update>
+ <update date="20240910">
+  <file source="scripts/csv.js" destination="scripts\csv.js"/>
+ </update>
  <update date="20240708">
   <file source="scripts/k10_suchen_linken.js" destination="scripts\k10_suchen_linken.js"/>
-  <file source="scripts/zdb_scripte_public.js" destination="scripts\zdb_scripte_public.js"/>
   <file source="scripts/zdb_set.js" destination="scripts\zdb_set.js"/>
   <file source="ttlcopy/zdb_titeldatenkopie.ttl" destination="ttlcopy\zdb_titeldatenkopie.ttl"/>
   <file source="ttlcopy/zdb_titeldatenkopie_parallel.ttl" destination="ttlcopy\zdb_titeldatenkopie_parallel.ttl"/>
@@ -124,6 +128,9 @@
  <update date="20240719">
   <file source="scripts/zdb_scripte_intern.js" destination="scripts\zdb_scripte_intern.js"/>
   <file source="chrome/ibw/content/xul/gbv_sucheErsetze_dialog.xul" destination="chrome\ibw\content\xul\gbv_sucheErsetze_dialog.xul"/>
+ </update>
+ <update date="20240926">
+  <file source="scripts/zdb_scripte_public.js" destination="scripts\zdb_scripte_public.js"/>
  </update>
  <update date="20240201">
   <file source="tables/0600.tab" destination="tables\0600.tab"/>
