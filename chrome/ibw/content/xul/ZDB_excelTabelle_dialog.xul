@@ -1,0 +1,173 @@
+﻿<?xml version="1.0"?> <!-- -*- Mode: HTML -*- -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
+
+<dialog
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+	title="Exceltabelle erstellen"
+	onload="onLoad();"
+	ondialogaccept="return onAccept();"
+	ondialogcancel="return onCancel();"
+	onunload="application.activate();"
+	buttons="cancel,help"
+	ondialoghelp="wikiWinibw();"
+
+	style="min-height: 30em; min-width: 50em"
+>
+<script type="application/x-javascript" src="chrome://ibw/content/xul/ZDB_excelTabelle_dialog.js" />
+	<tabbox flex="1">
+		<tabs >
+			<tab label="Tabelle erstellen" accesskey="T" />
+			<tab label="Konfigurationstabelle" accesskey="K"/>
+		</tabs>
+		<tabpanels >
+			<tabpanel id="idSeite1" flex="1">
+				<vbox flex="1">
+					<groupbox orient="horizontal">
+						<caption label="Infos" />
+						<vbox>
+							<label id = "idLabelInfos1a"
+								value = "Bitte führen Sie eine Recherche ... "/>
+							<label id = "idLabelInfos1b"
+								value = ""
+								/>
+							<label id = "idLabelInfos1c"
+								value = ""
+								/>
+						</vbox>
+						<box align="right" onclick="wikiWinibw();">
+							<image src="chrome://ibw/content/xul/icons/info32x32.png"
+								tooltiptext="Klick ... Kapitel im WinIBW3-Wiki aufrufen"
+								/>
+						</box>
+					</groupbox>
+					<separator/>
+					<groupbox>
+						<caption label="Bestandsfilter" />
+						<hbox>
+							<vbox>
+								<label value="In diesem PICA+-Feld:"/>
+							</vbox>
+						<textbox id="idTextboxFeldSST"
+							 name="textbox"
+							 cols="12"
+							 height="22px"
+							 maxwidth="68px"
+						/>
+							<vbox>
+								<label value="Muss dieser Text vorkommen:"/>
+							</vbox>
+						<textbox id="idTextboxSST"
+							 name="textboxFeld"
+							 cols="50"
+							 height="22px"
+						/>
+						</hbox>
+						<label id = "idLabelInfos3"
+							value=""
+							/>
+						<label id = "idLabelInfos4"
+							value=""
+							/>
+					</groupbox>
+					<groupbox style="min-height: 8em">
+						<caption label="Ergebnis" />
+						<label id = "idLabelErgebnis1"
+							value=""
+							hidden = "true"/>
+						<label id = "idLabelErgebnis2"
+							value=""
+							hidden = "true"/>
+						<textbox id="idTextboxPfad"
+							 name="textbox"
+							 flex="0.5"
+							 hidden = "true"/>
+					</groupbox>
+					<hbox align="right">
+						<button id="idButtonStart" label="Start" oncommand="onAccept();" accesskey="S"/>
+					</hbox>
+				</vbox>
+			</tabpanel>
+			<tabpanel id="idSeite2">
+				<vbox flex="1">
+					<box align="right" onclick="wikiAnzeigen2();">
+						<image src="chrome://ibw/content/xul/icons/info32x32.png"
+							tooltiptext="Klick ... Kapitel im WinIBW3-Wiki aufrufen"
+							/>
+					</box>
+					<hbox flex="1">
+						<groupbox flex="1" minheight="380px">
+							<caption label="Standardtabelle:"/>
+							<tree
+								id="idTree"
+								flex="1"
+								seltype="single"
+								style="margin-top: 1em;"
+								ondblclick ="waehleZeile();"
+							>
+								<treecols>
+									<treecol id="idColAlle" label="PicaPlus-Kategorien" flex="1.0"/>
+								</treecols>
+								<treechildren alternatingbackground="true"/>
+							</tree>
+							<label id = "idLabelKonfigInfos1"
+								value = "Verwenden Sie diese Standardtabelle oder wählen Sie"
+							/>
+							<label id = "idLabelKonfigInfos2"
+								value = "einzelne Kategorien durch Doppelklick!"
+							/>
+						</groupbox>
+						<groupbox flex="1" >
+							<caption label="Meine Auswahl:"/>
+							<textbox id="idAuswahlZeilen"
+								 name="textbox"
+								 flex="1"
+								 multiline = "true"
+								 />
+							<label value = "Außerdem: Tabelle beginnt immer mit PPN und EPN "/>
+							<label value = "in Spalte 1 und 2 (im Auswahlfenster nicht sichtbar)."/>
+							<hbox>
+								<button label="Auswahl speichern" oncommand="auswahlSpeichern();" />
+								<button label="Auswahl löschen" oncommand="auswahlLoeschen();" />
+							</hbox>
+							<label id = "idLabelAuswahl" value = ""/>
+						</groupbox>
+					</hbox>
+					<groupbox >
+						<caption label="Welche Konfiguration soll verwendet werden?"/>
+						<radiogroup id="idRadioTabelle" orient="horizontal" onclick = "waehleKonfigurationstabelle();">
+							<radio label="Standardtabelle" />
+							<radio label="Meine Auswahl" />
+						</radiogroup>
+					</groupbox>
+					<groupbox>
+						<caption label="Trennzeichen" />
+						<hbox>
+							<vbox flex="8">
+								<label id="idLabelInfos5"/>
+								<label id="idLabelInfos6"/>
+							</vbox>
+							<box align="right" onclick="wikiAnzeigen3();">
+								<image src="chrome://ibw/content/xul/icons/info32x32.png"
+									tooltiptext="Klick ... Kapitel im WinIBW3-Wiki aufrufen"
+									flex="1"
+								/>
+							</box>
+						</hbox>
+						<hbox>
+							<label value="Zeichen:"/>
+							<textbox id="idTextboxTrennzeichen"
+								 name="textbox"
+								 onchange="bContentsChanged=true;"
+								 cols="2"
+								 minheight="18px"
+								 maxwidth="22px"
+							/>
+						</hbox>
+					</groupbox>
+				</vbox>
+			</tabpanel>
+		</tabpanels>
+	</tabbox>
+</dialog>
+

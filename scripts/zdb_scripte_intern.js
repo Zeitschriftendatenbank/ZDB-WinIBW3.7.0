@@ -433,11 +433,11 @@ function csvBatchExemplar() {
 
 function excelTabelle(){
     var xulFeatures = "centerscreen, chrome, close, titlebar,modal=no,dependent=yes, dialog=yes";
-    open_xul_dialog("chrome://ibw/content/xul/k10_excelTabelle_dialog.xul", xulFeatures);
+    open_xul_dialog("chrome://ibw/content/xul/ZDB_excelTabelle_dialog.xul", xulFeatures);
 }
 
 function ZDBWinIBWInfo(){
-    application.shellExecute ("http://www.zeitschriftendatenbank.de/erschliessung/winibw", 5, "open", "");
+    application.shellExecute ("https://zeitschriftendatenbank.de/erschliessung/winibw", 5, "open", "");
 }
 
 function WinIBWSupport(){
@@ -448,23 +448,23 @@ function zdbformat(){
     var strkat, re;
     if (!application.activeWindow.title)
     {
-        application.shellExecute ("http://www.zeitschriftendatenbank.de/erschliessung/zdbformat/", 5, "open", "");
+        application.shellExecute ("https://zeitschriftendatenbank.de/erschliessung/zdb-format/", 5, "open", "");
     }
     else
     {
         strkat = application.activeWindow.title.tag;
         re = new RegExp("480.|482[02]|6700|7...|8[0-5]..|^...$");
         if(re.test(strkat)) {
-            application.shellExecute ("http://www.zeitschriftendatenbank.de/erschliessung/zdbformat/" + strkat, 5, "open", "");
+            application.shellExecute ("https://zeitschriftendatenbank.de/erschliessung/zdb-format/" + strkat, 5, "open", "");
         } else {
-            application.shellExecute ("http://www.zeitschriftendatenbank.de/fileadmin/user_upload/ZDB/pdf/zdbformat/" + strkat + ".pdf", 5, "open", "");
+            application.shellExecute ("https://zeitschriftendatenbank.de/fileadmin/user_upload/ZDB/pdf/zdbformat/" + strkat + ".pdf", 5, "open", "");
         }
     }
 }
 
 function sucheErsetze(){
     var xulFeatures = "centerscreen, chrome, close, titlebar,resizable, modal=no, dependent=yes, dialog=no";
-    open_xul_dialog("chrome://ibw/content/xul/gbv_sucheErsetze_dialog.xul", xulFeatures);
+    open_xul_dialog("chrome://ibw/content/xul/ZDB_sucheErsetze_dialog.xul", xulFeatures);
 }
 
 /**

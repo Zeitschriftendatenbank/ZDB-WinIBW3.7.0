@@ -125,9 +125,10 @@
  <update date="20230307">
   <file source="scripts/zdb_scripte_feld7120.js" destination="scripts\zdb_scripte_feld7120.js"/>
  </update>
- <update date="20240719">
+ <update date="20241101">
   <file source="scripts/zdb_scripte_intern.js" destination="scripts\zdb_scripte_intern.js"/>
-  <file source="chrome/ibw/content/xul/gbv_sucheErsetze_dialog.xul" destination="chrome\ibw\content\xul\gbv_sucheErsetze_dialog.xul"/>
+  <file source="chrome/ibw/content/xul/ZDB_sucheErsetze_dialog.js" destination="chrome\ibw\content\xul\ZDB_sucheErsetze_dialog.js"/>
+  <file source="chrome/ibw/content/xul/ZDB_sucheErsetze_dialog.xul" destination="chrome\ibw\content\xul\ZDB_sucheErsetze_dialog.xul"/>
  </update>
  <update date="20240926">
   <file source="scripts/zdb_scripte_public.js" destination="scripts\zdb_scripte_public.js"/>
@@ -154,11 +155,18 @@
  <update date="20230227">
   <file source="chrome/ibw/content/xul/ZDB_Erscheinungsverlauf.xul" destination="chrome\ibw\content\xul\ZDB_Erscheinungsverlauf.xul"/>
  </update>
+ <update date="20241030">
+  <file source="chrome/ibw/content/xul/ZDB_excelTabelle_dialog.js" destination="chrome\ibw\content\xul\ZDB_excelTabelle_dialog.js"/>
+  <file source="chrome/ibw/content/xul/ZDB_excelTabelle_dialog.xul" destination="chrome\ibw\content\xul\ZDB_excelTabelle_dialog.xul"/>
+ </update>
  <update date="20230321">
   <file source="chrome/ibw/content/xul/gbv_kategorie_dialog.js" destination="chrome\ibw\content\xul\gbv_kategorie_dialog.js"/>
  </update>
  <update date="20240815">
   <file source="chrome/ibw/content/xul/gbv_sucheErsetze_dialog.js" destination="chrome\ibw\content\xul\gbv_sucheErsetze_dialog.js"/>
+ </update>
+ <update date="20240719">
+  <file source="chrome/ibw/content/xul/gbv_sucheErsetze_dialog.xul" destination="chrome\ibw\content\xul\gbv_sucheErsetze_dialog.xul"/>
  </update>
  <update date="20240320">
   <file source="chrome/ibw/content/xul/k10_excelTabelle_dialog.js" destination="chrome\ibw\content\xul\k10_excelTabelle_dialog.js"/>
