@@ -12,7 +12,7 @@ function __isilOPAC(bearbeiter) {
 
     var isil = _rec['008H'][0]['e'];
 
-    _rec['OPAC_url'] = 'https://sigel.staatsbibliothek-berlin.de/suche/?isil=' + isil;
+    _rec['OPAC_url'] = 'https://isil.staatsbibliothek-berlin.de/isil/' + isil;
 
     if (_rec['035B']) {
         mailTo[0] = (_rec['035B'][0]['k']) ? _rec['035B'][0]['k'] : "keine E-Mail-Adresse angegeben";
@@ -33,6 +33,8 @@ function __isilOPAC(bearbeiter) {
     var lvrtext = text.match(lvrRegex)[1];
     //__zdbError(lvrtext);
     var lvrs = eval('({' + lvrtext + '})');
+
+    text = text.replace(/{003@ \$0}/g, application.activeWindow.getVariable("P3GPP"));
 
     // IFM
     if ('DE-MUS' == "" + isil[0].substr(0, 6)) {
@@ -63,7 +65,7 @@ function __isilOPAC(bearbeiter) {
         };
 
         var fli = decodeURIComponent(encodeURIComponent(flis[_rec['035I'][0]['e']]));
-        text = text.replace(/{FLI}/g, fli);
+        text = (0 < fli.length) ? text.replace(/{FLI}/g, fli) : "Fernleihindikator für Produkte nicht aussagekrätig. Bitte überdenken.";
     }
 
     // DBS-CC

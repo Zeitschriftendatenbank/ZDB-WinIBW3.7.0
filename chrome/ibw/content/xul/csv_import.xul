@@ -1,0 +1,47 @@
+<?xml version="1.0"?><!-- -*- Mode: HTML -*- -->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
+
+<dialog xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" title="CSV-Template-Import" onload="onLoad();" buttons="accept,cancel" ondialogaccept="return onAccept();" ondialogcancel="return onCancel();" onunload="application.activate();">
+    <script type="application/x-javascript" src="chrome://ibw/content/xul/csv_import.js" />
+
+    <!-- Layout the dialog controls: -->
+    <vbox>
+        <hbox align="center" flex="2">
+            <groupbox flex="2">
+                <vbox flex="1">
+                    <text value="Bitte wählen Sie eine Datenmaske aus:" />
+                    <hbox height="5px"></hbox>
+                    <menulist id="idFileListMenu0">
+                        <menupopup id="idFileList0" />
+                    </menulist>
+
+                    <text value="Bitte wählen Sie eine CSV/TSV/SSV-Datei aus:" />
+                    <hbox height="5px"></hbox>
+                    <menulist id="idFileListMenu1">
+                        <menupopup id="idFileList1" />
+                    </menulist>
+
+                    <text value="Bitte wählen Sie einen Separator aus:" />
+                    <hbox height="5px"></hbox>
+                    <menulist id="separator">
+                        <menupopup>
+                            <menuitem label="Komma" value=","/>
+                            <menuitem label="Semikolon" value=";"/>
+                            <menuitem label="Tab" value="t" checked="true" />
+                        </menupopup>
+                    </menulist>
+                    <hbox height="5px"></hbox>
+                    <checkbox id="idCheckboxTest" name="test" label="Generiere nur einen Testsatz!" checked="true"/>
+                    <hbox height="5px"></hbox>
+                    <checkbox id="idCheckboxNorm" name="norm" label="Generiere Normdaten!"/>
+                    <hbox height="5px"></hbox>
+                    <label value="${##} zählt hoch ab" />
+                    <textbox id="counter" rows="5" value="1"/>
+                </vbox>
+            </groupbox>
+        </hbox>
+        <hbox height="10px"></hbox>
+        <vbox id="vbox3" flex="3"></vbox>
+    </vbox>
+</dialog>

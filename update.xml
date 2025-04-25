@@ -43,7 +43,6 @@
   <file source="tables/1133.tab" destination="tables\1133.tab"/>
   <file source="tables/1140.tab" destination="tables\1140.tab"/>
   <file source="tables/1800.tab" destination="tables\1800.tab"/>
-  <file source="tables/3010.tab" destination="tables\3010.tab"/>
   <file source="tables/31XX.tab" destination="tables\31XX.tab"/>
   <file source="tables/380.tab" destination="tables\380.tab"/>
   <file source="tables/382.tab" destination="tables\382.tab"/>
@@ -57,7 +56,6 @@
   <file source="tables/4255.tab" destination="tables\4255.tab"/>
   <file source="tables/4256.tab" destination="tables\4256.tab"/>
   <file source="tables/450.tab" destination="tables\450.tab"/>
-  <file source="tables/4713.tab" destination="tables\4713.tab"/>
   <file source="tables/5056.tab" destination="tables\5056.tab"/>
   <file source="tables/670.tab" destination="tables\670.tab"/>
   <file source="tables/675.tab" destination="tables\675.tab"/>
@@ -100,7 +98,7 @@
  <update date="20240816">
   <file source="scripts/config_german.js" destination="scripts\config_german.js"/>
  </update>
- <update date="20240910">
+ <update date="20250408">
   <file source="scripts/csv.js" destination="scripts\csv.js"/>
  </update>
  <update date="20240708">
@@ -119,7 +117,7 @@
   <file source="chrome/ibw/content/xul/k10_exemplarmasken_dialog.js" destination="chrome\ibw\content\xul\k10_exemplarmasken_dialog.js"/>
   <file source="chrome/ibw/content/xul/k10_exemplarmasken_dialog.xul" destination="chrome\ibw\content\xul\k10_exemplarmasken_dialog.xul"/>
  </update>
- <update date="20230522">
+ <update date="20250207">
   <file source="scripts/zdb_isil.js" destination="scripts\zdb_isil.js"/>
  </update>
  <update date="20230307">
@@ -127,6 +125,7 @@
  </update>
  <update date="20241101">
   <file source="scripts/zdb_scripte_intern.js" destination="scripts\zdb_scripte_intern.js"/>
+  <file source="chrome/ibw/content/xul/ZDB_excelTabelle_dialog.js" destination="chrome\ibw\content\xul\ZDB_excelTabelle_dialog.js"/>
   <file source="chrome/ibw/content/xul/ZDB_sucheErsetze_dialog.js" destination="chrome\ibw\content\xul\ZDB_sucheErsetze_dialog.js"/>
   <file source="chrome/ibw/content/xul/ZDB_sucheErsetze_dialog.xul" destination="chrome\ibw\content\xul\ZDB_sucheErsetze_dialog.xul"/>
  </update>
@@ -142,9 +141,15 @@
  <update date="20240216">
   <file source="tables/1700.tab" destination="tables\1700.tab"/>
  </update>
+ <update date="20250107">
+  <file source="tables/3010.tab" destination="tables\3010.tab"/>
+ </update>
  <update date="20231027">
   <file source="tables/4030.tab" destination="tables\4030.tab"/>
   <file source="tables/5080.tab" destination="tables\5080.tab"/>
+ </update>
+ <update date="20250227">
+  <file source="tables/4713.tab" destination="tables\4713.tab"/>
  </update>
  <update date="20240716">
   <file source="ttlcopy/zdb_titeldatenkopie_digi.ttl" destination="ttlcopy\zdb_titeldatenkopie_digi.ttl"/>
@@ -156,8 +161,11 @@
   <file source="chrome/ibw/content/xul/ZDB_Erscheinungsverlauf.xul" destination="chrome\ibw\content\xul\ZDB_Erscheinungsverlauf.xul"/>
  </update>
  <update date="20241030">
-  <file source="chrome/ibw/content/xul/ZDB_excelTabelle_dialog.js" destination="chrome\ibw\content\xul\ZDB_excelTabelle_dialog.js"/>
   <file source="chrome/ibw/content/xul/ZDB_excelTabelle_dialog.xul" destination="chrome\ibw\content\xul\ZDB_excelTabelle_dialog.xul"/>
+ </update>
+ <update date="20250310">
+  <file source="chrome/ibw/content/xul/csv_import.js" destination="chrome\ibw\content\xul\csv_import.js"/>
+  <file source="chrome/ibw/content/xul/csv_import.xul" destination="chrome\ibw\content\xul\csv_import.xul"/>
  </update>
  <update date="20230321">
   <file source="chrome/ibw/content/xul/gbv_kategorie_dialog.js" destination="chrome\ibw\content\xul\gbv_kategorie_dialog.js"/>

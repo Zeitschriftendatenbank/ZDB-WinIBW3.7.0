@@ -763,9 +763,9 @@ function filterCopy(satz, occ) {
 				tmp_satz = "";
 			}
 		}
-	}
+	}*/
 	//alert("filterCopy: tmp_satz = \n" + tmp_satz);
-	return tmp_satz;*/
+	return tmp_satz;
 }
 
 // --------------------------------------------------------------------------------
