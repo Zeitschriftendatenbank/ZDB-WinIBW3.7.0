@@ -105,7 +105,6 @@
   <file source="scripts/k10_suchen_linken.js" destination="scripts\k10_suchen_linken.js"/>
   <file source="scripts/zdb_set.js" destination="scripts\zdb_set.js"/>
   <file source="ttlcopy/zdb_titeldatenkopie.ttl" destination="ttlcopy\zdb_titeldatenkopie.ttl"/>
-  <file source="ttlcopy/zdb_titeldatenkopie_parallel.ttl" destination="ttlcopy\zdb_titeldatenkopie_parallel.ttl"/>
   <file source="defaults/pref/setup.js" destination="defaults\pref\setup.js"/>
   <file source="defaults/pref/syntaxcolor.js" destination="defaults\pref\syntaxcolor.js"/>
  </update>
@@ -129,8 +128,10 @@
   <file source="chrome/ibw/content/xul/ZDB_sucheErsetze_dialog.js" destination="chrome\ibw\content\xul\ZDB_sucheErsetze_dialog.js"/>
   <file source="chrome/ibw/content/xul/ZDB_sucheErsetze_dialog.xul" destination="chrome\ibw\content\xul\ZDB_sucheErsetze_dialog.xul"/>
  </update>
- <update date="20240926">
+ <update date="20250710">
   <file source="scripts/zdb_scripte_public.js" destination="scripts\zdb_scripte_public.js"/>
+  <file source="ttlcopy/zdb_titeldatenkopie_digi.ttl" destination="ttlcopy\zdb_titeldatenkopie_digi.ttl"/>
+  <file source="ttlcopy/zdb_titeldatenkopie_parallel.ttl" destination="ttlcopy\zdb_titeldatenkopie_parallel.ttl"/>
  </update>
  <update date="20240201">
   <file source="tables/0600.tab" destination="tables\0600.tab"/>
@@ -150,9 +151,6 @@
  </update>
  <update date="20250227">
   <file source="tables/4713.tab" destination="tables\4713.tab"/>
- </update>
- <update date="20240716">
-  <file source="ttlcopy/zdb_titeldatenkopie_digi.ttl" destination="ttlcopy\zdb_titeldatenkopie_digi.ttl"/>
  </update>
  <update date="20240205">
   <file source="chrome/ibw/content/xul/ZDB_DigitalisierungConfig.xul" destination="chrome\ibw\content\xul\ZDB_DigitalisierungConfig.xul"/>

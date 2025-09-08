@@ -499,7 +499,10 @@ function __zdbOnlineRessource(copyFile, showComment, add0600, digi) {
         application.activeWindow.title.insertText("\n4085 " + application.getProfileString('zdb.userdata.digiconfig', '4085', ''));
     }
     // Kategorie 4212 mit neuem Vortext
-    if (_rec['046C']) {
+
+    
+    if (_rec['046C'] && !__zdbIsRda()) {
+        __zdbDeleteField("4212");
         for (var c in _rec['046C']) {
             if (!_rec['046C'].hasOwnProperty(c)) { continue; }
             application.activeWindow.title.insertText("\n4212 Abweichender Titel: " + _rec['046C'][c]['a'][0]);
@@ -556,6 +559,19 @@ function __zdbTitelAnpassen() {
     }
 
     return feld4000;
+}
+
+function __zdbIsRda() {
+    return ('rda' == _rec['010E'][0]['e'][0]) ? true : false;
+}
+
+function __zdbDeleteField(tag){
+    var y = 0;
+    while('' != application.activeWindow.title.findTag(tag,y, false, true, true))
+    {
+        application.activeWindow.title.deleteLine(1);
+        y++;
+    }
 }
 
 function __zdbFeld424XGet() {
