@@ -1,5 +1,6 @@
 function __isilOPAC(bearbeiter) {
     var mailTo = [];
+    var i;
     if (!__zdbCheckScreen(['8A'], 'Script OPAC')) {
         return false;
     }
@@ -15,7 +16,7 @@ function __isilOPAC(bearbeiter) {
     _rec['OPAC_url'] = 'https://isil.staatsbibliothek-berlin.de/isil/' + isil;
 
     if (_rec['035B']) {
-        mailTo[0] = (_rec['035B'][0]['k']) ? _rec['035B'][0]['k'] : "keine E-Mail-Adresse angegeben";
+        mailTo[0] = (_rec['035B'][0]['k']) ? _rec['035B'][0]['k'][0] : "keine E-Mail-Adresse angegeben";
     }
 
     // GET the File opac_textbausteine.txt
@@ -42,18 +43,17 @@ function __isilOPAC(bearbeiter) {
     }
 
     if (_rec['035I']) {
-        var lvr = decodeURIComponent(encodeURIComponent(lvrs[_rec['035I'][0]['a']]));
-        mailTo.push(decodeURIComponent(encodeURIComponent(lvrs[_rec['035I'][0]['a'] + '-CC'])));
-        //Verbund-CC
-        if (_rec['035I'][0]['c']) {
-            mailTo.push(decodeURIComponent(encodeURIComponent(lvrs[_rec['035I'][0]['c'] + '-CC'])));
-        }
-        // weitere Verbund - CC
-        if (_rec['035I'][0]['d']) {
-            mailTo.push(decodeURIComponent(encodeURIComponent(lvrs[_rec['035I'][0]['d'] + '-CC'])));
-        }
-
+        var lvr = decodeURIComponent(encodeURIComponent(lvrs[_rec['035I'][0]['a'][0]]));
         text = text.replace(/{LVR}/g, lvr);
+        // LVR-CC
+        if (_rec['035I'][0]['a'].length > 0) {
+        mailTo.push(decodeURIComponent(encodeURIComponent(lvrs[_rec['035I'][0]['a'][0] + '-CC'])));
+        }
+        //Verbund-CC
+        if (_rec['035I'][0]['c'].length > 0) {
+            mailTo.push(decodeURIComponent(encodeURIComponent(lvrs[_rec['035I'][0]['c'][0] + '-CC'])));
+        }
+        
 
         //__zdbError(lvr);
 
@@ -76,6 +76,15 @@ function __isilOPAC(bearbeiter) {
     // Primärerfassung
     if (!_rec['035E'][0]['e']) {
         _rec['035E'][0]['e'] = 'ZDB';
+    } else {
+        //Verbund-CC
+        if (_rec['035E'][0]['d'].length > 0) {
+            for (i = 0; i < _rec['035E'][0]['d'].length; i++) {
+                if (_rec['035E'][0]['d'][i] + '-CC' in lvrs) {
+                    mailTo.push(decodeURIComponent(encodeURIComponent(lvrs[_rec['035E'][0]['d'][i] + '-CC'])));
+                }
+            }
+        }
     }
 
     // Get all Vars in text
@@ -111,7 +120,8 @@ function __isilOPAC(bearbeiter) {
     //__zdbError(mailRegex);
     mailRegex = new RegExp(mailRegex, 'm');
 
-    var mail = text.match(mailRegex)[1];
+    var mailMatch = text.match(mailRegex);
+    var mail = mailMatch ? mailMatch[1] : "";
 
     // Get blocks
     //var blockRegex = /###\sTEXT(..?)\sBEGIN\s###((?:.|\n)+?)###\sTEXT..?\sEND\s###/gm;
@@ -119,7 +129,6 @@ function __isilOPAC(bearbeiter) {
     var blockMatch;
 
     while ((blockMatch = blockRegex.exec(text)) != null) {
-
         mail = mail.replace('{TEXT' + blockMatch[1] + '}', blockMatch[2]);
     }
 
@@ -130,8 +139,10 @@ function __isilOPAC(bearbeiter) {
         mail = mail.replace(cleanMatch[0], '');
     }
     mail = mail.replace('||', '#');
+
     // clipboard
-    application.activeWindow.clipboard = mailTo.join("; ") + "\n" + mail;
+    var uniqueMailTo = __zdbArrayUnique(mailTo);
+    application.activeWindow.clipboard = uniqueMailTo.join("; ") + "\n" + mail;
 
     /*if(__zdbYesNo("Der Text wurde in die Zwischenablage kopiert. Soll eine neue Mail an " + mailTo + " erstellt werden?")) {
         application.shellExecute('mailto:' + mailTo + '?subject=' + isil, 5, 'open','');
@@ -159,8 +170,7 @@ function zdb_isilInactive() {
     var feld_005 = "\n005 Tw\n",
         feld_806 = '',
         feld_092 = '092 ',
-        bik = '',
-        sigel = '';
+        bik = '';
 
     // sigel
     if (_rec['008H'][0]['d']) {
@@ -301,7 +311,7 @@ function __isilGetISIL(idn) {
             // workaround since findTagContent has errors
             _field = _field.replace(/^\s+|\s?\n$/g, '');
         }
-        if(reg.test(_field)) {
+        if (reg.test(_field)) {
             isil = _field.match(reg)[1];
         } else {
             return;
@@ -331,10 +341,9 @@ function __isilGetISIL(idn) {
 
 function isil_isilListe() {
     var set = new SET(),
-        t,
         alleisil = [];
-    while (t = set.nextTit()) {
-        alleisil[t] = __isilGetISIL();
+    while (set.nextTit()) {
+        alleisil.push(__isilGetISIL());
     }
     application.activeWindow.clipboard = alleisil.join("\r\n");
     application.messageBox("ISIL-Liste", "Alle ISIL wurden eingesammelt und in den " +

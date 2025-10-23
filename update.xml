@@ -116,7 +116,7 @@
   <file source="chrome/ibw/content/xul/k10_exemplarmasken_dialog.js" destination="chrome\ibw\content\xul\k10_exemplarmasken_dialog.js"/>
   <file source="chrome/ibw/content/xul/k10_exemplarmasken_dialog.xul" destination="chrome\ibw\content\xul\k10_exemplarmasken_dialog.xul"/>
  </update>
- <update date="20250207">
+ <update date="20251023">
   <file source="scripts/zdb_isil.js" destination="scripts\zdb_isil.js"/>
  </update>
  <update date="20230307">
@@ -125,18 +125,15 @@
  <update date="20241101">
   <file source="scripts/zdb_scripte_intern.js" destination="scripts\zdb_scripte_intern.js"/>
   <file source="chrome/ibw/content/xul/ZDB_excelTabelle_dialog.js" destination="chrome\ibw\content\xul\ZDB_excelTabelle_dialog.js"/>
-  <file source="chrome/ibw/content/xul/ZDB_sucheErsetze_dialog.js" destination="chrome\ibw\content\xul\ZDB_sucheErsetze_dialog.js"/>
   <file source="chrome/ibw/content/xul/ZDB_sucheErsetze_dialog.xul" destination="chrome\ibw\content\xul\ZDB_sucheErsetze_dialog.xul"/>
  </update>
- <update date="20250710">
+ <update date="20250912">
   <file source="scripts/zdb_scripte_public.js" destination="scripts\zdb_scripte_public.js"/>
-  <file source="ttlcopy/zdb_titeldatenkopie_digi.ttl" destination="ttlcopy\zdb_titeldatenkopie_digi.ttl"/>
-  <file source="ttlcopy/zdb_titeldatenkopie_parallel.ttl" destination="ttlcopy\zdb_titeldatenkopie_parallel.ttl"/>
  </update>
  <update date="20240201">
   <file source="tables/0600.tab" destination="tables\0600.tab"/>
  </update>
- <update date="20240524">
+ <update date="20250908">
   <file source="tables/1500.tab" destination="tables\1500.tab"/>
  </update>
  <update date="20240216">
@@ -152,6 +149,10 @@
  <update date="20250227">
   <file source="tables/4713.tab" destination="tables\4713.tab"/>
  </update>
+ <update date="20250710">
+  <file source="ttlcopy/zdb_titeldatenkopie_digi.ttl" destination="ttlcopy\zdb_titeldatenkopie_digi.ttl"/>
+  <file source="ttlcopy/zdb_titeldatenkopie_parallel.ttl" destination="ttlcopy\zdb_titeldatenkopie_parallel.ttl"/>
+ </update>
  <update date="20240205">
   <file source="chrome/ibw/content/xul/ZDB_DigitalisierungConfig.xul" destination="chrome\ibw\content\xul\ZDB_DigitalisierungConfig.xul"/>
  </update>
@@ -160,6 +161,9 @@
  </update>
  <update date="20241030">
   <file source="chrome/ibw/content/xul/ZDB_excelTabelle_dialog.xul" destination="chrome\ibw\content\xul\ZDB_excelTabelle_dialog.xul"/>
+ </update>
+ <update date="20250923">
+  <file source="chrome/ibw/content/xul/ZDB_sucheErsetze_dialog.js" destination="chrome\ibw\content\xul\ZDB_sucheErsetze_dialog.js"/>
  </update>
  <update date="20250310">
   <file source="chrome/ibw/content/xul/csv_import.js" destination="chrome\ibw\content\xul\csv_import.js"/>

@@ -562,7 +562,10 @@ function __zdbTitelAnpassen() {
 }
 
 function __zdbIsRda() {
-    return ('rda' == _rec['010E'][0]['e'][0]) ? true : false;
+    if(0 > count(_rec['010E'])) { 
+        return ('rda' == _rec['010E'][0]['e'][0]) ? true : false;
+    }
+    return false;
 }
 
 function __zdbDeleteField(tag){
